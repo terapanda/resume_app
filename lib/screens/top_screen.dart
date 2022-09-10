@@ -38,7 +38,7 @@ class _TopScreenState extends State<TopScreen> {
             Navigator.of(context).push(
               PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) {
-                return Search();
+                return SearchScreen();
               }, transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                 final Offset begin = Offset(0.0, 1.0);
