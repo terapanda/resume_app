@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import '../controller/search_bar_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:resume_app/controller/search_bar_controller.dart';
+import 'package:resume_app/utils/hex_color.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);
+  final color_gray = '757575';
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +21,11 @@ class SearchScreen extends StatelessWidget {
         builder: (BuildContext context, SearchBarController searchBarController,
             Widget? child) {
           if (searchBarController.isLoading) {
-            return const Scaffold(
+            return Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(HexColor(color_gray)),
+                ),
               ),
             );
           }
@@ -47,13 +53,13 @@ class SearchScreen extends StatelessWidget {
 
   Widget _appbarIcon(SearchBarController searchBarController) {
     return searchBarController.isSearching
-        ? const Icon(
+        ? Icon(
             Icons.close,
-            color: Colors.white,
+            color: HexColor(color_gray),
           )
-        : const Icon(
+        : Icon(
             Icons.search,
-            color: Colors.white,
+            color: HexColor(color_gray),
           );
   }
 
@@ -62,27 +68,27 @@ class SearchScreen extends StatelessWidget {
         ? TextField(
             autofocus: true,
             cursorColor: Colors.white,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: HexColor(color_gray),
             ),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.search,
-                color: Colors.white,
+                color: HexColor(color_gray),
               ),
               hintText: '全文検索...',
               hintStyle: TextStyle(
-                color: Colors.white,
+                color: HexColor(color_gray),
               ),
             ),
             onChanged: (word) {
               searchBarController.searchOperation(word);
             },
           )
-        : const Text(
+        : Text(
             '検索リスト',
             style: TextStyle(
-              color: Colors.white,
+              color: HexColor(color_gray),
             ),
           );
   }
@@ -98,23 +104,69 @@ class SearchScreen extends StatelessWidget {
         child: Text('"${searchBarController.searchedText}"を含む文字列は見つかりませんでした。'),
       );
     } else {
-      return Container(
-        color: Colors.white,
-        child: ListView.builder(
-          key: const PageStorageKey(0),
-          controller: searchBarController.scrollController,
-          itemCount: itemList.length,
-          itemBuilder: (context, index) {
-            return SizedBox(
-              height: 60,
-              child: Card(
-                child: Center(
-                  child: Text(itemList[index].name),
+      return GridView.count(
+        padding: EdgeInsets.all(4.0),
+        crossAxisCount: 2,
+        crossAxisSpacing: 10.0, // 縦
+        mainAxisSpacing: 10.0, // 横
+        childAspectRatio: 0.7, // 高さ
+        shrinkWrap: true,
+        children: List.generate(itemList.length, (index) {
+          return Container(
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                new BoxShadow(
+                  color: Colors.grey,
+                  offset: new Offset(5.0, 5.0),
+                  blurRadius: 10.0,
+                )
+              ],
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Column(children: <Widget>[
+              Container(
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.network(
+                      itemList[index].image,
+                      fit: BoxFit.cover,
+                    )),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 16.0),
+                width: double.infinity,
+                child: Text(
+                  itemList[index].ruby,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
                 ),
               ),
-            );
-          },
-        ),
+              Container(
+                width: double.infinity,
+                child: Text(
+                  itemList[index].name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 4.0),
+                width: double.infinity,
+                child: Text(
+                  "年齢：${itemList[index].age}歳",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ]),
+          );
+        }),
       );
     }
   }

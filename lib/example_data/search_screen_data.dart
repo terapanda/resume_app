@@ -8,7 +8,8 @@ List<Person> exampleList = [
     sex: "1",
     age: "29",
     station: "地下鉄御堂筋線　江坂",
-    image: "assets/img/earth.png",
+    image:
+        "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
   ),
   const Person(
     id: "2",
@@ -17,7 +18,8 @@ List<Person> exampleList = [
     sex: "1",
     age: "34",
     station: "JRおおさか東線　高井田中央",
-    image: "assets/img/earth.png",
+    image:
+        "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
   ),
   const Person(
     id: "3",
@@ -26,7 +28,8 @@ List<Person> exampleList = [
     sex: "1",
     age: "35",
     station: "JRおおさか東線　鴫野",
-    image: "assets/img/earth.png",
+    image:
+        "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
   ),
   const Person(
     id: "4",
@@ -35,7 +38,8 @@ List<Person> exampleList = [
     sex: "2",
     age: "34",
     station: "阪神電鉄　野田",
-    image: "assets/img/earth.png",
+    image:
+        "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
   ),
   const Person(
     id: "5",
@@ -44,6 +48,7 @@ List<Person> exampleList = [
     sex: "1",
     age: "29",
     station: "地下鉄御堂筋線　東三国",
-    image: "assets/img/earth.png",
+    image:
+        "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
   ),
 ];
