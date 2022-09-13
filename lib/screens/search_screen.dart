@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resume_app/controller/search_bar_controller.dart';
 import 'package:resume_app/utils/hex_color.dart';
+import 'package:resume_app/screens/search_detail_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -44,7 +43,7 @@ class SearchScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: _listWidget(searchBarController),
+            body: _listWidget(context, searchBarController),
           );
         },
       ),
@@ -93,7 +92,8 @@ class SearchScreen extends StatelessWidget {
           );
   }
 
-  Widget _listWidget(SearchBarController searchBarController) {
+  Widget _listWidget(
+      BuildContext context, SearchBarController searchBarController) {
     final itemList = (searchBarController.isSearching &&
             searchBarController.searchedText.isNotEmpty)
         ? searchBarController.searchedItemList
@@ -104,70 +104,36 @@ class SearchScreen extends StatelessWidget {
         child: Text('"${searchBarController.searchedText}"を含む文字列は見つかりませんでした。'),
       );
     } else {
-      return GridView.count(
-        padding: EdgeInsets.all(4.0),
-        crossAxisCount: 2,
-        crossAxisSpacing: 10.0, // 縦
-        mainAxisSpacing: 10.0, // 横
-        childAspectRatio: 0.7, // 高さ
-        shrinkWrap: true,
-        children: List.generate(itemList.length, (index) {
-          return Container(
-            padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                new BoxShadow(
-                  color: Colors.grey,
-                  offset: new Offset(5.0, 5.0),
-                  blurRadius: 10.0,
-                )
-              ],
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Column(children: <Widget>[
-              Container(
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
+      return ListView.builder(
+          itemCount: itemList.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SearchDatailScreen(itemList[index], index)),
+              ),
+              child: Card(
+                child: ListTile(
+                  leading: Hero(
+                    tag: 'image${index}',
                     child: Image.network(
                       itemList[index].image,
-                      fit: BoxFit.cover,
-                    )),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 16.0),
-                width: double.infinity,
-                child: Text(
-                  itemList[index].ruby,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 10,
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                child: Text(
-                  itemList[index].name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 4.0),
-                width: double.infinity,
-                child: Text(
-                  "年齢：${itemList[index].age}歳",
-                  style: TextStyle(
-                    fontSize: 12,
+                  title: Text(
+                    itemList[index].name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.left,
+                  subtitle: Text(itemList[index].ruby),
+                  trailing: Icon(Icons.more_vert),
+                  minVerticalPadding: 20,
                 ),
               ),
-            ]),
-          );
-        }),
-      );
+            );
+          });
     }
   }
 }

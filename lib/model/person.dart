@@ -10,7 +10,7 @@ class Person {
   const Person(
       {required this.id,
       required this.name,
-      required this.ruby,
+      this.ruby = '',
       required this.sex,
       required this.age,
       required this.station,
