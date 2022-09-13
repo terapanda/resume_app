@@ -12,11 +12,11 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Private Page"),
+        title:  const Text("Private Page"),
       ),
       body: Center(
           child: Column(
-        children: [ElevatedButton(onPressed: () {}, child: Text('fasf'))],
+        children: [ElevatedButton(onPressed: () {}, child: const Text('fasf'))],
       )),
     );
   }
