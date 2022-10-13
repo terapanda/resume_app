@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(onPressed: () => {}, icon: const Icon(Icons.chat)),
           IconButton(onPressed: () => {}, icon: const Icon(Icons.notifications))
