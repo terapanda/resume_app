@@ -53,7 +53,8 @@ dependencies:
   path_provider: ^2.0.11
   intl: ^0.17.0
   share_plus: ^4.4.0
-
+  syncfusion_flutter_datepicker: ^20.3.52
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

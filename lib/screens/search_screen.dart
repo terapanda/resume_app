@@ -7,6 +7,8 @@ import 'package:resume_app/screens/create_pdf/create_pdf_screen.dart';
 import 'package:banner_listtile/banner_listtile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../screens/project_list_screen.dart';
+
 class SearchScreen extends StatefulWidget {
   final String searchValue; //上位Widgetから受け取りたいデータ
 
@@ -250,12 +252,23 @@ class _SearchScreenState extends State<SearchScreen> {
                             makePopupMenuItem('delete', FontAwesomeIcons.trash),
                           ];
                         },
-                        onSelected: (String value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CreatePdfScreen(person: itemList[index])),
-                        ),
+                        onSelected: (String value) {
+                          if (value == 'edit') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProjectListScreen(),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CreatePdfScreen(person: itemList[index])),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),
