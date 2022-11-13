@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class ProjectEditDialog extends StatefulWidget {
   const ProjectEditDialog({super.key});
@@ -60,6 +61,14 @@ class _ProjectEditDialogState extends State<ProjectEditDialog> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      Text('参画期間'),
+                      Text('ポジション'),
+                    ]),
+              ),
+              SizedBox(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
                       InkWell(
                         onTap: () => showDialog(
                             context: context,
@@ -76,7 +85,6 @@ class _ProjectEditDialogState extends State<ProjectEditDialog> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Text('参画期間'),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -91,48 +99,45 @@ class _ProjectEditDialogState extends State<ProjectEditDialog> {
                           ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Text('ポジション'),
-                            DropdownButton(
-                              items: const [
-                                DropdownMenuItem(
-                                  value: 1,
-                                  child: Text('PM'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 2,
-                                  child: Text('PL'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 3,
-                                  child: Text('SE'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 4,
-                                  child: Text('PG'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 5,
-                                  child: Text('TESTER'),
-                                ),
-                              ],
-                              onChanged: (int? value) {
-                                setState(() {
-                                  position = value!;
-                                });
-                              },
-                              value: position,
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          buttonPadding: EdgeInsets.all(10),
+                          buttonDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          buttonWidth: MediaQuery.of(context).size.width * 0.3,
+                          buttonHeight:
+                              MediaQuery.of(context).size.height * 0.08,
+                          itemHeight: 60,
+                          items: const [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text('PM'),
+                            ),
+                            DropdownMenuItem(
+                              value: 2,
+                              child: Text('PL'),
+                            ),
+                            DropdownMenuItem(
+                              value: 3,
+                              child: Text('SE'),
+                            ),
+                            DropdownMenuItem(
+                              value: 4,
+                              child: Text('PG'),
+                            ),
+                            DropdownMenuItem(
+                              value: 5,
+                              child: Text('TESTER'),
                             ),
                           ],
+                          onChanged: (int? value) {
+                            setState(() {
+                              position = value!;
+                            });
+                          },
+                          value: position,
                         ),
                       ),
                     ]),
