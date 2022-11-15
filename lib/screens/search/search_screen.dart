@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resume_app/controller/search_bar_controller.dart';
+import 'package:resume_app/screens/search/person_list_widget.dart';
 import 'package:resume_app/utils/hex_color.dart';
-import 'package:resume_app/screens/search_detail_screen.dart';
-import 'package:resume_app/screens/create_pdf/create_pdf_screen.dart';
-import 'package:banner_listtile/banner_listtile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../screens/project_list_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   final String searchValue; //上位Widgetから受け取りたいデータ
@@ -19,7 +15,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  var color_gray = '757575'; // アイコン、文字色
   var _inputWord = '';
   var _selectedSortItem = 'up_ruby';
   final _sortMap = {
@@ -58,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
             return Scaffold(
               body: Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(HexColor(color_gray)),
+                  valueColor: AlwaysStoppedAnimation(HexColor()),
                 ),
               ),
             );
@@ -83,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   children: [
                     // ソート用のドロップダウンリスト
                     _dropDownWidget(searchBarController),
-                    _listWidget(context, searchBarController),
+                    PersonListWidget(searchBarController: searchBarController),
                   ]));
         },
       ),
@@ -94,11 +89,11 @@ class _SearchScreenState extends State<SearchScreen> {
     return searchBarController.isSearching
         ? Icon(
             Icons.close,
-            color: HexColor(color_gray),
+            color: HexColor(),
           )
         : Icon(
             Icons.search,
-            color: HexColor(color_gray),
+            color: HexColor(),
           );
   }
 
@@ -106,18 +101,18 @@ class _SearchScreenState extends State<SearchScreen> {
     return searchBarController.isSearching
         ? TextFormField(
             autofocus: true,
-            cursorColor: HexColor(color_gray),
+            cursorColor: HexColor(),
             style: TextStyle(
-              color: HexColor(color_gray),
+              color: HexColor(),
             ),
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.search,
-                color: HexColor(color_gray),
+                color: HexColor(),
               ),
               hintText: '全文検索...',
               hintStyle: TextStyle(
-                color: HexColor(color_gray),
+                color: HexColor(),
               ),
             ),
             initialValue: searchValue, //ここに初期値
@@ -132,7 +127,7 @@ class _SearchScreenState extends State<SearchScreen> {
         : Text(
             '検索リスト',
             style: TextStyle(
-              color: HexColor(color_gray),
+              color: HexColor(),
             ),
           );
   }
@@ -158,7 +153,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Text(
                   _sortMap[_selectedSortItem] as String,
                   style: TextStyle(
-                    color: HexColor(color_gray),
+                    color: HexColor(),
                   ),
                 ),
               ],
@@ -189,110 +184,12 @@ class _SearchScreenState extends State<SearchScreen> {
         ? Icon(
             FontAwesomeIcons.arrowDownWideShort,
             size: 24,
-            color: HexColor(color_gray),
+            color: HexColor(),
           )
         : Icon(
             FontAwesomeIcons.arrowDownShortWide,
             size: 24,
-            color: HexColor(color_gray),
+            color: HexColor(),
           );
-  }
-
-  Widget _listWidget(
-      BuildContext context, SearchBarController searchBarController) {
-    final itemList = (searchBarController.isSearching &&
-            searchBarController.searchedText.isNotEmpty)
-        ? searchBarController.searchedItemList
-        : searchBarController.allItemList;
-
-    return Flexible(
-      child: itemList.isEmpty
-          ? Center(
-              child: Text(
-                  '"${searchBarController.searchedText}"を含む文字列は見つかりませんでした。'),
-            )
-          : ListView.builder(
-              itemCount: itemList.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: InkWell(
-                    child: BannerListTile(
-                      imageContainerShapeZigzagIndex: index,
-                      backgroundColor: Colors.white,
-                      showBanner: false,
-                      bannerPositionRight: false,
-                      borderRadius: BorderRadius.circular(8),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SearchDatailScreen(itemList[index], index)),
-                      ),
-                      title: Text(
-                        // style: TextStyle(fontSize: 20, color: Colors.white),
-                        itemList[index].name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      imageContainer: Hero(
-                        tag: 'image${index}',
-                        child: Image.network(
-                          itemList[index].image,
-                        ),
-                      ),
-                      subtitle: Text(
-                        itemList[index].ruby,
-                      ),
-                      trailing: PopupMenuButton(
-                        icon: const Icon(Icons.more_vert),
-                        itemBuilder: (context) {
-                          return [
-                            makePopupMenuItem('edit', FontAwesomeIcons.userPen),
-                            makePopupMenuItem('pdf', FontAwesomeIcons.filePdf),
-                            makePopupMenuItem('delete', FontAwesomeIcons.trash),
-                          ];
-                        },
-                        onSelected: (String value) {
-                          if (value == 'edit') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProjectListScreen(),
-                              ),
-                            );
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CreatePdfScreen(person: itemList[index])),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-    );
-  }
-
-  PopupMenuItem<String> makePopupMenuItem(String itemValue, IconData icon) {
-    return PopupMenuItem(
-      value: itemValue,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            size: 24,
-            color: HexColor(color_gray),
-          ),
-          Padding(padding: EdgeInsets.only(right: 16)),
-          Text(itemValue.toUpperCase()),
-        ],
-      ),
-    );
   }
 }

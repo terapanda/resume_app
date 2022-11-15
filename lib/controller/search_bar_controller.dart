@@ -58,26 +58,28 @@ class SearchBarController extends ChangeNotifier {
     searchedItemList.clear();
 
     // 全件検索
-    searchedItemList.addAll(
-      allItemList.where(
-        (element) =>
-            element.name.toLowerCase().contains(
-                  searchText.toLowerCase(),
-                ) ||
-            element.ruby.toLowerCase().contains(
-                  searchText.toLowerCase(),
-                ) ||
-            element.sex.toLowerCase().contains(
-                  searchText.toLowerCase(),
-                ) ||
-            element.age.toLowerCase().contains(
-                  searchText.toLowerCase(),
-                ) ||
-            element.station.toLowerCase().contains(
-                  searchText.toLowerCase(),
-                ),
-      ),
-    );
+    searchedItemList.addAll(allItemList.where((element) =>
+        element.name.toLowerCase().contains(
+              searchText.toLowerCase(),
+            ) ||
+        element.ruby.toLowerCase().contains(
+              searchText.toLowerCase(),
+            ) ||
+        element.sex.toLowerCase().contains(
+              searchText.toLowerCase(),
+            ) ||
+        element.age.toLowerCase().contains(
+              searchText.toLowerCase(),
+            ) ||
+        element.station.toLowerCase().contains(
+              searchText.toLowerCase(),
+            ) ||
+        element.experience.toString().contains(
+              searchText.toLowerCase(),
+            ) ||
+        element.excelsAt.join(',').toLowerCase().contains(
+              searchText.toLowerCase(),
+            )));
 
     searchedItemList = sortList(selectedSortItem, searchedItemList);
     notifyListeners();

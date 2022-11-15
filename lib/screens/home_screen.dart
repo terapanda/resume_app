@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'search_screen.dart';
+import 'search/search_screen.dart';
 import 'package:resume_app/utils/size_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
@@ -103,7 +103,7 @@ class DevelopmentLanguageList extends StatelessWidget {
       {'icon': FontAwesomeIcons.react, 'language': 'react'},
       {'icon': FontAwesomeIcons.vuejs, 'language': 'vuejs'},
       {'icon': FontAwesomeIcons.angular, 'language': 'angular'},
-      {'icon': FontAwesomeIcons.js, 'language': 'js'},
+      {'icon': FontAwesomeIcons.js, 'language': 'javascript'},
       {'icon': FontAwesomeIcons.node, 'language': 'node'},
       {'icon': FontAwesomeIcons.java, 'language': 'java'},
       {'icon': FontAwesomeIcons.php, 'language': 'php'},
