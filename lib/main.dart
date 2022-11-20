@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 import 'screens/top_screen.dart';
@@ -35,12 +36,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: white,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const TopScreen(),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: white,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialWithModalsPageRoute(
+              builder: (_) => TopScreen(), settings: settings);
+        });
   }
 }

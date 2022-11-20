@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:resume_app/screens/image_picker.dart';
 import 'search/search_screen.dart';
 import 'package:resume_app/utils/size_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -103,7 +104,7 @@ class DevelopmentLanguageList extends StatelessWidget {
       {'icon': FontAwesomeIcons.react, 'language': 'react'},
       {'icon': FontAwesomeIcons.vuejs, 'language': 'vuejs'},
       {'icon': FontAwesomeIcons.angular, 'language': 'angular'},
-      {'icon': FontAwesomeIcons.js, 'language': 'javascript'},
+      {'icon': FontAwesomeIcons.js, 'language': 'js'},
       {'icon': FontAwesomeIcons.node, 'language': 'node'},
       {'icon': FontAwesomeIcons.java, 'language': 'java'},
       {'icon': FontAwesomeIcons.php, 'language': 'php'},
@@ -511,7 +512,7 @@ class DevelopmentLanguageList extends StatelessWidget {
                 Navigator.of(context).push(
                   PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) {
-                    return SearchScreen(searchValue: 'Flutter');
+                    return ImagePickerWidget();
                   }, transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                     final Offset begin = Offset(0.0, 1.0);

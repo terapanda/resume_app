@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:resume_app/example_data/book_data.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/screens/create_pdf/file_name_widget.dart';
@@ -37,7 +38,7 @@ class _CreatePdfScreenState extends State<CreatePdfScreen> {
   void _preview() {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialWithModalsPageRoute(
         builder: (context) =>
             PreviewPage('${fileNameKey.currentState!.fileName}.pdf'),
       ),

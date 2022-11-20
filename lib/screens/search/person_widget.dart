@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:resume_app/component/popup_card/popup_card.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/screens/create_pdf/create_pdf_screen.dart';
@@ -70,14 +71,14 @@ class PersonWidget extends StatelessWidget {
                       if (value == 'edit') {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          MaterialWithModalsPageRoute(
                             builder: (context) => ProjectListScreen(),
                           ),
                         );
                       } else {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          MaterialWithModalsPageRoute(
                               builder: (context) =>
                                   CreatePdfScreen(person: personList[index])),
                         );
