@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:resume_app/model/person.dart';
+import 'package:resume_app/utils/replace_profile_data.dart';
 
 //スクリーン2
 class SearchDatailScreen extends StatelessWidget {
@@ -98,7 +99,7 @@ class SearchDatailScreen extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              personItem.age + '歳',
+              personItem.age.toString() + '歳',
               style: TextStyle(fontSize: 16),
             ),
           ),
@@ -122,7 +123,7 @@ class SearchDatailScreen extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              personItem.sex == '0' ? '女性' : '男性',
+              ReplaceProfileData.replaceSex(personItem.sex),
               style: TextStyle(fontSize: 16),
             ),
           ),

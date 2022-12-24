@@ -1,116 +1,286 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:resume_app/model/job_career.dart';
+import 'package:resume_app/model/person.dart';
+import 'package:resume_app/model/technical_skill.dart';
+import 'package:resume_app/utils/calc_skill_experience.dart';
+import 'package:resume_app/utils/replace_profile_data.dart';
+import 'package:resume_app/utils/replace_technical.dart';
 
-import 'package:resume_app/example_data/book_data.dart';
+const PdfColor green = PdfColor.fromInt(0xff9ce5d0);
+const PdfColor lightGreen = PdfColor.fromInt(0xffcdf1e7);
+
+// var logger = Logger(
+//   printer: PrettyPrinter(),
+// );
 
 class PdfCreator {
-  static Future<Document> create() async {
-    // final fontData = await rootBundle.load('assets/ShipporiMincho-Regular.ttf');
-    // final font = Font.ttf(fontData);
+  static Future<pw.Document> create(
+      Person person, bool showName, bool showContractType) async {
     // Googleフォントを取得して埋め込むことも可能
-    final Font font = await PdfGoogleFonts.shipporiMinchoRegular();
+    final pw.Font regular = await PdfGoogleFonts.mPLUS1pRegular();
+    final pw.Font bold = await PdfGoogleFonts.mPLUS1pBold();
 
-    final pdf = Document(author: 'Me');
+    final pdf = pw.Document(author: 'Me');
     var now = DateTime.now();
 
-    // // 表紙
-    // final cover = Page(
-    //   // pageThemeと「build以外のプロパティ」を同時に設定するとエラー
-    //   pageTheme: PageTheme(
-    //     theme: ThemeData.withFont(base: font),
-    //     pageFormat: PdfPageFormat.a4,
-    //     orientation: PageOrientation.portrait,
-    //     buildBackground: (context) => Opacity(
-    //       opacity: 0.3,
-    //       child: FlutterLogo(),
-    //     ),
-    //   ),
-    //   build: (context) => Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         Text(
-    //           BookData.title,
-    //           style: Theme.of(context).header0.copyWith(fontSize: 60),
-    //         ),
-    //         SizedBox(height: 30),
-    //         Text(
-    //           BookData.author,
-    //           style: Theme.of(context).header3,
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
+    final logo = pw.MemoryImage(
+      (await rootBundle.load('images/sun_logo.png')).buffer.asUint8List(),
+    );
+
+    late List<String> basicTableHeader = ['エンジニア名', '年齢', '性別', '最寄駅'];
+    late List<String> basicTableBody = [
+      showName ? person.name : person.initial,
+      person.age.toString(),
+      ReplaceProfileData.replaceSex(person.sex),
+      person.station
+    ];
+
+    late List<String> technicalTableHeader = [
+      'No.',
+      '期間',
+      'システム名及び作業内容',
+      '役割・規模',
+      'テクニカルスキル／開発環境等'
+    ];
+
+    if (showContractType) {
+      basicTableHeader.add('弊社契約形態');
+      basicTableBody
+          .add(ReplaceProfileData.replaceContractType(person.contractType));
+    }
+
+    late List<List<String>> technicalTableBody = [];
+    if (person.jobCareerList != null && person.jobCareerList!.isNotEmpty) {
+      for (var i = 0; i < person.jobCareerList!.length; i++) {
+        late List<String> technicalTableBodyRecord = [];
+
+        technicalTableBodyRecord.add(
+          (i + 1).toString(),
+        );
+
+        technicalTableBodyRecord.add(DateFormat('yyyy/MM/dd')
+                .format(person.jobCareerList![i].careerPeriodFrom) +
+            '\n~\n' +
+            DateFormat('yyyy/MM/dd')
+                .format(person.jobCareerList![i].careerPeriodTo));
+
+        technicalTableBodyRecord.add('【システム名】\n' +
+            person.jobCareerList![i].content +
+            '\n【担当フェーズ】\n' +
+            person.jobCareerList![i].phaseInCharge);
+
+        technicalTableBodyRecord
+            .add(ReplaceProfileData.replaceRole(person.jobCareerList![i].role));
+
+        late String technicals = "";
+
+        if (person.jobCareerList![i].usedTechnicalOSList != null &&
+            person.jobCareerList![i].usedTechnicalOSList!.isNotEmpty) {
+          technicals += "【OS】\n";
+          for (var j = 0;
+              j < person.jobCareerList![i].usedTechnicalOSList!.length;
+              j++) {
+            technicals += "・";
+            technicals += ReplaceTechnical.replaceTechnicalSkill(
+                person.jobCareerList![i].usedTechnicalOSList![j].osId);
+            technicals += "\n";
+          }
+        }
+
+        if (person.jobCareerList![i].usedTechnicalDBList != null &&
+            person.jobCareerList![i].usedTechnicalDBList!.isNotEmpty) {
+          technicals += "【DB】\n";
+          for (var j = 0;
+              j < person.jobCareerList![i].usedTechnicalDBList!.length;
+              j++) {
+            technicals += "・";
+            technicals += ReplaceTechnical.replaceTechnicalSkill(
+                person.jobCareerList![i].usedTechnicalDBList![j].dbId);
+            technicals += "\n";
+          }
+        }
+
+        if (person.jobCareerList![i].usedTechnicalSkillList != null &&
+            person.jobCareerList![i].usedTechnicalSkillList!.isNotEmpty) {
+          technicals += "【言語】\n";
+          for (var j = 0;
+              j < person.jobCareerList![i].usedTechnicalSkillList!.length;
+              j++) {
+            technicals += "・";
+            technicals += ReplaceTechnical.replaceTechnicalSkill(
+                person.jobCareerList![i].usedTechnicalSkillList![j].skillId);
+            technicals += "\n";
+          }
+        }
+        technicalTableBodyRecord.add(technicals);
+
+        technicalTableBody.add(technicalTableBodyRecord);
+      }
+    }
+    ;
 
     // 本文
-    final content = MultiPage(
-      pageTheme: PageTheme(
-        theme: ThemeData.withFont(base: font),
+    final content = pw.MultiPage(
+      pageTheme: pw.PageTheme(
+        theme: pw.ThemeData.withFont(
+          base: regular,
+          bold: bold,
+        ),
         pageFormat: PdfPageFormat.a4,
-        orientation: PageOrientation.portrait,
+        orientation: pw.PageOrientation.portrait,
       ),
       header: (context) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return pw.Padding(
+          padding: const pw.EdgeInsets.only(bottom: 30),
+          child: pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              Text(BookData.headerImage),
-              Text(BookData.headerTitle),
-              Text(DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now())),
+              pw.Image(logo, width: 100),
+              pw.Text("技　術　経　歴　書",
+                  style: pw.Theme.of(context).header0.copyWith(fontSize: 24)),
+              pw.Text(DateFormat('yyyy/MM/dd').format(DateTime.now())),
             ],
           ),
         );
       },
-      footer: (context) {
-        return Align(
-          alignment: Alignment.centerRight,
-          child: Text(BookData.author),
-        );
-      },
       build: (context) {
         return [
-          Header(
+          pw.Header(
             level: 0,
-            textStyle: Theme.of(context).header0,
-            child: Text(
-              BookData.chapter1Title,
-              style: Theme.of(context).header3,
+            textStyle: pw.Theme.of(context).header0,
+            child: pw.Text(
+              "■基本情報",
+              style: pw.Theme.of(context).header3,
             ),
           ),
-          Paragraph(
-            style: Theme.of(context).paragraphStyle,
-            text: BookData.chapter1Body,
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Expanded(
+                  flex: 1, // 1 要素分の横幅
+                  child: pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 10),
+                      child: pw.SizedBox(
+                          child: pw.Table.fromTextArray(
+                        context: context,
+                        data: <List>[
+                          basicTableHeader,
+                          basicTableBody,
+                        ],
+                        cellAlignment: pw.Alignment.center,
+                        // cellAlignments: {0: pw.Alignment.center},
+                      )))),
+              pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10),
+                  child: pw.SizedBox(
+                      width: 90,
+                      child: pw.Table.fromTextArray(
+                        context: context,
+                        data: <List>[
+                          ['参画可能日'],
+                          ['1234年 56月中旬'],
+                        ],
+                        cellAlignment: pw.Alignment.center,
+                        // cellAlignments: {0: pw.Alignment.center},
+                      ))),
+            ],
           ),
-          Header(
+          pw.SizedBox(height: 10),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Expanded(
+                flex: 1, // 1 要素分の横幅
+                child: pw.Padding(
+                    padding: const pw.EdgeInsets.only(top: 4),
+                    child: pw.Container(
+                      margin: pw.EdgeInsets.only(left: 10),
+                      alignment: pw.Alignment.topLeft,
+                      child: pw.Column(children: <pw.Widget>[
+                        pw.Text("概要（得意分野、自己PRなど）",
+                            textAlign: TextAlign.left,
+                            style: pw.TextStyle(
+                                fontSize: 16, fontWeight: pw.FontWeight.bold)),
+                        pw.Container(
+                            decoration: pw.BoxDecoration(
+                              border: pw.Border.all(),
+                            ),
+                            padding: const pw.EdgeInsets.all(8),
+                            child: pw.Text(person.description,
+                                maxLines: 20,
+                                textAlign: TextAlign.left,
+                                style: pw.TextStyle(fontSize: 10)))
+                      ]),
+                    )),
+              ),
+              pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10),
+                  child: pw.SizedBox(
+                      width: 200,
+                      child: pw.Table.fromTextArray(
+                        border: null,
+                        headers: [
+                          person.technicalSkillList != null ? '主要な言語' : ""
+                        ],
+                        data: List<List<dynamic>>.generate(
+                          person.technicalSkillList != null
+                              ? person.technicalSkillList!.length
+                              : 0,
+                          (index) => <dynamic>[
+                            ReplaceTechnical.replaceTechnicalSkill(
+                                person.technicalSkillList![index].skillId),
+                            CalcSkillExperience.calcSkillExperience(person
+                                .technicalSkillList![index].skillExperience),
+                          ],
+                        ),
+                        cellStyle: pw.TextStyle(
+                          fontSize: 10,
+                        ),
+                        headerStyle: pw.TextStyle(
+                          fontSize: 16,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                        rowDecoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                            top: pw.BorderSide(
+                              width: .5,
+                            ),
+                          ),
+                        ),
+                        cellAlignment: pw.Alignment.centerRight,
+                        cellAlignments: {0: pw.Alignment.centerLeft},
+                      ))),
+            ],
+          ),
+          pw.SizedBox(height: 20),
+          pw.Header(
             level: 0,
-            textStyle: Theme.of(context).header0,
-            child: Text(
-              BookData.chapter2Title,
-              style: Theme.of(context).header3,
+            textStyle: pw.Theme.of(context).header0,
+            child: pw.Text(
+              "■技術概要",
+              style: pw.Theme.of(context).header3,
             ),
           ),
-          Paragraph(
-            style: Theme.of(context).paragraphStyle,
-            text: BookData.chapter2Body,
-          ),
-          Header(
-            level: 0,
-            textStyle: Theme.of(context).header0,
-            child: Text(
-              BookData.chapter3Title,
-              style: Theme.of(context).header3,
-            ),
-          ),
-          Paragraph(
-            style: Theme.of(context).paragraphStyle,
-            text: BookData.chapter3Body,
-          ),
+          pw.Padding(
+              padding: const pw.EdgeInsets.only(left: 10),
+              child: pw.SizedBox(
+                  child: pw.Table.fromTextArray(
+                      context: context,
+                      headers: List<String>.generate(
+                        technicalTableHeader.length,
+                        (col) => technicalTableHeader[col],
+                      ),
+                      cellAlignment: pw.Alignment.topLeft,
+                      data: technicalTableBody)))
         ];
       },
     );

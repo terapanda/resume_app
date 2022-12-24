@@ -1,11 +1,12 @@
 class TechnicalSkill {
+  /// 言語ID
   final String skillId;
-  final String skillName;
+
+  /// 経験年数
   final double skillExperience;
 
   const TechnicalSkill({
-    required this.skillId, // 言語ID
-    required this.skillName, // 言語名
-    required this.skillExperience, // 経験年数
+    required this.skillId,
+    required this.skillExperience,
   });
 }
