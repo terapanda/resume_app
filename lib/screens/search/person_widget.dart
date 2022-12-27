@@ -582,9 +582,9 @@ class PersonWidget extends StatelessWidget {
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                   Text(
-                                    CalcYearsOfSkill.calcYearsOfSkill(personItem
+                                    CalcMonthOfSkill.calcMonthOfSkill(personItem
                                             .technicalSkillList![index]
-                                            .yearsOfSkill)
+                                            .monthOfSkill)
                                         .toString(),
                                     style: const TextStyle(fontSize: 16),
                                   ),

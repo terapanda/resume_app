@@ -3,10 +3,10 @@ class TechnicalDB {
   final String dbId;
 
   /// データベース経験年月
-  final int yearsOfDB;
+  final int monthOfDB;
 
   const TechnicalDB({
     required this.dbId,
-    required this.yearsOfDB,
+    required this.monthOfDB,
   });
 }

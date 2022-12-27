@@ -22,12 +22,12 @@ List<Person> exampleList = [
     experience: 8,
     lastUpdateDate: DateTime(2022, 11, 11, 17, 30),
     technicalSkillList: [
-      const TechnicalSkill(skillId: 'react', yearsOfSkill: 38),
-      const TechnicalSkill(skillId: 'vue', yearsOfSkill: 38),
-      const TechnicalSkill(skillId: 'java', yearsOfSkill: 65),
-      const TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
-      const TechnicalSkill(skillId: 'flutter', yearsOfSkill: 12),
-      const TechnicalSkill(skillId: 'vba', yearsOfSkill: 12)
+      const TechnicalSkill(skillId: 'react', monthOfSkill: 38),
+      const TechnicalSkill(skillId: 'vue', monthOfSkill: 38),
+      const TechnicalSkill(skillId: 'java', monthOfSkill: 65),
+      const TechnicalSkill(skillId: 'php', monthOfSkill: 12),
+      const TechnicalSkill(skillId: 'flutter', monthOfSkill: 12),
+      const TechnicalSkill(skillId: 'vba', monthOfSkill: 12)
     ],
     jobCareerList: [
       JobCareer(
@@ -38,7 +38,7 @@ List<Person> exampleList = [
           phaseInCharge: "フロントエンド",
           role: 4,
           usedTechnicalSkillList: [
-            const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+            const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
           ]),
       JobCareer(
           careerId: 2,
@@ -48,11 +48,11 @@ List<Person> exampleList = [
           phaseInCharge: "フロントエンド\n　要件定義～テスト",
           role: 4,
           usedTechnicalOSList: [
-            const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+            const TechnicalOS(osId: 'mac', monthOfOS: 8),
           ],
           usedTechnicalSkillList: [
-            const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-            const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+            const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+            const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
           ])
     ],
   ),
@@ -73,13 +73,13 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 25),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'vba', yearsOfSkill: 36),
-        TechnicalSkill(skillId: 'python', yearsOfSkill: 36)
+        TechnicalSkill(skillId: 'react', monthOfSkill: 25),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'vba', monthOfSkill: 36),
+        TechnicalSkill(skillId: 'python', monthOfSkill: 36)
       ],
       jobCareerList: [
         JobCareer(
@@ -90,7 +90,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -100,11 +100,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
         JobCareer(
             careerId: 3,
@@ -114,11 +114,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
         JobCareer(
             careerId: 4,
@@ -128,11 +128,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
         JobCareer(
             careerId: 5,
@@ -142,11 +142,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
         JobCareer(
             careerId: 6,
@@ -156,11 +156,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
         JobCareer(
             careerId: 7,
@@ -170,11 +170,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -202,7 +202,7 @@ List<Person> exampleList = [
     experience: 4,
     lastUpdateDate: new DateTime(2022, 3, 9, 1, 30),
     technicalSkillList: [
-      TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
+      TechnicalSkill(skillId: 'java', monthOfSkill: 24),
     ],
   ),
   Person(
@@ -222,10 +222,10 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2020, 5, 1, 1, 01),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 6),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 120),
+        TechnicalSkill(skillId: 'react', monthOfSkill: 6),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 60),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 120),
       ],
       jobCareerList: [
         JobCareer(
@@ -236,7 +236,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -246,11 +246,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -270,14 +270,14 @@ List<Person> exampleList = [
       experience: 6,
       lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
       technicalOSList: [
-        const TechnicalOS(osId: 'linux', yearsOfOS: 7),
-        const TechnicalOS(osId: 'unix', yearsOfOS: 10),
-        const TechnicalOS(osId: 'windows', yearsOfOS: 12),
+        const TechnicalOS(osId: 'linux', monthOfOS: 7),
+        const TechnicalOS(osId: 'unix', monthOfOS: 10),
+        const TechnicalOS(osId: 'windows', monthOfOS: 12),
       ],
       technicalDBList: [
-        const TechnicalDB(dbId: 'snowfleak', yearsOfDB: 7),
-        const TechnicalDB(dbId: 'oracle', yearsOfDB: 12),
-        const TechnicalDB(dbId: 'mysql', yearsOfDB: 9),
+        const TechnicalDB(dbId: 'snowfleak', monthOfDB: 7),
+        const TechnicalDB(dbId: 'oracle', monthOfDB: 12),
+        const TechnicalDB(dbId: 'mysql', monthOfDB: 9),
       ],
       jobCareerList: [
         JobCareer(
@@ -288,11 +288,11 @@ List<Person> exampleList = [
           phaseInCharge: "インフラ",
           role: 4,
           usedTechnicalOSList: [
-            const TechnicalOS(osId: 'linux', yearsOfOS: 7),
-            const TechnicalOS(osId: 'unix', yearsOfOS: 3),
+            const TechnicalOS(osId: 'linux', monthOfOS: 7),
+            const TechnicalOS(osId: 'unix', monthOfOS: 3),
           ],
           usedTechnicalDBList: [
-            const TechnicalDB(dbId: 'snowfleak', yearsOfDB: 7),
+            const TechnicalDB(dbId: 'snowfleak', monthOfDB: 7),
           ],
         ),
         JobCareer(
@@ -303,12 +303,12 @@ List<Person> exampleList = [
           phaseInCharge: "インフラ",
           role: 4,
           usedTechnicalOSList: [
-            const TechnicalOS(osId: 'windows', yearsOfOS: 12),
-            const TechnicalOS(osId: 'unix', yearsOfOS: 7),
+            const TechnicalOS(osId: 'windows', monthOfOS: 12),
+            const TechnicalOS(osId: 'unix', monthOfOS: 7),
           ],
           usedTechnicalDBList: [
-            const TechnicalDB(dbId: 'oracle', yearsOfDB: 12),
-            const TechnicalDB(dbId: 'mysql', yearsOfDB: 9),
+            const TechnicalDB(dbId: 'oracle', monthOfDB: 12),
+            const TechnicalDB(dbId: 'mysql', monthOfDB: 9),
           ],
         ),
       ]),
@@ -329,12 +329,12 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2022, 11, 11, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 36),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 36),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'vba', yearsOfSkill: 12)
+        TechnicalSkill(skillId: 'react', monthOfSkill: 36),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 36),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 60),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'vba', monthOfSkill: 12)
       ],
       jobCareerList: [
         JobCareer(
@@ -345,7 +345,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -355,11 +355,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -379,13 +379,13 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2022, 11, 11, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 25),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'vba', yearsOfSkill: 36),
-        TechnicalSkill(skillId: 'python', yearsOfSkill: 36)
+        TechnicalSkill(skillId: 'react', monthOfSkill: 25),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'vba', monthOfSkill: 36),
+        TechnicalSkill(skillId: 'python', monthOfSkill: 36)
       ],
       jobCareerList: [
         JobCareer(
@@ -396,7 +396,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -406,11 +406,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -430,8 +430,8 @@ List<Person> exampleList = [
     experience: 8,
     lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
     technicalSkillList: [
-      TechnicalSkill(skillId: 'パッション', yearsOfSkill: 14),
-      TechnicalSkill(skillId: '人の話を聞かない', yearsOfSkill: 432),
+      TechnicalSkill(skillId: 'パッション', monthOfSkill: 14),
+      TechnicalSkill(skillId: '人の話を聞かない', monthOfSkill: 432),
     ],
   ),
   Person(
@@ -451,10 +451,10 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 6),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 120),
+        TechnicalSkill(skillId: 'react', monthOfSkill: 6),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 60),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 120),
       ],
       jobCareerList: [
         JobCareer(
@@ -465,7 +465,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 5,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -475,11 +475,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -499,14 +499,14 @@ List<Person> exampleList = [
       experience: 6,
       lastUpdateDate: DateTime.now(),
       technicalOSList: [
-        const TechnicalOS(osId: 'linux', yearsOfOS: 7),
-        const TechnicalOS(osId: 'unix', yearsOfOS: 10),
-        const TechnicalOS(osId: 'windows', yearsOfOS: 12),
+        const TechnicalOS(osId: 'linux', monthOfOS: 7),
+        const TechnicalOS(osId: 'unix', monthOfOS: 10),
+        const TechnicalOS(osId: 'windows', monthOfOS: 12),
       ],
       technicalDBList: [
-        const TechnicalDB(dbId: 'snowfleak', yearsOfDB: 7),
-        const TechnicalDB(dbId: 'oracle', yearsOfDB: 12),
-        const TechnicalDB(dbId: 'mysql', yearsOfDB: 9),
+        const TechnicalDB(dbId: 'snowfleak', monthOfDB: 7),
+        const TechnicalDB(dbId: 'oracle', monthOfDB: 12),
+        const TechnicalDB(dbId: 'mysql', monthOfDB: 9),
       ],
       jobCareerList: [
         JobCareer(
@@ -517,11 +517,11 @@ List<Person> exampleList = [
           phaseInCharge: "インフラ",
           role: 5,
           usedTechnicalOSList: [
-            const TechnicalOS(osId: 'linux', yearsOfOS: 7),
-            const TechnicalOS(osId: 'unix', yearsOfOS: 3),
+            const TechnicalOS(osId: 'linux', monthOfOS: 7),
+            const TechnicalOS(osId: 'unix', monthOfOS: 3),
           ],
           usedTechnicalDBList: [
-            const TechnicalDB(dbId: 'snowfleak', yearsOfDB: 7),
+            const TechnicalDB(dbId: 'snowfleak', monthOfDB: 7),
           ],
         ),
         JobCareer(
@@ -532,12 +532,12 @@ List<Person> exampleList = [
           phaseInCharge: "インフラ",
           role: 4,
           usedTechnicalOSList: [
-            const TechnicalOS(osId: 'windows', yearsOfOS: 12),
-            const TechnicalOS(osId: 'unix', yearsOfOS: 7),
+            const TechnicalOS(osId: 'windows', monthOfOS: 12),
+            const TechnicalOS(osId: 'unix', monthOfOS: 7),
           ],
           usedTechnicalDBList: [
-            const TechnicalDB(dbId: 'oracle', yearsOfDB: 12),
-            const TechnicalDB(dbId: 'mysql', yearsOfDB: 9),
+            const TechnicalDB(dbId: 'oracle', monthOfDB: 12),
+            const TechnicalDB(dbId: 'mysql', monthOfDB: 9),
           ],
         ),
       ]),
@@ -558,12 +558,12 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 36),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 36),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'vba', yearsOfSkill: 12)
+        TechnicalSkill(skillId: 'react', monthOfSkill: 36),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 36),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 60),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'vba', monthOfSkill: 12)
       ],
       jobCareerList: [
         JobCareer(
@@ -574,7 +574,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -584,11 +584,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -608,13 +608,13 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 4),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 25),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 24),
-        TechnicalSkill(skillId: 'vba', yearsOfSkill: 36),
-        TechnicalSkill(skillId: 'python', yearsOfSkill: 36)
+        TechnicalSkill(skillId: 'react', monthOfSkill: 4),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 25),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', monthOfSkill: 24),
+        TechnicalSkill(skillId: 'vba', monthOfSkill: 36),
+        TechnicalSkill(skillId: 'python', monthOfSkill: 36)
       ],
       jobCareerList: [
         JobCareer(
@@ -625,7 +625,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 2,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -635,11 +635,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 4,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -659,8 +659,8 @@ List<Person> exampleList = [
     experience: 8,
     lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
     technicalSkillList: [
-      TechnicalSkill(skillId: 'パッション', yearsOfSkill: 432),
-      TechnicalSkill(skillId: '人の話を聞かない', yearsOfSkill: 432),
+      TechnicalSkill(skillId: 'パッション', monthOfSkill: 432),
+      TechnicalSkill(skillId: '人の話を聞かない', monthOfSkill: 432),
     ],
   ),
   Person(
@@ -680,10 +680,10 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: DateTime.now(),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', yearsOfSkill: 6),
-        TechnicalSkill(skillId: 'vue', yearsOfSkill: 12),
-        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 120),
+        TechnicalSkill(skillId: 'react', monthOfSkill: 6),
+        TechnicalSkill(skillId: 'vue', monthOfSkill: 12),
+        TechnicalSkill(skillId: 'java', monthOfSkill: 60),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 120),
       ],
       jobCareerList: [
         JobCareer(
@@ -694,7 +694,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 1,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -704,11 +704,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 2,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
   Person(
@@ -728,15 +728,15 @@ List<Person> exampleList = [
       experience: 6,
       lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
       technicalOSList: [
-        const TechnicalOS(osId: 'linux', yearsOfOS: 7),
-        const TechnicalOS(osId: 'unix', yearsOfOS: 10),
-        const TechnicalOS(osId: 'windows', yearsOfOS: 12),
-        const TechnicalOS(osId: 'mac', yearsOfOS: 4),
+        const TechnicalOS(osId: 'linux', monthOfOS: 7),
+        const TechnicalOS(osId: 'unix', monthOfOS: 10),
+        const TechnicalOS(osId: 'windows', monthOfOS: 12),
+        const TechnicalOS(osId: 'mac', monthOfOS: 4),
       ],
       technicalDBList: [
-        const TechnicalDB(dbId: 'snowfleak', yearsOfDB: 7),
-        const TechnicalDB(dbId: 'oracle', yearsOfDB: 12),
-        const TechnicalDB(dbId: 'mysql', yearsOfDB: 9),
+        const TechnicalDB(dbId: 'snowfleak', monthOfDB: 7),
+        const TechnicalDB(dbId: 'oracle', monthOfDB: 12),
+        const TechnicalDB(dbId: 'mysql', monthOfDB: 9),
       ],
       jobCareerList: [
         JobCareer(
@@ -747,11 +747,11 @@ List<Person> exampleList = [
           phaseInCharge: "インフラ",
           role: 2,
           usedTechnicalOSList: [
-            const TechnicalOS(osId: 'linux', yearsOfOS: 7),
-            const TechnicalOS(osId: 'unix', yearsOfOS: 3),
+            const TechnicalOS(osId: 'linux', monthOfOS: 7),
+            const TechnicalOS(osId: 'unix', monthOfOS: 3),
           ],
           usedTechnicalDBList: [
-            const TechnicalDB(dbId: 'snowfleak', yearsOfDB: 7),
+            const TechnicalDB(dbId: 'snowfleak', monthOfDB: 7),
           ],
         ),
         JobCareer(
@@ -762,12 +762,12 @@ List<Person> exampleList = [
           phaseInCharge: "インフラ",
           role: 4,
           usedTechnicalOSList: [
-            const TechnicalOS(osId: 'windows', yearsOfOS: 12),
-            const TechnicalOS(osId: 'unix', yearsOfOS: 7),
+            const TechnicalOS(osId: 'windows', monthOfOS: 12),
+            const TechnicalOS(osId: 'unix', monthOfOS: 7),
           ],
           usedTechnicalDBList: [
-            const TechnicalDB(dbId: 'oracle', yearsOfDB: 12),
-            const TechnicalDB(dbId: 'mysql', yearsOfDB: 9),
+            const TechnicalDB(dbId: 'oracle', monthOfDB: 12),
+            const TechnicalDB(dbId: 'mysql', monthOfDB: 9),
           ],
         ),
       ]),
@@ -788,8 +788,8 @@ List<Person> exampleList = [
       experience: 8,
       lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'javascript', yearsOfSkill: 60),
-        TechnicalSkill(skillId: 'php', yearsOfSkill: 60),
+        TechnicalSkill(skillId: 'javascript', monthOfSkill: 60),
+        TechnicalSkill(skillId: 'php', monthOfSkill: 60),
       ],
       jobCareerList: [
         JobCareer(
@@ -800,7 +800,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
+              const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -810,11 +810,11 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド\n要件定義～テスト",
             role: 3,
             usedTechnicalOSList: [
-              const TechnicalOS(osId: 'mac', yearsOfOS: 8),
+              const TechnicalOS(osId: 'mac', monthOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
-              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
+              const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
             ]),
       ]),
 ];

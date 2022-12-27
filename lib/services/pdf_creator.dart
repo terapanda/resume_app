@@ -233,8 +233,8 @@ class PdfCreator {
                           (index) => <dynamic>[
                             ReplaceTechnical.replaceTechnicalSkill(
                                 person.technicalSkillList![index].skillId),
-                            CalcYearsOfSkill.calcYearsOfSkill(
-                                person.technicalSkillList![index].yearsOfSkill),
+                            CalcMonthOfSkill.calcMonthOfSkill(
+                                person.technicalSkillList![index].monthOfSkill),
                           ],
                         ),
                         cellStyle: const pw.TextStyle(

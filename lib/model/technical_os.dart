@@ -3,10 +3,10 @@ class TechnicalOS {
   final String osId;
 
   /// OS経験年月
-  final int yearsOfOS;
+  final int monthOfOS;
 
   const TechnicalOS({
     required this.osId,
-    required this.yearsOfOS,
+    required this.monthOfOS,
   });
 }

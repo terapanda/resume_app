@@ -3,10 +3,10 @@ class TechnicalSkill {
   final String skillId;
 
   /// 経験年数
-  final double yearsOfSkill;
+  final double monthOfSkill;
 
   const TechnicalSkill({
     required this.skillId,
-    required this.yearsOfSkill,
+    required this.monthOfSkill,
   });
 }
