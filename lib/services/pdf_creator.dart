@@ -1,16 +1,11 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
-import 'package:resume_app/model/job_career.dart';
 import 'package:resume_app/model/person.dart';
-import 'package:resume_app/model/technical_skill.dart';
-import 'package:resume_app/utils/calc_skill_experience.dart';
+import 'package:resume_app/utils/calc_years_of_skill.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
 
@@ -218,7 +213,7 @@ class PdfCreator {
                             child: pw.Text(person.description,
                                 maxLines: 20,
                                 textAlign: TextAlign.left,
-                                style: pw.TextStyle(fontSize: 10)))
+                                style: const pw.TextStyle(fontSize: 10)))
                       ]),
                     )),
               ),
@@ -238,11 +233,11 @@ class PdfCreator {
                           (index) => <dynamic>[
                             ReplaceTechnical.replaceTechnicalSkill(
                                 person.technicalSkillList![index].skillId),
-                            CalcSkillExperience.calcSkillExperience(person
-                                .technicalSkillList![index].skillExperience),
+                            CalcYearsOfSkill.calcYearsOfSkill(
+                                person.technicalSkillList![index].yearsOfSkill),
                           ],
                         ),
-                        cellStyle: pw.TextStyle(
+                        cellStyle: const pw.TextStyle(
                           fontSize: 10,
                         ),
                         headerStyle: pw.TextStyle(

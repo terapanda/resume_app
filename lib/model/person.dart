@@ -14,7 +14,7 @@ class Person {
   final String ruby;
 
   /// 得意言語
-  final List<String> excelsAt;
+  final List<String> favoriteSkill;
 
   /// イニシャル
   final String initial;
@@ -59,7 +59,7 @@ class Person {
     required this.id,
     required this.name,
     required this.ruby,
-    required this.excelsAt,
+    required this.favoriteSkill,
     required this.initial,
     required this.sex,
     required this.age,

@@ -6,8 +6,7 @@ import 'package:resume_app/model/person.dart';
 import 'package:resume_app/screens/create_pdf/preview_page.dart';
 import 'package:resume_app/services/pdf_creator.dart';
 import 'package:resume_app/services/save_helper/save_helper.dart';
-import 'package:resume_app/utils/calc_skill_experience.dart';
-import 'package:resume_app/utils/development_language.dart';
+import 'package:resume_app/utils/calc_years_of_skill.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:resume_app/screens/project_list_screen.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
@@ -42,7 +41,7 @@ class PersonWidget extends StatelessWidget {
         background: Container(
           alignment: AlignmentDirectional.centerEnd,
           color: Colors.red,
-          child: Padding(
+          child: const Padding(
             padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
             //Padding配下にchildを足し、Iconを配置
             child: Icon(
@@ -75,7 +74,7 @@ class PersonWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialWithModalsPageRoute(
-                            builder: (context) => ProjectListScreen(),
+                            builder: (context) => const ProjectListScreen(),
                           ),
                         );
                       } else if (value == 'pdf') {
@@ -90,8 +89,8 @@ class PersonWidget extends StatelessWidget {
                     },
                   )
                 ]),
-                new Divider(),
-                Padding(padding: EdgeInsets.only(top: 8)),
+                const Divider(),
+                const Padding(padding: EdgeInsets.only(top: 8)),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -100,7 +99,7 @@ class PersonWidget extends StatelessWidget {
                     ]),
                 sex(true, personList[index]),
                 station(true, personList[index]),
-                excelsAt(true, personList[index]),
+                favoriteSkill(true, personList[index]),
                 lastUpdateDate(true, personList[index]),
                 // new Divider(),
                 // Padding(padding: EdgeInsets.only(top: 8)),
@@ -137,8 +136,8 @@ class PersonWidget extends StatelessWidget {
       ),
       body: PopUpItem(
         height: deviceHeight,
-        outerPadding: EdgeInsets.all(0),
-        innerPadding: EdgeInsets.all(16),
+        outerPadding: const EdgeInsets.all(0),
+        innerPadding: const EdgeInsets.all(16),
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         elevation: 2,
@@ -158,17 +157,18 @@ class PersonWidget extends StatelessWidget {
               )
             ]),
             headline('プロフィール'),
-            Padding(padding: EdgeInsets.only(top: 8)),
+            const Padding(padding: EdgeInsets.only(top: 8)),
             Row(children: [
               age(false, personList[index]),
               sex(false, personList[index]),
             ]),
-            new Container(
-                margin: const EdgeInsets.only(left: 48.0), child: Divider()),
+            Container(
+                margin: const EdgeInsets.only(left: 48.0),
+                child: const Divider()),
             station(false, personList[index]),
-            excelsAt(false, personList[index]),
-            new Divider(),
-            Padding(padding: EdgeInsets.only(top: 8)),
+            favoriteSkill(false, personList[index]),
+            const Divider(),
+            const Padding(padding: EdgeInsets.only(top: 8)),
             headline('言語経歴'),
             technicalSkill(personList[index]),
           ],
@@ -195,12 +195,12 @@ class PersonWidget extends StatelessWidget {
 // 見出し
   Widget headline(String headName) {
     return Padding(
-      padding: EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
           headName,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -209,7 +209,7 @@ class PersonWidget extends StatelessWidget {
 // 写真
   Widget image(Person personItem, double size) {
     return Padding(
-      padding: EdgeInsets.only(right: 16),
+      padding: const EdgeInsets.only(right: 16),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(45),
         child: Image.network(
@@ -227,10 +227,10 @@ class PersonWidget extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Padding(
-          padding: EdgeInsets.only(bottom: 4),
+          padding: const EdgeInsets.only(bottom: 4),
           child: Text(
             personItem.ruby,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -244,7 +244,7 @@ class PersonWidget extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Padding(
-          padding: EdgeInsets.only(bottom: 4),
+          padding: const EdgeInsets.only(bottom: 4),
           child: Text(
             personItem.name,
             style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
@@ -263,11 +263,11 @@ class PersonWidget extends StatelessWidget {
         children: [
           Icon(FontAwesomeIcons.addressCard, size: 20, color: HexColor()),
           Padding(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                personItem.age.toString() + '歳',
+                '${personItem.age}歳',
                 style: TextStyle(fontSize: 16, color: HexColor()),
               ),
             ),
@@ -282,7 +282,7 @@ class PersonWidget extends StatelessWidget {
           children: [
             Icon(FontAwesomeIcons.addressCard, size: 30, color: HexColor()),
             Padding(
-                padding: EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 16),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -291,8 +291,8 @@ class PersonWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 12, color: HexColor()),
                       ),
                       Text(
-                        personItem.age.toString() + '歳',
-                        style: TextStyle(fontSize: 16),
+                        '${personItem.age}歳',
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ])),
           ],
@@ -309,7 +309,7 @@ class PersonWidget extends StatelessWidget {
         children: [
           Icon(FontAwesomeIcons.briefcase, size: 20, color: HexColor()),
           Padding(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -326,7 +326,7 @@ class PersonWidget extends StatelessWidget {
         children: [
           Icon(FontAwesomeIcons.briefcase, size: 40, color: HexColor()),
           Padding(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Text(
               '経験年数 ${personItem.experience} 年',
               style: TextStyle(fontSize: 16, color: HexColor()),
@@ -341,7 +341,7 @@ class PersonWidget extends StatelessWidget {
   Widget sex(bool isCard, Person personItem) {
     if (isCard) {
       return Padding(
-        padding: EdgeInsets.only(top: 4),
+        padding: const EdgeInsets.only(top: 4),
         child: Row(
           // Property
           children: [
@@ -354,12 +354,12 @@ class PersonWidget extends StatelessWidget {
                 size: 20,
                 color: HexColor()),
             Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   ReplaceProfileData.replaceSex(personItem.sex),
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
@@ -370,7 +370,7 @@ class PersonWidget extends StatelessWidget {
       return Expanded(
         flex: 1, // 1 要素分の横幅
         child: Padding(
-          padding: EdgeInsets.only(top: 4),
+          padding: const EdgeInsets.only(top: 4),
           child: Row(
             // Property
             children: [
@@ -383,7 +383,7 @@ class PersonWidget extends StatelessWidget {
                   size: 30,
                   color: HexColor()),
               Padding(
-                padding: EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 16),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -393,7 +393,7 @@ class PersonWidget extends StatelessWidget {
                       ),
                       Text(
                         ReplaceProfileData.replaceSex(personItem.sex),
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ]),
               ),
@@ -408,18 +408,18 @@ class PersonWidget extends StatelessWidget {
   Widget station(bool isCard, Person personItem) {
     if (isCard) {
       return Padding(
-        padding: EdgeInsets.only(top: 4),
+        padding: const EdgeInsets.only(top: 4),
         child: Row(
           // Property
           children: [
             Icon(FontAwesomeIcons.trainSubway, size: 20, color: HexColor()),
             Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  personItem.station + '駅',
-                  style: TextStyle(fontSize: 16),
+                  '${personItem.station}駅',
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
@@ -428,13 +428,13 @@ class PersonWidget extends StatelessWidget {
       );
     } else {
       return Padding(
-        padding: EdgeInsets.only(top: 4),
+        padding: const EdgeInsets.only(top: 4),
         child: Row(
           // Property
           children: [
             Icon(FontAwesomeIcons.trainSubway, size: 30, color: HexColor()),
             Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -443,8 +443,8 @@ class PersonWidget extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: HexColor()),
                     ),
                     Text(
-                      personItem.station + '駅',
-                      style: TextStyle(fontSize: 16),
+                      '${personItem.station}駅',
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ]),
             ),
@@ -455,17 +455,17 @@ class PersonWidget extends StatelessWidget {
   }
 
 // 得意な言語
-  Widget excelsAt(bool isCard, Person personItem) {
+  Widget favoriteSkill(bool isCard, Person personItem) {
     if (isCard) {
       return Align(
         alignment: Alignment.centerLeft,
         child: Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 8),
           child: Wrap(
             //RowからWrapへ
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 4),
+                padding: const EdgeInsets.only(top: 4),
                 child: Icon(
                   FontAwesomeIcons.bookmark,
                   size: 20,
@@ -473,10 +473,10 @@ class PersonWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 16),
                 child: Wrap(
-                  children: personItem.excelsAt
-                      .map((excelsAtItem) => Container(
+                  children: personItem.favoriteSkill
+                      .map((favoriteSkillItem) => Container(
                           margin: const EdgeInsets.only(bottom: 8, right: 16),
                           padding: const EdgeInsets.only(
                               top: 4, bottom: 4, left: 8, right: 8),
@@ -484,7 +484,7 @@ class PersonWidget extends StatelessWidget {
                             border: Border.all(color: HexColor()),
                             borderRadius: BorderRadius.circular(45),
                           ),
-                          child: Text(excelsAtItem)))
+                          child: Text(favoriteSkillItem)))
                       .toList(),
                 ),
               ),
@@ -508,20 +508,20 @@ class PersonWidget extends StatelessWidget {
                 child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 16),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 4, bottom: 4),
+                        padding: const EdgeInsets.only(top: 4, bottom: 4),
                         child: Text(
                           '得意な言語',
                           style: TextStyle(fontSize: 12, color: HexColor()),
                         ),
                       ),
                       Wrap(
-                        children: personItem.excelsAt
-                            .map((excelsAtItem) => Container(
+                        children: personItem.favoriteSkill
+                            .map((favoriteSkillItem) => Container(
                                 margin:
                                     const EdgeInsets.only(bottom: 4, right: 16),
                                 padding: const EdgeInsets.only(
@@ -530,7 +530,7 @@ class PersonWidget extends StatelessWidget {
                                   border: Border.all(color: HexColor()),
                                   borderRadius: BorderRadius.circular(45),
                                 ),
-                                child: Text(excelsAtItem)))
+                                child: Text(favoriteSkillItem)))
                             .toList(),
                       ),
                     ]),
@@ -543,9 +543,8 @@ class PersonWidget extends StatelessWidget {
 // テクニカルスキル
   Widget technicalSkill(Person personItem) {
     if (personItem.technicalSkillList == null) {
-      return Padding(
-          padding:
-              const EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
+      return const Padding(
+          padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
           child: Text(
             "言語経歴の登録がありません",
             style: TextStyle(fontSize: 16),
@@ -567,12 +566,12 @@ class PersonWidget extends StatelessWidget {
                     child: Row(
                       // Property
                       children: [
-                        DevelopmentLanguage.getDevelopmentLanguage(
+                        ReplaceTechnical.getSkillIcon(
                             personItem.technicalSkillList![index].skillId,
                             30,
                             HexColor()),
                         Padding(
-                            padding: EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 16),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -580,15 +579,14 @@ class PersonWidget extends StatelessWidget {
                                     ReplaceTechnical.replaceTechnicalSkill(
                                         personItem.technicalSkillList![index]
                                             .skillId),
-                                    style: TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                   Text(
-                                    CalcSkillExperience.calcSkillExperience(
-                                            personItem
-                                                .technicalSkillList![index]
-                                                .skillExperience)
+                                    CalcYearsOfSkill.calcYearsOfSkill(personItem
+                                            .technicalSkillList![index]
+                                            .yearsOfSkill)
                                         .toString(),
-                                    style: TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                 ])),
                       ],
@@ -608,7 +606,7 @@ class PersonWidget extends StatelessWidget {
         children: [
           Icon(FontAwesomeIcons.clock, size: 14, color: HexColor()),
           Padding(
-              padding: EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 8),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -618,7 +616,7 @@ class PersonWidget extends StatelessWidget {
                     ),
                     Text(
                       personItem.lastUpdateDate.toString().substring(0, 16),
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ])),
         ],
@@ -630,7 +628,7 @@ class PersonWidget extends StatelessWidget {
         children: [
           Icon(FontAwesomeIcons.clock, size: 14, color: HexColor()),
           Padding(
-              padding: EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 8),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -640,7 +638,7 @@ class PersonWidget extends StatelessWidget {
                     ),
                     Text(
                       personItem.lastUpdateDate.toString().substring(0, 16),
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ])),
         ],
@@ -659,7 +657,7 @@ class PersonWidget extends StatelessWidget {
             size: 24,
             color: HexColor(),
           ),
-          Padding(padding: EdgeInsets.only(right: 16)),
+          const Padding(padding: EdgeInsets.only(right: 16)),
           Text(itemValue.toUpperCase()),
         ],
       ),

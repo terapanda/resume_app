@@ -66,7 +66,7 @@ class SearchBarController extends ChangeNotifier {
       (element) =>
           element.name.toLowerCase().contains(searchText.toLowerCase()) ||
           element.ruby.toLowerCase().contains(searchText.toLowerCase()) ||
-          element.excelsAt
+          element.favoriteSkill
               .join(',')
               .toLowerCase()
               .contains(searchText.toLowerCase()) ||

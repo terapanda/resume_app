@@ -14,7 +14,7 @@ List<Person> exampleList = [
     age: 29,
     contractType: 1,
     station: "地下鉄御堂筋線　江坂",
-    excelsAt: ['React', 'Vue', 'java'],
+    favoriteSkill: ['React', 'Vue', 'java'],
     description:
         "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
     image:
@@ -22,12 +22,12 @@ List<Person> exampleList = [
     experience: 8,
     lastUpdateDate: DateTime(2022, 11, 11, 17, 30),
     technicalSkillList: [
-      const TechnicalSkill(skillId: 'react', skillExperience: 38),
-      const TechnicalSkill(skillId: 'vue', skillExperience: 38),
-      const TechnicalSkill(skillId: 'java', skillExperience: 65),
-      const TechnicalSkill(skillId: 'php', skillExperience: 12),
-      const TechnicalSkill(skillId: 'flutter', skillExperience: 12),
-      const TechnicalSkill(skillId: 'vba', skillExperience: 12)
+      const TechnicalSkill(skillId: 'react', yearsOfSkill: 38),
+      const TechnicalSkill(skillId: 'vue', yearsOfSkill: 38),
+      const TechnicalSkill(skillId: 'java', yearsOfSkill: 65),
+      const TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
+      const TechnicalSkill(skillId: 'flutter', yearsOfSkill: 12),
+      const TechnicalSkill(skillId: 'vba', yearsOfSkill: 12)
     ],
     jobCareerList: [
       JobCareer(
@@ -38,7 +38,7 @@ List<Person> exampleList = [
           phaseInCharge: "フロントエンド",
           role: 4,
           usedTechnicalSkillList: [
-            const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+            const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
           ]),
       JobCareer(
           careerId: 2,
@@ -51,8 +51,8 @@ List<Person> exampleList = [
             const TechnicalOS(osId: 'mac', yearsOfOS: 8),
           ],
           usedTechnicalSkillList: [
-            const TechnicalSkill(skillId: 'react', skillExperience: 8),
-            const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+            const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+            const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
           ])
     ],
   ),
@@ -67,19 +67,19 @@ List<Person> exampleList = [
       description:
           "＜身についた知識・スキル＞\n・業務用基幹システム構築業務で身につけたプロジェクト全体をマネジメントするスキル\n・社内関係部署の要望を把握し、協力会社との調整・折衝を経験したことから得た課題を把握する力、解決策を提示し遂行する力\n・システム全般に関する包括的な知識・スキル",
       station: "JRおおさか東線　高井田中央",
-      excelsAt: ['COBOL', 'Vue', 'Python'],
+      favoriteSkill: ['COBOL', 'Vue', 'Python'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 25),
-        TechnicalSkill(skillId: 'vue', skillExperience: 24),
-        TechnicalSkill(skillId: 'java', skillExperience: 24),
-        TechnicalSkill(skillId: 'php', skillExperience: 12),
-        TechnicalSkill(skillId: 'flutter', skillExperience: 24),
-        TechnicalSkill(skillId: 'vba', skillExperience: 36),
-        TechnicalSkill(skillId: 'python', skillExperience: 36)
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 25),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'vba', yearsOfSkill: 36),
+        TechnicalSkill(skillId: 'python', yearsOfSkill: 36)
       ],
       jobCareerList: [
         JobCareer(
@@ -90,7 +90,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -103,8 +103,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
         JobCareer(
             careerId: 3,
@@ -117,8 +117,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
         JobCareer(
             careerId: 4,
@@ -131,8 +131,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
         JobCareer(
             careerId: 5,
@@ -145,8 +145,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
         JobCareer(
             careerId: 6,
@@ -159,8 +159,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
         JobCareer(
             careerId: 7,
@@ -173,8 +173,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -188,7 +188,7 @@ List<Person> exampleList = [
     description:
         "●●業界向けのWEBアプリケーション開発を約●年経験しております。\n要件定義〜テスト、導入までの上流工程から下流工程まで幅広い経験があります。また、現在はリーダー職を務めております。",
     station: "JRおおさか東線　鴫野",
-    excelsAt: [
+    favoriteSkill: [
       'C#',
       'COBOL',
       'Vue',
@@ -202,7 +202,7 @@ List<Person> exampleList = [
     experience: 4,
     lastUpdateDate: new DateTime(2022, 3, 9, 1, 30),
     technicalSkillList: [
-      TechnicalSkill(skillId: 'java', skillExperience: 24),
+      TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
     ],
   ),
   Person(
@@ -216,16 +216,16 @@ List<Person> exampleList = [
       description:
           "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
       station: "JR奈良　坊城",
-      excelsAt: ['php', 'Vue', 'java'],
+      favoriteSkill: ['php', 'Vue', 'java'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2020, 5, 1, 1, 01),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 6),
-        TechnicalSkill(skillId: 'vue', skillExperience: 12),
-        TechnicalSkill(skillId: 'java', skillExperience: 60),
-        TechnicalSkill(skillId: 'php', skillExperience: 120),
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 6),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 120),
       ],
       jobCareerList: [
         JobCareer(
@@ -236,7 +236,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -249,8 +249,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -264,7 +264,7 @@ List<Person> exampleList = [
       description:
           "●●業界向けのWEBアプリケーション開発を約●年経験しております。\n要件定義〜テスト、導入までの上流工程から下流工程まで幅広い経験があります。また、現在はリーダー職を務めております。",
       station: "地下鉄御堂筋線　東三国",
-      excelsAt: ['vba'],
+      favoriteSkill: ['vba'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 6,
@@ -323,18 +323,18 @@ List<Person> exampleList = [
       description:
           "●●業界向けのWEBアプリケーション開発を約●年経験しております。\n要件定義〜テスト、導入までの上流工程から下流工程まで幅広い経験があります。また、現在はリーダー職を務めております。",
       station: "地下鉄御堂筋線　江坂",
-      excelsAt: ['React', 'Vue', 'java'],
+      favoriteSkill: ['React', 'Vue', 'java'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2022, 11, 11, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 36),
-        TechnicalSkill(skillId: 'vue', skillExperience: 36),
-        TechnicalSkill(skillId: 'java', skillExperience: 60),
-        TechnicalSkill(skillId: 'php', skillExperience: 12),
-        TechnicalSkill(skillId: 'flutter', skillExperience: 12),
-        TechnicalSkill(skillId: 'vba', skillExperience: 12)
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 36),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 36),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'vba', yearsOfSkill: 12)
       ],
       jobCareerList: [
         JobCareer(
@@ -345,7 +345,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -358,8 +358,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -373,19 +373,19 @@ List<Person> exampleList = [
       description:
           "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
       station: "JRおおさか東線　高井田中央",
-      excelsAt: ['COBOL', 'Vue', 'Python'],
+      favoriteSkill: ['COBOL', 'Vue', 'Python'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2022, 11, 11, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 25),
-        TechnicalSkill(skillId: 'vue', skillExperience: 24),
-        TechnicalSkill(skillId: 'java', skillExperience: 24),
-        TechnicalSkill(skillId: 'php', skillExperience: 12),
-        TechnicalSkill(skillId: 'flutter', skillExperience: 24),
-        TechnicalSkill(skillId: 'vba', skillExperience: 36),
-        TechnicalSkill(skillId: 'python', skillExperience: 36)
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 25),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'vba', yearsOfSkill: 36),
+        TechnicalSkill(skillId: 'python', yearsOfSkill: 36)
       ],
       jobCareerList: [
         JobCareer(
@@ -396,7 +396,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -409,8 +409,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -424,14 +424,14 @@ List<Person> exampleList = [
     description:
         "＜身についた知識・スキル＞\n・業務用基幹システム構築業務で身につけたプロジェクト全体をマネジメントするスキル\n・社内関係部署の要望を把握し、協力会社との調整・折衝を\n　経験したことから得た課題を把握する力、解決策を提示し遂行する力\n・システム全般に関する包括的な知識・スキル",
     station: "JRおおさか東線　鴫野",
-    excelsAt: ['パッション'],
+    favoriteSkill: ['パッション'],
     image:
         "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
     experience: 8,
     lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
     technicalSkillList: [
-      TechnicalSkill(skillId: 'パッション', skillExperience: 14),
-      TechnicalSkill(skillId: '人の話を聞かない', skillExperience: 432),
+      TechnicalSkill(skillId: 'パッション', yearsOfSkill: 14),
+      TechnicalSkill(skillId: '人の話を聞かない', yearsOfSkill: 432),
     ],
   ),
   Person(
@@ -445,16 +445,16 @@ List<Person> exampleList = [
       description:
           "＜身についた知識・スキル＞\n・業務用基幹システム構築業務で身につけたプロジェクト全体をマネジメントするスキル\n・社内関係部署の要望を把握し、協力会社との調整・折衝を\n　経験したことから得た課題を把握する力、解決策を提示し遂行する力\n・システム全般に関する包括的な知識・スキル",
       station: "JR奈良　坊城",
-      excelsAt: ['php', 'Vue', 'java'],
+      favoriteSkill: ['php', 'Vue', 'java'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 6),
-        TechnicalSkill(skillId: 'vue', skillExperience: 12),
-        TechnicalSkill(skillId: 'java', skillExperience: 60),
-        TechnicalSkill(skillId: 'php', skillExperience: 120),
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 6),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 120),
       ],
       jobCareerList: [
         JobCareer(
@@ -465,7 +465,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 5,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -478,8 +478,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -493,7 +493,7 @@ List<Person> exampleList = [
       description:
           "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
       station: "地下鉄御堂筋線　東三国",
-      excelsAt: ['vba'],
+      favoriteSkill: ['vba'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 6,
@@ -552,18 +552,18 @@ List<Person> exampleList = [
       description:
           "＜身についた知識・スキル＞\n・業務用基幹システム構築業務で身につけたプロジェクト全体をマネジメントするスキル\n・社内関係部署の要望を把握し、協力会社との調整・折衝を\n　経験したことから得た課題を把握する力、解決策を提示し遂行する力\n・システム全般に関する包括的な知識・スキル",
       station: "地下鉄御堂筋線　江坂",
-      excelsAt: ['React', 'Vue', 'java'],
+      favoriteSkill: ['React', 'Vue', 'java'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 36),
-        TechnicalSkill(skillId: 'vue', skillExperience: 36),
-        TechnicalSkill(skillId: 'java', skillExperience: 60),
-        TechnicalSkill(skillId: 'php', skillExperience: 12),
-        TechnicalSkill(skillId: 'flutter', skillExperience: 12),
-        TechnicalSkill(skillId: 'vba', skillExperience: 12)
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 36),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 36),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'vba', yearsOfSkill: 12)
       ],
       jobCareerList: [
         JobCareer(
@@ -574,7 +574,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -587,8 +587,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -602,19 +602,19 @@ List<Person> exampleList = [
       description:
           "●●業界向けのWEBアプリケーション開発を約●年経験しております。\n要件定義〜テスト、導入までの上流工程から下流工程まで幅広い経験があります。また、現在はリーダー職を務めております。",
       station: "JRおおさか東線　高井田中央",
-      excelsAt: ['COBOL', 'Vue', 'Python'],
+      favoriteSkill: ['COBOL', 'Vue', 'Python'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 4),
-        TechnicalSkill(skillId: 'vue', skillExperience: 25),
-        TechnicalSkill(skillId: 'java', skillExperience: 24),
-        TechnicalSkill(skillId: 'php', skillExperience: 12),
-        TechnicalSkill(skillId: 'flutter', skillExperience: 24),
-        TechnicalSkill(skillId: 'vba', skillExperience: 36),
-        TechnicalSkill(skillId: 'python', skillExperience: 36)
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 4),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 25),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'flutter', yearsOfSkill: 24),
+        TechnicalSkill(skillId: 'vba', yearsOfSkill: 36),
+        TechnicalSkill(skillId: 'python', yearsOfSkill: 36)
       ],
       jobCareerList: [
         JobCareer(
@@ -625,7 +625,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 2,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -638,8 +638,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -653,14 +653,14 @@ List<Person> exampleList = [
     description:
         "●●業界向けのWEBアプリケーション開発を約●年経験しております。\n要件定義〜テスト、導入までの上流工程から下流工程まで幅広い経験があります。また、現在はリーダー職を務めております。",
     station: "JRおおさか東線　鴫野",
-    excelsAt: ['ノリ'],
+    favoriteSkill: ['ノリ'],
     image:
         "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
     experience: 8,
     lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
     technicalSkillList: [
-      TechnicalSkill(skillId: 'パッション', skillExperience: 432),
-      TechnicalSkill(skillId: '人の話を聞かない', skillExperience: 432),
+      TechnicalSkill(skillId: 'パッション', yearsOfSkill: 432),
+      TechnicalSkill(skillId: '人の話を聞かない', yearsOfSkill: 432),
     ],
   ),
   Person(
@@ -674,16 +674,16 @@ List<Person> exampleList = [
       description:
           "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
       station: "JR奈良　坊城",
-      excelsAt: ['php', 'Vue', 'java'],
+      favoriteSkill: ['php', 'Vue', 'java'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: DateTime.now(),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'react', skillExperience: 6),
-        TechnicalSkill(skillId: 'vue', skillExperience: 12),
-        TechnicalSkill(skillId: 'java', skillExperience: 60),
-        TechnicalSkill(skillId: 'php', skillExperience: 120),
+        TechnicalSkill(skillId: 'react', yearsOfSkill: 6),
+        TechnicalSkill(skillId: 'vue', yearsOfSkill: 12),
+        TechnicalSkill(skillId: 'java', yearsOfSkill: 60),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 120),
       ],
       jobCareerList: [
         JobCareer(
@@ -694,7 +694,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 1,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -707,8 +707,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
   Person(
@@ -722,7 +722,7 @@ List<Person> exampleList = [
       description:
           "＜身についた知識・スキル＞\n・業務用基幹システム構築業務で身につけたプロジェクト全体をマネジメントするスキル\n・社内関係部署の要望を把握し、協力会社との調整・折衝を\n　経験したことから得た課題を把握する力、解決策を提示し遂行する力\n・システム全般に関する包括的な知識・スキル",
       station: "地下鉄御堂筋線　東三国",
-      excelsAt: ['vba'],
+      favoriteSkill: ['vba'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 6,
@@ -782,14 +782,14 @@ List<Person> exampleList = [
       description:
           "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
       station: "JR神戸線　姫路",
-      excelsAt: ['php', 'javascript'],
+      favoriteSkill: ['php', 'javascript'],
       image:
           "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
       experience: 8,
       lastUpdateDate: new DateTime(2022, 2, 2, 2, 2),
       technicalSkillList: [
-        TechnicalSkill(skillId: 'javascript', skillExperience: 60),
-        TechnicalSkill(skillId: 'php', skillExperience: 60),
+        TechnicalSkill(skillId: 'javascript', yearsOfSkill: 60),
+        TechnicalSkill(skillId: 'php', yearsOfSkill: 60),
       ],
       jobCareerList: [
         JobCareer(
@@ -800,7 +800,7 @@ List<Person> exampleList = [
             phaseInCharge: "フロントエンド",
             role: 4,
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'vue', skillExperience: 2),
+              const TechnicalSkill(skillId: 'vue', yearsOfSkill: 2),
             ]),
         JobCareer(
             careerId: 2,
@@ -813,8 +813,8 @@ List<Person> exampleList = [
               const TechnicalOS(osId: 'mac', yearsOfOS: 8),
             ],
             usedTechnicalSkillList: [
-              const TechnicalSkill(skillId: 'react', skillExperience: 8),
-              const TechnicalSkill(skillId: 'type_script', skillExperience: 7),
+              const TechnicalSkill(skillId: 'react', yearsOfSkill: 8),
+              const TechnicalSkill(skillId: 'type_script', yearsOfSkill: 7),
             ]),
       ]),
 ];

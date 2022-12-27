@@ -1,7 +1,7 @@
-class CalcSkillExperience {
-  static String calcSkillExperience(double skillExperience) {
-    var experienceYear = (skillExperience / 12).floor();
-    var experienceMonth = (skillExperience - (experienceYear * 12)).floor();
+class CalcYearsOfSkill {
+  static String calcYearsOfSkill(double yearsOfSkill) {
+    var experienceYear = (yearsOfSkill / 12).floor();
+    var experienceMonth = (yearsOfSkill - (experienceYear * 12)).floor();
 
     if (experienceYear == 0) {
       return '${experienceMonth}ヶ月';
