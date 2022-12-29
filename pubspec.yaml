@@ -60,6 +60,8 @@ dependencies:
   image_cropper: ^3.0.1
   modal_bottom_sheet: ^2.1.2
   logger: ^1.1.0
+  modal_bottom_sheet: ^2.1.2
+  search_choices: ^2.1.8
 
 dev_dependencies:
   flutter_test:

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+<<<<<<< HEAD
 import 'package:resume_app/screens/image_picker.dart';
 import 'search/search_screen.dart';
+=======
+>>>>>>> feature/profile_edit
 import 'package:resume_app/utils/size_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
-import 'test_inifinty.dart';
+
+import 'search/search_screen.dart';
+import 'mypage_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,7 +28,19 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(onPressed: () => {}, icon: const Icon(Icons.chat)),
-          IconButton(onPressed: () => {}, icon: const Icon(Icons.notifications))
+          IconButton(
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MypageScreen(),
+                ),
+              )
+            },
+            icon: const Icon(
+              Icons.account_circle,
+            ),
+          )
         ],
       ),
       body: Center(
