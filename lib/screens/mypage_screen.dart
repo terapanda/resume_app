@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/component/popup_card/popup_card.dart';
 import 'package:resume_app/model/person.dart';
-import 'package:resume_app/screens/create_pdf/create_pdf_screen.dart';
-import 'package:resume_app/screens/create_pdf/file_name_widget.dart';
+// import 'package:resume_app/screens/create_pdf/create_pdf_screen.dart';
+// import 'package:resume_app/screens/create_pdf/file_name_widget.dart';
 import 'package:resume_app/services/pdf_creator.dart';
 import 'package:resume_app/services/save_helper/save_helper.dart';
-import 'package:resume_app/utils/development_language.dart';
+// import 'package:resume_app/utils/development_language.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:resume_app/screens/project_list_screen.dart';
 import 'package:resume_app/example_data/search_screen_data.dart';
@@ -50,16 +50,16 @@ class _MypageScreenState extends State<MypageScreen> {
         {'skillId': 'vue', 'skillName': 'Vue', 'skillExperience': 38},
       ],
     };
-    void _save() async {
-      final pdf = await PdfCreator.create();
-      final bytes = await pdf.save();
-      final fileName = '技術経歴書Y.W.pdf';
-      await SaveHelper.save(
-        bytes: bytes,
-        fileName: fileName,
-        platform: Theme.of(context).platform,
-      );
-    }
+    // void _save() async {
+    //   final pdf = await PdfCreator.create();
+    //   final bytes = await pdf.save();
+    //   final fileName = '技術経歴書Y.W.pdf';
+    //   await SaveHelper.save(
+    //     bytes: bytes,
+    //     fileName: fileName,
+    //     platform: Theme.of(context).platform,
+    //   );
+    // }
 
     return Scaffold(
         body: CupertinoScaffold(
@@ -465,50 +465,50 @@ Widget excelsAt(bool isCard, Map personItem) {
 }
 
 // テクニカルスキル
-Widget technicalSkill(Person personItem) {
-  return SizedBox(
-      height: personItem.technicalSkill.length * (64 + 8 + 8),
-      child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: personItem.technicalSkill.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: SizedBox(
-                height: 64,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8, bottom: 8, left: 16, right: 16),
-                  child: Row(
-                    // Property
-                    children: [
-                      DevelopmentLanguage.getDevelopmentLanguage(
-                          personItem.technicalSkill[index].skillId,
-                          30,
-                          HexColor()),
-                      Padding(
-                          padding: EdgeInsets.only(left: 16),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  personItem.technicalSkill[index].skillName,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Text(
-                                  calcSkillExperience(personItem
-                                          .technicalSkill[index]
-                                          .skillExperience)
-                                      .toString(),
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ])),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }));
-}
+// Widget technicalSkill(Person personItem) {
+//   return SizedBox(
+//       height: personItem.technicalSkill.length * (64 + 8 + 8),
+//       child: ListView.builder(
+//           physics: const NeverScrollableScrollPhysics(),
+//           itemCount: personItem.technicalSkill.length,
+//           itemBuilder: (context, index) {
+//             return Card(
+//               child: SizedBox(
+//                 height: 64,
+//                 child: Padding(
+//                   padding: const EdgeInsets.only(
+//                       top: 8, bottom: 8, left: 16, right: 16),
+//                   child: Row(
+//                     // Property
+//                     children: [
+//                       DevelopmentLanguage.getDevelopmentLanguage(
+//                           personItem.technicalSkill[index].skillId,
+//                           30,
+//                           HexColor()),
+//                       Padding(
+//                           padding: EdgeInsets.only(left: 16),
+//                           child: Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Text(
+//                                   personItem.technicalSkill[index].skillName,
+//                                   style: TextStyle(fontSize: 16),
+//                                 ),
+//                                 Text(
+//                                   calcSkillExperience(personItem
+//                                           .technicalSkill[index]
+//                                           .skillExperience)
+//                                       .toString(),
+//                                   style: TextStyle(fontSize: 16),
+//                                 ),
+//                               ])),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             );
+//           }));
+// }
 
 PopupMenuItem<String> makePopupMenuItem(String itemValue, IconData icon) {
   return PopupMenuItem(
