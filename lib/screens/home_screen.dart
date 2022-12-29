@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-<<<<<<< HEAD
 import 'package:resume_app/screens/image_picker.dart';
 import 'search/search_screen.dart';
-=======
->>>>>>> feature/profile_edit
 import 'package:resume_app/utils/size_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
