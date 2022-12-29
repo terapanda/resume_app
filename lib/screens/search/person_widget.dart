@@ -221,7 +221,7 @@ class PersonWidget extends StatelessWidget {
     );
   }
 
-// 名前
+// ふりがな
   Widget ruby(Person personItem) {
     return Flexible(
       child: Align(

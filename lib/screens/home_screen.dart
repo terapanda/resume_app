@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:resume_app/screens/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'search/search_screen.dart';
 import 'package:resume_app/utils/size_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -74,6 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+Future<void> _launchUrl(url) async {
+  final Uri _url = Uri.parse(url);
+  if (!await launchUrl(_url)) {
+    throw 'Could not launch $_url';
+  }
+}
+
 class Carousel extends StatelessWidget {
   const Carousel({Key? key}) : super(key: key);
 
@@ -83,27 +91,36 @@ class Carousel extends StatelessWidget {
       options: CarouselOptions(
           height: SizeConfig.blockSizeVertical! * 20, autoPlay: true),
       items: [
-        Card(
-          child: Container(
-            height: SizeConfig.blockSizeVertical! * 80,
-            width: SizeConfig.blockSizeHorizontal! * 80,
-            child: Image.asset('images/sauna2.jpg'),
+        TextButton(
+          child: Card(
+            child: Container(
+              height: SizeConfig.blockSizeVertical! * 80,
+              width: SizeConfig.blockSizeHorizontal! * 80,
+              child: Image.asset('images/image1.png'),
+            ),
           ),
+          onPressed: () => _launchUrl('https://www.sun21.co.jp/'),
         ),
-        Card(
-          child: Container(
-            height: SizeConfig.blockSizeVertical! * 80,
-            width: SizeConfig.blockSizeHorizontal! * 80,
-            child: Image.asset('images/sauna1.jpg'),
+        TextButton(
+          child: Card(
+            child: Container(
+              height: SizeConfig.blockSizeVertical! * 80,
+              width: SizeConfig.blockSizeHorizontal! * 80,
+              child: Image.asset('images/image2.png'),
+            ),
           ),
+          onPressed: () => _launchUrl('https://kurashi-study.net/'),
         ),
-        Card(
-          child: Container(
-            height: SizeConfig.blockSizeVertical! * 80,
-            width: SizeConfig.blockSizeHorizontal! * 80,
-            child: Image.asset('images/sauna3.jpg'),
+        TextButton(
+          child: Card(
+            child: Container(
+              height: SizeConfig.blockSizeVertical! * 80,
+              width: SizeConfig.blockSizeHorizontal! * 80,
+              child: Image.asset('images/image3.png'),
+            ),
           ),
-        )
+          onPressed: () => _launchUrl('https://kurashi-japan.net/?lang=ja'),
+        ),
       ],
     );
   }

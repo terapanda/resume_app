@@ -4,19 +4,17 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/component/popup_card/popup_card.dart';
+import 'package:resume_app/model/job_career.dart';
 import 'package:resume_app/model/person.dart';
-// import 'package:resume_app/screens/create_pdf/create_pdf_screen.dart';
-// import 'package:resume_app/screens/create_pdf/file_name_widget.dart';
+import 'package:resume_app/model/technical_os.dart';
+import 'package:resume_app/model/technical_skill.dart';
 import 'package:resume_app/services/pdf_creator.dart';
 import 'package:resume_app/services/save_helper/save_helper.dart';
-// import 'package:resume_app/utils/development_language.dart';
+import 'package:resume_app/utils/calc_years_of_skill.dart';
 import 'package:resume_app/utils/hex_color.dart';
-import 'package:resume_app/screens/project_list_screen.dart';
-import 'package:resume_app/example_data/search_screen_data.dart';
-import 'package:resume_app/model/technical_skill.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:resume_app/screens/home_screen.dart';
 import 'package:resume_app/screens/profile_edit_screen.dart';
+import 'package:resume_app/utils/replace_profile_data.dart';
+import 'package:resume_app/utils/replace_technical.dart';
 
 class MypageScreen extends StatefulWidget {
   const MypageScreen({super.key});
@@ -33,33 +31,137 @@ class _MypageScreenState extends State<MypageScreen> {
 
   Widget _popUpItemBody(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
-    Map Persondata = {
-      'id': '1',
-      'name': '渡部　悠貴',
-      'ruby': 'わたなべ　ゆうき',
-      'initial': 'Y.W',
-      'sex': '1',
-      'age': '29',
-      'station': '地下鉄御堂筋線　江坂',
-      'excelsAt': ['React', 'Vue', 'java'],
-      'image':
-          'https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg',
-      'experience': 8,
-      'technicalSkill': [
-        {'skillId': 'react', 'skillName': 'React', 'skillExperience': 38},
-        {'skillId': 'vue', 'skillName': 'Vue', 'skillExperience': 38},
-      ],
-    };
-    // void _save() async {
-    //   final pdf = await PdfCreator.create();
-    //   final bytes = await pdf.save();
-    //   final fileName = '技術経歴書Y.W.pdf';
-    //   await SaveHelper.save(
-    //     bytes: bytes,
-    //     fileName: fileName,
-    //     platform: Theme.of(context).platform,
-    //   );
-    // }
+    Person Persondata = Person(
+        id: 2,
+        name: "谷内　伸輔神",
+        ruby: "たにうち　しんすけ",
+        initial: "S.T",
+        sex: 3,
+        age: 34,
+        contractType: 1,
+        description:
+            "＜身についた知識・スキル＞\n・業務用基幹システム構築業務で身につけたプロジェクト全体をマネジメントするスキル\n・社内関係部署の要望を把握し、協力会社との調整・折衝を経験したことから得た課題を把握する力、解決策を提示し遂行する力\n・システム全般に関する包括的な知識・スキル",
+        station: "JRおおさか東線　高井田中央",
+        favoriteSkill: ['COBOL', 'Vue', 'Python'],
+        image:
+            "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
+        experience: 8,
+        lastUpdateDate: new DateTime(2021, 11, 12, 17, 30),
+        technicalSkillList: [
+          TechnicalSkill(skillId: 'react', monthOfSkill: 25),
+          TechnicalSkill(skillId: 'vue', monthOfSkill: 24),
+          TechnicalSkill(skillId: 'java', monthOfSkill: 24),
+          TechnicalSkill(skillId: 'php', monthOfSkill: 12),
+          TechnicalSkill(skillId: 'flutter', monthOfSkill: 24),
+          TechnicalSkill(skillId: 'vba', monthOfSkill: 36),
+          TechnicalSkill(skillId: 'python', monthOfSkill: 36)
+        ],
+        jobCareerList: [
+          JobCareer(
+              careerId: 1,
+              careerPeriodFrom: DateTime(2019, 11, 01),
+              careerPeriodTo: DateTime(2019, 12, 31),
+              content: "高速道路に表示する電光掲示の遠隔操作システム",
+              phaseInCharge: "フロントエンド",
+              role: 4,
+              usedTechnicalSkillList: [
+                const TechnicalSkill(skillId: 'vue', monthOfSkill: 2),
+              ]),
+          JobCareer(
+              careerId: 2,
+              careerPeriodFrom: DateTime(2020, 01, 01),
+              careerPeriodTo: DateTime(2021, 08, 31),
+              content: "空調機器設置遠隔操作システム",
+              phaseInCharge: "フロントエンド\n要件定義～テスト",
+              role: 4,
+              usedTechnicalOSList: [
+                const TechnicalOS(osId: 'mac', monthOfOS: 8),
+              ],
+              usedTechnicalSkillList: [
+                const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+                const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
+              ]),
+          JobCareer(
+              careerId: 3,
+              careerPeriodFrom: DateTime(2020, 01, 01),
+              careerPeriodTo: DateTime(2021, 08, 31),
+              content: "空調機器設置遠隔操作システム",
+              phaseInCharge: "フロントエンド\n要件定義～テスト",
+              role: 4,
+              usedTechnicalOSList: [
+                const TechnicalOS(osId: 'mac', monthOfOS: 8),
+              ],
+              usedTechnicalSkillList: [
+                const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+                const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
+              ]),
+          JobCareer(
+              careerId: 4,
+              careerPeriodFrom: DateTime(2020, 01, 01),
+              careerPeriodTo: DateTime(2021, 08, 31),
+              content: "空調機器設置遠隔操作システム",
+              phaseInCharge: "フロントエンド\n要件定義～テスト",
+              role: 4,
+              usedTechnicalOSList: [
+                const TechnicalOS(osId: 'mac', monthOfOS: 8),
+              ],
+              usedTechnicalSkillList: [
+                const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+                const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
+              ]),
+          JobCareer(
+              careerId: 5,
+              careerPeriodFrom: DateTime(2020, 01, 01),
+              careerPeriodTo: DateTime(2021, 08, 31),
+              content: "空調機器設置遠隔操作システム",
+              phaseInCharge: "フロントエンド\n要件定義～テスト",
+              role: 4,
+              usedTechnicalOSList: [
+                const TechnicalOS(osId: 'mac', monthOfOS: 8),
+              ],
+              usedTechnicalSkillList: [
+                const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+                const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
+              ]),
+          JobCareer(
+              careerId: 6,
+              careerPeriodFrom: DateTime(2020, 01, 01),
+              careerPeriodTo: DateTime(2021, 08, 31),
+              content: "空調機器設置遠隔操作システム",
+              phaseInCharge: "フロントエンド\n要件定義～テスト",
+              role: 4,
+              usedTechnicalOSList: [
+                const TechnicalOS(osId: 'mac', monthOfOS: 8),
+              ],
+              usedTechnicalSkillList: [
+                const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+                const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
+              ]),
+          JobCareer(
+              careerId: 7,
+              careerPeriodFrom: DateTime(2020, 01, 01),
+              careerPeriodTo: DateTime(2021, 08, 31),
+              content: "空調機器設置遠隔操作システム",
+              phaseInCharge: "フロントエンド\n要件定義～テスト",
+              role: 4,
+              usedTechnicalOSList: [
+                const TechnicalOS(osId: 'mac', monthOfOS: 8),
+              ],
+              usedTechnicalSkillList: [
+                const TechnicalSkill(skillId: 'react', monthOfSkill: 8),
+                const TechnicalSkill(skillId: 'type_script', monthOfSkill: 7),
+              ]),
+        ]);
+    void _save(Persondata) async {
+      final pdf = await PdfCreator.create(Persondata, false, true);
+      final bytes = await pdf.save();
+      final fileName = '技術経歴書Y.W.pdf';
+      await SaveHelper.save(
+        bytes: bytes,
+        fileName: fileName,
+        platform: Theme.of(context).platform,
+      );
+    }
 
     return Scaffold(
         body: CupertinoScaffold(
@@ -107,18 +209,20 @@ class _MypageScreenState extends State<MypageScreen> {
                       )
                     ]),
                     headline('プロフィール'),
-                    Padding(padding: EdgeInsets.only(top: 8)),
+                    const Padding(padding: EdgeInsets.only(top: 8)),
                     Row(children: [
                       age(false, Persondata),
                       sex(false, Persondata),
                     ]),
-                    const Divider(),
+                    Container(
+                        margin: const EdgeInsets.only(left: 48.0),
+                        child: const Divider()),
                     station(false, Persondata),
-                    excelsAt(false, Persondata),
+                    favoriteSkill(false, Persondata),
                     const Divider(),
-                    Padding(padding: EdgeInsets.only(top: 8)),
+                    const Padding(padding: EdgeInsets.only(top: 8)),
                     headline('言語経歴'),
-                    // technicalSkill(personList[index]),
+                    technicalSkill(Persondata),
                   ],
                 ),
               ),
@@ -133,25 +237,25 @@ class _MypageScreenState extends State<MypageScreen> {
 // 見出し
 Widget headline(String headName) {
   return Padding(
-    padding: EdgeInsets.only(top: 8),
+    padding: const EdgeInsets.only(top: 8),
     child: Align(
       alignment: Alignment.centerLeft,
       child: Text(
         headName,
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     ),
   );
 }
 
 // 写真
-Widget image(Map personItem, double size) {
+Widget image(Person personItem, double size) {
   return Padding(
-    padding: EdgeInsets.only(right: 16),
+    padding: const EdgeInsets.only(right: 16),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(45),
       child: Image.network(
-        personItem['image'],
+        personItem.image,
         width: size,
         height: size,
       ),
@@ -159,16 +263,16 @@ Widget image(Map personItem, double size) {
   );
 }
 
-// 名前
-Widget ruby(Map personItem) {
+// ふりがな
+Widget ruby(Person personItem) {
   return Flexible(
     child: Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 4),
+        padding: const EdgeInsets.only(bottom: 4),
         child: Text(
-          personItem['ruby'],
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          personItem.ruby,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -177,14 +281,14 @@ Widget ruby(Map personItem) {
 }
 
 // 名前
-Widget name(Map personItem, double fontSize) {
+Widget name(Person personItem, double fontSize) {
   return Flexible(
     child: Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 4),
+        padding: const EdgeInsets.only(bottom: 4),
         child: Text(
-          personItem['name'],
+          personItem.name,
           style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis,
         ),
@@ -194,18 +298,18 @@ Widget name(Map personItem, double fontSize) {
 }
 
 // 年齢
-Widget age(bool isCard, Map personItem) {
+Widget age(bool isCard, Person personItem) {
   if (isCard) {
     return Row(
       // Property
       children: [
         Icon(FontAwesomeIcons.addressCard, size: 20, color: HexColor()),
         Padding(
-          padding: EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 16),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              personItem['age'] + '歳',
+              '${personItem.age}歳',
               style: TextStyle(fontSize: 16, color: HexColor()),
             ),
           ),
@@ -220,7 +324,7 @@ Widget age(bool isCard, Map personItem) {
         children: [
           Icon(FontAwesomeIcons.addressCard, size: 30, color: HexColor()),
           Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -229,8 +333,8 @@ Widget age(bool isCard, Map personItem) {
                       style: TextStyle(fontSize: 12, color: HexColor()),
                     ),
                     Text(
-                      personItem['age'] + '歳',
-                      style: TextStyle(fontSize: 16),
+                      '${personItem.age}歳',
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ])),
         ],
@@ -240,18 +344,18 @@ Widget age(bool isCard, Map personItem) {
 }
 
 // 経験年数
-Widget experience(bool isCard, Map personItem) {
+Widget experience(bool isCard, Person personItem) {
   if (isCard) {
     return Row(
       // Property
       children: [
         Icon(FontAwesomeIcons.briefcase, size: 20, color: HexColor()),
         Padding(
-          padding: EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 16),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              '経験年数 ${personItem["experience"]} 年',
+              '経験年数 ${personItem.experience} 年',
               style: TextStyle(fontSize: 16, color: HexColor()),
             ),
           ),
@@ -264,9 +368,9 @@ Widget experience(bool isCard, Map personItem) {
       children: [
         Icon(FontAwesomeIcons.briefcase, size: 40, color: HexColor()),
         Padding(
-          padding: EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 16),
           child: Text(
-            '経験年数 ${personItem["experience"]} 年',
+            '経験年数 ${personItem.experience} 年',
             style: TextStyle(fontSize: 16, color: HexColor()),
           ),
         ),
@@ -276,21 +380,28 @@ Widget experience(bool isCard, Map personItem) {
 }
 
 // 性別
-Widget sex(bool isCard, Map personItem) {
+Widget sex(bool isCard, Person personItem) {
   if (isCard) {
     return Padding(
-      padding: EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.only(top: 4),
       child: Row(
         // Property
         children: [
-          Icon(FontAwesomeIcons.marsAndVenus, size: 20, color: HexColor()),
+          Icon(
+              personItem.sex == 0
+                  ? FontAwesomeIcons.venus
+                  : personItem.sex == 1
+                      ? FontAwesomeIcons.mars
+                      : FontAwesomeIcons.question,
+              size: 20,
+              color: HexColor()),
           Padding(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                personItem['sex'] == '0' ? '女性' : '男性',
-                style: TextStyle(fontSize: 16),
+                ReplaceProfileData.replaceSex(personItem.sex),
+                style: const TextStyle(fontSize: 16),
               ),
             ),
           ),
@@ -301,13 +412,20 @@ Widget sex(bool isCard, Map personItem) {
     return Expanded(
       flex: 1, // 1 要素分の横幅
       child: Padding(
-        padding: EdgeInsets.only(top: 4),
+        padding: const EdgeInsets.only(top: 4),
         child: Row(
           // Property
           children: [
-            Icon(FontAwesomeIcons.marsAndVenus, size: 30, color: HexColor()),
+            Icon(
+                personItem.sex == 0
+                    ? FontAwesomeIcons.venus
+                    : personItem.sex == 1
+                        ? FontAwesomeIcons.mars
+                        : FontAwesomeIcons.question,
+                size: 30,
+                color: HexColor()),
             Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -316,8 +434,8 @@ Widget sex(bool isCard, Map personItem) {
                       style: TextStyle(fontSize: 12, color: HexColor()),
                     ),
                     Text(
-                      personItem['sex'] == '0' ? '女性' : '男性',
-                      style: TextStyle(fontSize: 16),
+                      ReplaceProfileData.replaceSex(personItem.sex),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ]),
             ),
@@ -329,21 +447,21 @@ Widget sex(bool isCard, Map personItem) {
 }
 
 // 最寄り駅
-Widget station(bool isCard, Map personItem) {
+Widget station(bool isCard, Person personItem) {
   if (isCard) {
     return Padding(
-      padding: EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.only(top: 4),
       child: Row(
         // Property
         children: [
           Icon(FontAwesomeIcons.trainSubway, size: 20, color: HexColor()),
           Padding(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                personItem['station'] + '駅',
-                style: TextStyle(fontSize: 16),
+                '${personItem.station}駅',
+                style: const TextStyle(fontSize: 16),
               ),
             ),
           ),
@@ -352,13 +470,13 @@ Widget station(bool isCard, Map personItem) {
     );
   } else {
     return Padding(
-      padding: EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.only(top: 4),
       child: Row(
         // Property
         children: [
           Icon(FontAwesomeIcons.trainSubway, size: 30, color: HexColor()),
           Padding(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
@@ -366,8 +484,8 @@ Widget station(bool isCard, Map personItem) {
                 style: TextStyle(fontSize: 12, color: HexColor()),
               ),
               Text(
-                personItem['station'] + '駅',
-                style: TextStyle(fontSize: 16),
+                '${personItem.station}駅',
+                style: const TextStyle(fontSize: 16),
               ),
             ]),
           ),
@@ -378,18 +496,17 @@ Widget station(bool isCard, Map personItem) {
 }
 
 // 得意な言語
-Widget excelsAt(bool isCard, Map personItem) {
-  List lang = personItem['excelsAt'];
+Widget favoriteSkill(bool isCard, Person personItem) {
   if (isCard) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.only(top: 8),
         child: Wrap(
           //RowからWrapへ
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 4),
+              padding: const EdgeInsets.only(top: 4),
               child: Icon(
                 FontAwesomeIcons.bookmark,
                 size: 20,
@@ -397,10 +514,10 @@ Widget excelsAt(bool isCard, Map personItem) {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Wrap(
-                children: lang
-                    .map((excelsAtItem) => Container(
+                children: personItem.favoriteSkill
+                    .map((favoriteSkillItem) => Container(
                         margin: const EdgeInsets.only(bottom: 8, right: 16),
                         padding: const EdgeInsets.only(
                             top: 4, bottom: 4, left: 8, right: 8),
@@ -408,7 +525,7 @@ Widget excelsAt(bool isCard, Map personItem) {
                           border: Border.all(color: HexColor()),
                           borderRadius: BorderRadius.circular(45),
                         ),
-                        child: Text(excelsAtItem)))
+                        child: Text(favoriteSkillItem)))
                     .toList(),
               ),
             ),
@@ -432,20 +549,20 @@ Widget excelsAt(bool isCard, Map personItem) {
               child: Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 4, bottom: 4),
+                      padding: const EdgeInsets.only(top: 4, bottom: 4),
                       child: Text(
                         '得意な言語',
                         style: TextStyle(fontSize: 12, color: HexColor()),
                       ),
                     ),
                     Wrap(
-                      children: lang
-                          .map((excelsAtItem) => Container(
+                      children: personItem.favoriteSkill
+                          .map((favoriteSkillItem) => Container(
                               margin:
                                   const EdgeInsets.only(bottom: 4, right: 16),
                               padding: const EdgeInsets.only(
@@ -454,7 +571,7 @@ Widget excelsAt(bool isCard, Map personItem) {
                                 border: Border.all(color: HexColor()),
                                 borderRadius: BorderRadius.circular(45),
                               ),
-                              child: Text(excelsAtItem)))
+                              child: Text(favoriteSkillItem)))
                           .toList(),
                     ),
                   ]),
@@ -465,50 +582,108 @@ Widget excelsAt(bool isCard, Map personItem) {
 }
 
 // テクニカルスキル
-// Widget technicalSkill(Person personItem) {
-//   return SizedBox(
-//       height: personItem.technicalSkill.length * (64 + 8 + 8),
-//       child: ListView.builder(
-//           physics: const NeverScrollableScrollPhysics(),
-//           itemCount: personItem.technicalSkill.length,
-//           itemBuilder: (context, index) {
-//             return Card(
-//               child: SizedBox(
-//                 height: 64,
-//                 child: Padding(
-//                   padding: const EdgeInsets.only(
-//                       top: 8, bottom: 8, left: 16, right: 16),
-//                   child: Row(
-//                     // Property
-//                     children: [
-//                       DevelopmentLanguage.getDevelopmentLanguage(
-//                           personItem.technicalSkill[index].skillId,
-//                           30,
-//                           HexColor()),
-//                       Padding(
-//                           padding: EdgeInsets.only(left: 16),
-//                           child: Column(
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 Text(
-//                                   personItem.technicalSkill[index].skillName,
-//                                   style: TextStyle(fontSize: 16),
-//                                 ),
-//                                 Text(
-//                                   calcSkillExperience(personItem
-//                                           .technicalSkill[index]
-//                                           .skillExperience)
-//                                       .toString(),
-//                                   style: TextStyle(fontSize: 16),
-//                                 ),
-//                               ])),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             );
-//           }));
-// }
+Widget technicalSkill(Person personItem) {
+  if (personItem.technicalSkillList == null) {
+    return const Padding(
+        padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
+        child: Text(
+          "言語経歴の登録がありません",
+          style: TextStyle(fontSize: 16),
+        ));
+  }
+
+  return SizedBox(
+      height: personItem.technicalSkillList!.length * (64 + 8 + 8),
+      child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: personItem.technicalSkillList!.length,
+          itemBuilder: (context, index) {
+            return Card(
+              child: SizedBox(
+                height: 64,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8, bottom: 8, left: 16, right: 16),
+                  child: Row(
+                    // Property
+                    children: [
+                      ReplaceTechnical.getSkillIcon(
+                          personItem.technicalSkillList![index].skillId,
+                          30,
+                          HexColor()),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ReplaceTechnical.replaceTechnicalSkill(
+                                      personItem
+                                          .technicalSkillList![index].skillId),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                Text(
+                                  CalcMonthOfSkill.calcMonthOfSkill(personItem
+                                          .technicalSkillList![index]
+                                          .monthOfSkill)
+                                      .toString(),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ])),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }));
+}
+
+// 最終更新日
+Widget lastUpdateDate(bool isCard, Person personItem) {
+  if (isCard) {
+    return Row(
+      // Property
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Icon(FontAwesomeIcons.clock, size: 14, color: HexColor()),
+        Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                '最終更新時刻',
+                style: TextStyle(fontSize: 9, color: HexColor()),
+              ),
+              Text(
+                personItem.lastUpdateDate.toString().substring(0, 16),
+                style: const TextStyle(fontSize: 12),
+              ),
+            ])),
+      ],
+    );
+  } else {
+    return Row(
+      // Property
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Icon(FontAwesomeIcons.clock, size: 14, color: HexColor()),
+        Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                '最終更新時刻',
+                style: TextStyle(fontSize: 9, color: HexColor()),
+              ),
+              Text(
+                personItem.lastUpdateDate.toString().substring(0, 16),
+                style: const TextStyle(fontSize: 12),
+              ),
+            ])),
+      ],
+    );
+  }
+}
 
 PopupMenuItem<String> makePopupMenuItem(String itemValue, IconData icon) {
   return PopupMenuItem(
@@ -521,24 +696,43 @@ PopupMenuItem<String> makePopupMenuItem(String itemValue, IconData icon) {
           size: 24,
           color: HexColor(),
         ),
-        Padding(padding: EdgeInsets.only(right: 16)),
+        const Padding(padding: EdgeInsets.only(right: 16)),
         Text(itemValue.toUpperCase()),
       ],
     ),
   );
 }
 
-String calcSkillExperience(double skillExperience) {
-  var experienceYear = (skillExperience / 12).floor();
-  var experienceMonth = (skillExperience - (experienceYear * 12)).floor();
+  // PopupMenuItem<String> makePopupMenuDownloadItem(
+  //     BuildContext context, String initial) {
+  //   const itemValue = 'download';
 
-  if (experienceYear == 0) {
-    return '${experienceMonth}ヶ月';
-  }
+  //   void _save() async {
+  //     final pdf = await PdfCreator.create(personList[index], false, true);
+  //     final bytes = await pdf.save();
+  //     final fileName = '技術経歴書($initial).pdf';
+  //     await SaveHelper.save(
+  //       bytes: bytes,
+  //       fileName: fileName,
+  //       platform: Theme.of(context).platform,
+  //     );
+  //   }
 
-  if (experienceMonth.floor() == 0) {
-    return '${experienceYear}年';
-  }
+  //   return PopupMenuItem(
+  //     value: itemValue,
+  //     onTap: _save,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       children: [
+  //         Icon(
+  //           Icons.download,
+  //           size: 24,
+  //           color: HexColor(),
+  //         ),
+  //         const Padding(padding: EdgeInsets.only(right: 16)),
+  //         Text(itemValue.toUpperCase()),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  return '${experienceYear}年 ${experienceMonth}ヶ月';
-}
