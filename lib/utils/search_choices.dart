@@ -2651,7 +2651,7 @@ class _DropdownDialogState<T> extends State<DropdownDialog> {
         widget.futureSelectedValues?.remove(value);
       }
     } else {
-      for (int i = 0; i < widget.selectedItems!.length!; i++) {
+      for (int i = 0; i < widget.selectedItems!.length; i++) {
         if (widget.selectedItems![i]['value'] == index) {
           widget.selectedItems?.removeAt(i);
         }

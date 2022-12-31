@@ -9,6 +9,16 @@ import 'package:resume_app/services/save_helper/save_helper.dart';
 import 'package:resume_app/utils/calc_years_of_skill.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:resume_app/screens/project_list_screen.dart';
+import 'package:resume_app/utils/person_utils/age_widget.dart';
+import 'package:resume_app/utils/person_utils/experience_widget.dart';
+import 'package:resume_app/utils/person_utils/favorite_skill_widget.dart';
+import 'package:resume_app/utils/person_utils/headline_widget.dart';
+import 'package:resume_app/utils/person_utils/image_widget.dart';
+import 'package:resume_app/utils/person_utils/last_update_date_widget.dart';
+import 'package:resume_app/utils/person_utils/name_widget.dart';
+import 'package:resume_app/utils/person_utils/sex_widget.dart';
+import 'package:resume_app/utils/person_utils/station_widget.dart';
+import 'package:resume_app/utils/person_utils/technical_skill_widget.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
 
@@ -57,8 +67,8 @@ class PersonWidget extends StatelessWidget {
             child: Column(
               children: [
                 Row(children: [
-                  image(personList[index], 56),
-                  name(personList[index], 16),
+                  ImageWidget().get(personList[index], 56),
+                  NameWidget().get(personList[index], 16),
                   PopupMenuButton(
                     icon: const Icon(Icons.more_vert),
                     itemBuilder: (context) {
@@ -94,13 +104,13 @@ class PersonWidget extends StatelessWidget {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      age(true, personList[index]),
-                      experience(true, personList[index]),
+                      AgeWidget().get(true, personList[index]),
+                      ExperienceWidget().get(true, personList[index]),
                     ]),
-                sex(true, personList[index]),
-                station(true, personList[index]),
-                favoriteSkill(true, personList[index]),
-                lastUpdateDate(true, personList[index]),
+                SexWidget().get(true, personList[index]),
+                StationWidget().get(true, personList[index]),
+                FavoriteSkillWidget().get(true, personList[index]),
+                LastUpdateDateWidget().get(true, personList[index]),
                 // new Divider(),
                 // Padding(padding: EdgeInsets.only(top: 8)),
                 // technicalSkill(personList[index]),
@@ -145,32 +155,32 @@ class PersonWidget extends StatelessWidget {
         child: Column(
           children: [
             Row(children: [
-              image(personList[index], 88),
+              ImageWidget().get(personList[index], 88),
               Expanded(
                 child: SizedBox(
                   height: 88,
                   child: Column(children: [
-                    name(personList[index], 24),
-                    experience(true, personList[index]),
+                    NameWidget().get(personList[index], 24),
+                    ExperienceWidget().get(true, personList[index]),
                   ]),
                 ),
               )
             ]),
-            headline('プロフィール'),
+            HeadlineWidget().get('プロフィール'),
             const Padding(padding: EdgeInsets.only(top: 8)),
             Row(children: [
-              age(false, personList[index]),
-              sex(false, personList[index]),
+              AgeWidget().get(false, personList[index]),
+              SexWidget().get(false, personList[index]),
             ]),
             Container(
                 margin: const EdgeInsets.only(left: 48.0),
                 child: const Divider()),
-            station(false, personList[index]),
-            favoriteSkill(false, personList[index]),
+            StationWidget().get(false, personList[index]),
+            FavoriteSkillWidget().get(false, personList[index]),
             const Divider(),
             const Padding(padding: EdgeInsets.only(top: 8)),
-            headline('言語経歴'),
-            technicalSkill(personList[index]),
+            HeadlineWidget().get('言語経歴'),
+            TechnicalSkillWidget().get(personList[index]),
           ],
         ),
       ),
@@ -190,460 +200,6 @@ class PersonWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-// 見出し
-  Widget headline(String headName) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          headName,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
-// 写真
-  Widget image(Person personItem, double size) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(45),
-        child: Image.network(
-          personItem.image,
-          width: size,
-          height: size,
-        ),
-      ),
-    );
-  }
-
-// ふりがな
-  Widget ruby(Person personItem) {
-    return Flexible(
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 4),
-          child: Text(
-            personItem.ruby,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-    );
-  }
-
-// 名前
-  Widget name(Person personItem, double fontSize) {
-    return Flexible(
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 4),
-          child: Text(
-            personItem.name,
-            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-    );
-  }
-
-// 年齢
-  Widget age(bool isCard, Person personItem) {
-    if (isCard) {
-      return Row(
-        // Property
-        children: [
-          Icon(FontAwesomeIcons.addressCard, size: 20, color: HexColor()),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '${personItem.age}歳',
-                style: TextStyle(fontSize: 16, color: HexColor()),
-              ),
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Expanded(
-        flex: 1, // 1 要素分の横幅
-        child: Row(
-          // Property
-          children: [
-            Icon(FontAwesomeIcons.addressCard, size: 30, color: HexColor()),
-            Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '年齢',
-                        style: TextStyle(fontSize: 12, color: HexColor()),
-                      ),
-                      Text(
-                        '${personItem.age}歳',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ])),
-          ],
-        ),
-      );
-    }
-  }
-
-// 経験年数
-  Widget experience(bool isCard, Person personItem) {
-    if (isCard) {
-      return Row(
-        // Property
-        children: [
-          Icon(FontAwesomeIcons.briefcase, size: 20, color: HexColor()),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '経験年数 ${personItem.experience} 年',
-                style: TextStyle(fontSize: 16, color: HexColor()),
-              ),
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        // Property
-        children: [
-          Icon(FontAwesomeIcons.briefcase, size: 40, color: HexColor()),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Text(
-              '経験年数 ${personItem.experience} 年',
-              style: TextStyle(fontSize: 16, color: HexColor()),
-            ),
-          ),
-        ],
-      );
-    }
-  }
-
-// 性別
-  Widget sex(bool isCard, Person personItem) {
-    if (isCard) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Row(
-          // Property
-          children: [
-            Icon(
-                personItem.sex == 0
-                    ? FontAwesomeIcons.venus
-                    : personItem.sex == 1
-                        ? FontAwesomeIcons.mars
-                        : FontAwesomeIcons.question,
-                size: 20,
-                color: HexColor()),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  ReplaceProfileData.replaceSex(personItem.sex),
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Expanded(
-        flex: 1, // 1 要素分の横幅
-        child: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Row(
-            // Property
-            children: [
-              Icon(
-                  personItem.sex == 0
-                      ? FontAwesomeIcons.venus
-                      : personItem.sex == 1
-                          ? FontAwesomeIcons.mars
-                          : FontAwesomeIcons.question,
-                  size: 30,
-                  color: HexColor()),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '性別',
-                        style: TextStyle(fontSize: 12, color: HexColor()),
-                      ),
-                      Text(
-                        ReplaceProfileData.replaceSex(personItem.sex),
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ]),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-  }
-
-// 最寄り駅
-  Widget station(bool isCard, Person personItem) {
-    if (isCard) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Row(
-          // Property
-          children: [
-            Icon(FontAwesomeIcons.trainSubway, size: 20, color: HexColor()),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '${personItem.station}駅',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Row(
-          // Property
-          children: [
-            Icon(FontAwesomeIcons.trainSubway, size: 30, color: HexColor()),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '最寄り駅',
-                      style: TextStyle(fontSize: 12, color: HexColor()),
-                    ),
-                    Text(
-                      '${personItem.station}駅',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ]),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-// 得意な言語
-  Widget favoriteSkill(bool isCard, Person personItem) {
-    if (isCard) {
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Wrap(
-            //RowからWrapへ
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Icon(
-                  FontAwesomeIcons.bookmark,
-                  size: 20,
-                  color: HexColor(),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Wrap(
-                  children: personItem.favoriteSkill
-                      .map((favoriteSkillItem) => Container(
-                          margin: const EdgeInsets.only(bottom: 8, right: 16),
-                          padding: const EdgeInsets.only(
-                              top: 4, bottom: 4, left: 8, right: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: HexColor()),
-                            borderRadius: BorderRadius.circular(45),
-                          ),
-                          child: Text(favoriteSkillItem)))
-                      .toList(),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return Row(
-          // Property
-          children: [
-            SizedBox(
-              width: 30,
-              child: Icon(
-                FontAwesomeIcons.bookmark,
-                size: 30,
-                color: HexColor(),
-              ),
-            ),
-            Expanded(
-                child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4, bottom: 4),
-                        child: Text(
-                          '得意な言語',
-                          style: TextStyle(fontSize: 12, color: HexColor()),
-                        ),
-                      ),
-                      Wrap(
-                        children: personItem.favoriteSkill
-                            .map((favoriteSkillItem) => Container(
-                                margin:
-                                    const EdgeInsets.only(bottom: 4, right: 16),
-                                padding: const EdgeInsets.only(
-                                    top: 4, bottom: 4, left: 8, right: 8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: HexColor()),
-                                  borderRadius: BorderRadius.circular(45),
-                                ),
-                                child: Text(favoriteSkillItem)))
-                            .toList(),
-                      ),
-                    ]),
-              ),
-            )),
-          ]);
-    }
-  }
-
-// テクニカルスキル
-  Widget technicalSkill(Person personItem) {
-    if (personItem.technicalSkillList == null) {
-      return const Padding(
-          padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-          child: Text(
-            "言語経歴の登録がありません",
-            style: TextStyle(fontSize: 16),
-          ));
-    }
-
-    return SizedBox(
-        height: personItem.technicalSkillList!.length * (64 + 8 + 8),
-        child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: personItem.technicalSkillList!.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: SizedBox(
-                  height: 64,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8, bottom: 8, left: 16, right: 16),
-                    child: Row(
-                      // Property
-                      children: [
-                        ReplaceTechnical.getSkillIcon(
-                            personItem.technicalSkillList![index].skillId,
-                            30,
-                            HexColor()),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ReplaceTechnical.replaceTechnicalSkill(
-                                        personItem.technicalSkillList![index]
-                                            .skillId),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  Text(
-                                    CalcMonthOfSkill.calcMonthOfSkill(personItem
-                                            .technicalSkillList![index]
-                                            .monthOfSkill)
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ])),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }));
-  }
-
-// 最終更新日
-  Widget lastUpdateDate(bool isCard, Person personItem) {
-    if (isCard) {
-      return Row(
-        // Property
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Icon(FontAwesomeIcons.clock, size: 14, color: HexColor()),
-          Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '最終更新時刻',
-                      style: TextStyle(fontSize: 9, color: HexColor()),
-                    ),
-                    Text(
-                      personItem.lastUpdateDate.toString().substring(0, 16),
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ])),
-        ],
-      );
-    } else {
-      return Row(
-        // Property
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Icon(FontAwesomeIcons.clock, size: 14, color: HexColor()),
-          Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '最終更新時刻',
-                      style: TextStyle(fontSize: 9, color: HexColor()),
-                    ),
-                    Text(
-                      personItem.lastUpdateDate.toString().substring(0, 16),
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ])),
-        ],
-      );
-    }
   }
 
   PopupMenuItem<String> makePopupMenuItem(String itemValue, IconData icon) {
