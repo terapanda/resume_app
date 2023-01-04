@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:resume_app/model/technical_db.dart';
-import 'package:resume_app/model/technical_os.dart';
-import 'package:resume_app/model/technical_skill.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
 import '../example_data/search_screen_data.dart';
 import 'package:resume_app/model/person.dart';
-import 'package:collection/src/iterable_extensions.dart';
 
 class SearchBarController extends ChangeNotifier {
   final globalKey = GlobalKey<ScaffoldState>();
@@ -193,6 +189,12 @@ class SearchBarController extends ChangeNotifier {
         itemList.sort((a, b) => a.age.compareTo(b.age));
       } else {
         itemList.sort((a, b) => -a.age.compareTo(b.age));
+      }
+    } else if (selectedSortItem.split('_')[1] == 'updateTime') {
+      if (selectedSortItem.split('_')[0] == 'up') {
+        itemList.sort((a, b) => a.lastUpdateDate.compareTo(b.lastUpdateDate));
+      } else {
+        itemList.sort((a, b) => -a.lastUpdateDate.compareTo(b.lastUpdateDate));
       }
     }
     return itemList;

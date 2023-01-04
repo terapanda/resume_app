@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/screens/create_pdf/dialog_widget.dart';
 
 import 'package:resume_app/services/save_helper/save_helper.dart';
 import 'package:resume_app/services/pdf_creator.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:resume_app/utils/hex_color.dart';
 
 class PreviewPage extends StatefulWidget {
@@ -48,7 +45,7 @@ class _PreviewPageState extends State<PreviewPage> {
             icon: const Icon(Icons.more_vert),
             itemBuilder: (context) {
               return [
-                makePopupMenuItem('name', 'イニシャル → 名前', '名前 → イニシャル', showName,
+                makePopupMenuItem('name', '名前 → イニシャル', 'イニシャル → 名前', showName,
                     FontAwesomeIcons.arrowsUpDownLeftRight),
                 makePopupMenuItem('contractType', '契約形態を非表示', '契約形態を表示',
                     showContractType, FontAwesomeIcons.arrowsUpDownLeftRight),

@@ -6,7 +6,6 @@ import 'package:resume_app/model/person.dart';
 import 'package:resume_app/screens/create_pdf/preview_page.dart';
 import 'package:resume_app/services/pdf_creator.dart';
 import 'package:resume_app/services/save_helper/save_helper.dart';
-import 'package:resume_app/utils/calc_years_of_skill.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:resume_app/screens/project_list_screen.dart';
 import 'package:resume_app/utils/person_utils/age_widget.dart';
@@ -19,8 +18,6 @@ import 'package:resume_app/utils/person_utils/name_widget.dart';
 import 'package:resume_app/utils/person_utils/sex_widget.dart';
 import 'package:resume_app/utils/person_utils/station_widget.dart';
 import 'package:resume_app/utils/person_utils/technical_skill_widget.dart';
-import 'package:resume_app/utils/replace_profile_data.dart';
-import 'package:resume_app/utils/replace_technical.dart';
 
 class PersonWidget extends StatelessWidget {
   final List<Person> personList;

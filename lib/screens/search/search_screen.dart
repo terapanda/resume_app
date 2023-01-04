@@ -21,7 +21,9 @@ class _SearchScreenState extends State<SearchScreen> {
     'up_ruby': "名前：昇順",
     'down_ruby': "名前：降順",
     'up_age': "年齢：昇順",
-    'down_age': "年齢：降順"
+    'down_age': "年齢：降順",
+    'up_updateTime': "更新時刻：昇順",
+    'down_updateTime': "更新時刻：降順"
   };
 
   late String searchValue; // 前画面から受け取った検索用文字列

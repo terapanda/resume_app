@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/utils/hex_color.dart';
-import 'package:resume_app/utils/replace_profile_data.dart';
 
 // 経験年数
 class ExperienceWidget {
