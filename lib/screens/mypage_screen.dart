@@ -173,8 +173,15 @@ class _MypageScreenState extends State<MypageScreen> {
       body: Builder(
         builder: (context) => CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
+            leading: CupertinoButton(
+              padding: EdgeInsets.only(left: 0),
+              // color: Colors.amber,
+              color: Color(0xFAFAFAFA),
+              child: const Icon(CupertinoIcons.left_chevron),
+              onPressed: () => onLeadingPressed(context),
+            ),
             transitionBetweenRoutes: false,
-            middle: Text('エンジニア'),
+            middle: Text('マイページ'),
             trailing: TextButton(
               onPressed: () => CupertinoScaffold.showCupertinoModalBottomSheet(
                 context: context,
@@ -236,5 +243,10 @@ class _MypageScreenState extends State<MypageScreen> {
         ),
       ),
     ));
+  }
+
+  void onLeadingPressed(context) {
+    print('Leading pressed.'); //任意の処理
+    Navigator.of(context).pop();
   }
 }

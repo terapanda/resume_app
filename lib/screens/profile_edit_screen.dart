@@ -11,6 +11,8 @@ import 'package:resume_app/utils/search_choices.dart';
 // import 'package:search_choices/search_choices.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:resume_app/screens/image_picker.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -45,6 +47,34 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImagePickerWidget(),
+                      ),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(top: 5),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        // color: Colors.yellow,
+                      ),
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 110,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('プロフィール画像の編集')],
+              ),
               Container(
                   margin: EdgeInsets.only(top: 5, bottom: 5),
                   child: Text("姓名")),
