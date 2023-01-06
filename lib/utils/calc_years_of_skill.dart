@@ -1,5 +1,5 @@
 class CalcMonthOfSkill {
-  static String calcMonthOfSkill(double monthOfSkill) {
+  static String calcMonthOfSkill(int monthOfSkill) {
     var experienceYear = (monthOfSkill / 12).floor();
     var experienceMonth = (monthOfSkill - (experienceYear * 12)).floor();
 
