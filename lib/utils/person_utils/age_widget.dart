@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/utils/hex_color.dart';
+import 'package:resume_app/utils/age_calculator.dart';
 
 // 年齢
 class AgeWidget {
@@ -16,7 +17,7 @@ class AgeWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '${personItem.age}歳',
+                '${AgeCalculator.age(personItem.birthDay).years}歳',
                 style: TextStyle(fontSize: 16, color: HexColor()),
               ),
             ),
@@ -40,7 +41,7 @@ class AgeWidget {
                         style: TextStyle(fontSize: 12, color: HexColor()),
                       ),
                       Text(
-                        '${personItem.age}歳',
+                        '${AgeCalculator.age(personItem.birthDay).years}歳',
                         style: const TextStyle(fontSize: 16),
                       ),
                     ])),

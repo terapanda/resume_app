@@ -22,7 +22,7 @@ class LastUpdateDateWidget {
                       style: TextStyle(fontSize: 9, color: HexColor()),
                     ),
                     Text(
-                      personItem.lastUpdateDate.toString().substring(0, 16),
+                      personItem.updateDate.toString().substring(0, 16),
                       style: const TextStyle(fontSize: 12),
                     ),
                   ])),
@@ -44,7 +44,7 @@ class LastUpdateDateWidget {
                       style: TextStyle(fontSize: 9, color: HexColor()),
                     ),
                     Text(
-                      personItem.lastUpdateDate.toString().substring(0, 16),
+                      personItem.updateDate.toString().substring(0, 16),
                       style: const TextStyle(fontSize: 12),
                     ),
                   ])),

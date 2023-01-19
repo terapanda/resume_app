@@ -4,38 +4,38 @@ import 'package:resume_app/model/technical_skill.dart';
 
 class JobCareer {
   /// 職務経歴ID
-  final int careerId;
+  late int careerId;
 
   /// 参画期間From
-  final DateTime careerPeriodFrom;
+  late DateTime careerPeriodFrom;
 
   /// 参画期間To
-  final DateTime careerPeriodTo;
+  late DateTime careerPeriodTo;
 
   /// 作業内容
-  final String content;
+  late String content;
 
   /// 担当フェーズ
-  final String phaseInCharge;
+  late List<int> phase;
 
   /// 役割
-  final int role;
+  late int role;
 
   /// OS経歴
-  final List<TechnicalOS>? usedTechnicalOSList;
+  late List<TechnicalOS>? usedTechnicalOSList;
 
   /// 使用言語
-  final List<TechnicalSkill>? usedTechnicalSkillList;
+  late List<TechnicalSkill>? usedTechnicalSkillList;
 
   /// DB経歴
-  final List<TechnicalDB>? usedTechnicalDBList;
+  late List<TechnicalDB>? usedTechnicalDBList;
 
-  const JobCareer({
+  JobCareer({
     required this.careerId,
     required this.careerPeriodFrom,
     required this.careerPeriodTo,
     required this.content,
-    required this.phaseInCharge,
+    required this.phase,
     required this.role,
     this.usedTechnicalOSList,
     this.usedTechnicalSkillList,

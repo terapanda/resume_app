@@ -1,12 +1,12 @@
 class TechnicalSkill {
   /// 言語ID
-  final String skillId;
+  late String skillId;
 
   /// 経験年数
-  final int monthOfSkill;
+  late int month;
 
-  const TechnicalSkill({
+  TechnicalSkill({
     required this.skillId,
-    required this.monthOfSkill,
+    required this.month,
   });
 }

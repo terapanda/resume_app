@@ -47,9 +47,8 @@ class TechnicalSkillWidget {
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                   Text(
-                                    CalcMonthOfSkill.calcMonthOfSkill(personItem
-                                            .technicalSkillList![index]
-                                            .monthOfSkill)
+                                    CalcMonth.calcMonth(personItem
+                                            .technicalSkillList![index].month)
                                         .toString(),
                                     style: const TextStyle(fontSize: 16),
                                   ),

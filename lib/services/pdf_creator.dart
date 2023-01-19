@@ -8,6 +8,7 @@ import 'package:resume_app/model/person.dart';
 import 'package:resume_app/utils/calc_years_of_skill.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
+import 'package:resume_app/utils/age_calculator.dart';
 
 const PdfColor green = PdfColor.fromInt(0xff9ce5d0);
 const PdfColor lightGreen = PdfColor.fromInt(0xffcdf1e7);
@@ -33,7 +34,7 @@ class PdfCreator {
     late List<String> basicTableHeader = ['エンジニア名', '年齢', '性別', '最寄駅'];
     late List<String> basicTableBody = [
       showName ? person.name : person.initial,
-      person.age.toString(),
+      AgeCalculator.age(person.birthDay).years.toString(),
       ReplaceProfileData.replaceSex(person.sex),
       person.station
     ];
@@ -70,7 +71,7 @@ class PdfCreator {
         technicalTableBodyRecord.add('【システム名】\n' +
             person.jobCareerList![i].content +
             '\n【担当フェーズ】\n' +
-            person.jobCareerList![i].phaseInCharge);
+            person.jobCareerList![i].phase.toString());
 
         technicalTableBodyRecord
             .add(ReplaceProfileData.replaceRole(person.jobCareerList![i].role));
@@ -233,8 +234,8 @@ class PdfCreator {
                           (index) => <dynamic>[
                             ReplaceTechnical.replaceTechnicalSkill(
                                 person.technicalSkillList![index].skillId),
-                            CalcMonthOfSkill.calcMonthOfSkill(
-                                person.technicalSkillList![index].monthOfSkill),
+                            CalcMonth.calcMonth(
+                                person.technicalSkillList![index].month),
                           ],
                         ),
                         cellStyle: const pw.TextStyle(

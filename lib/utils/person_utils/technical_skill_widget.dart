@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/utils/calc_years_of_skill.dart';
 import 'package:resume_app/utils/hex_color.dart';
-import 'package:resume_app/utils/person_utils/headline_widget.dart';
 import 'package:resume_app/utils/replace_technical.dart';
 
 // テクニカル
 class TechnicalSkillWidget {
   Widget get(Person personItem, String type) {
     if (type == 'os') {
-      if (personItem.technicalOSList == null) {
-        return Text(
+      if (personItem.technicalOSList == null ||
+          personItem.technicalOSList!.isEmpty) {
+        return const Text(
           "",
           style: TextStyle(fontSize: 16),
         );
       }
       return Column(children: [
-        _technicalTitle("OS", personItem, 1),
+        _technicalTitle("OS歴", personItem, 1),
         SizedBox(
             height: personItem.technicalOSList!.length * (64 + 8 + 8),
             child: ListView.builder(
@@ -49,10 +49,8 @@ class TechnicalSkillWidget {
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       Text(
-                                        CalcMonthOfSkill.calcMonthOfSkill(
-                                                personItem
-                                                    .technicalOSList![index]
-                                                    .monthOfOS)
+                                        CalcMonth.calcMonth(personItem
+                                                .technicalOSList![index].month)
                                             .toString(),
                                         style: const TextStyle(fontSize: 16),
                                       ),
@@ -65,14 +63,15 @@ class TechnicalSkillWidget {
                 }))
       ]);
     } else if (type == 'skill') {
-      if (personItem.technicalSkillList == null) {
-        return Text(
+      if (personItem.technicalSkillList == null ||
+          personItem.technicalSkillList!.isEmpty) {
+        return const Text(
           "",
           style: TextStyle(fontSize: 16),
         );
       }
       return Column(children: [
-        _technicalTitle("言語", personItem, 2),
+        _technicalTitle("プログラミング言語歴", personItem, 2),
         SizedBox(
             height: personItem.technicalSkillList!.length * (64 + 8 + 8),
             child: ListView.builder(
@@ -106,10 +105,9 @@ class TechnicalSkillWidget {
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       Text(
-                                        CalcMonthOfSkill.calcMonthOfSkill(
-                                                personItem
-                                                    .technicalSkillList![index]
-                                                    .monthOfSkill)
+                                        CalcMonth.calcMonth(personItem
+                                                .technicalSkillList![index]
+                                                .month)
                                             .toString(),
                                         style: const TextStyle(fontSize: 16),
                                       ),
@@ -122,14 +120,15 @@ class TechnicalSkillWidget {
                 }))
       ]);
     } else if (type == 'db') {
-      if (personItem.technicalDBList == null) {
-        return Text(
+      if (personItem.technicalDBList == null ||
+          personItem.technicalDBList!.isEmpty) {
+        return const Text(
           "",
           style: TextStyle(fontSize: 16),
         );
       }
       return Column(children: [
-        _technicalTitle("DB", personItem, 3),
+        _technicalTitle("DB歴", personItem, 3),
         SizedBox(
             height: personItem.technicalDBList!.length * (64 + 8 + 8),
             child: ListView.builder(
@@ -162,10 +161,8 @@ class TechnicalSkillWidget {
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       Text(
-                                        CalcMonthOfSkill.calcMonthOfSkill(
-                                                personItem
-                                                    .technicalDBList![index]
-                                                    .monthOfDB)
+                                        CalcMonth.calcMonth(personItem
+                                                .technicalDBList![index].month)
                                             .toString(),
                                         style: const TextStyle(fontSize: 16),
                                       ),
@@ -177,9 +174,12 @@ class TechnicalSkillWidget {
                   );
                 }))
       ]);
-    } else if (personItem.technicalOSList == null &&
-        personItem.technicalSkillList == null &&
-        personItem.technicalDBList == null) {
+    } else if ((personItem.technicalOSList == null ||
+            personItem.technicalOSList!.isEmpty) &&
+        (personItem.technicalSkillList == null ||
+            personItem.technicalSkillList!.isEmpty) &&
+        (personItem.technicalDBList == null ||
+            personItem.technicalDBList!.isEmpty)) {
       return const Padding(
           padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
           child: Text(
@@ -187,7 +187,7 @@ class TechnicalSkillWidget {
             style: TextStyle(fontSize: 16),
           ));
     } else {
-      return Text(
+      return const Text(
         "",
         style: TextStyle(fontSize: 16),
       );

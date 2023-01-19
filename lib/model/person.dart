@@ -5,70 +5,70 @@ import 'package:resume_app/model/technical_skill.dart';
 
 class Person {
   /// 社員番号
-  final int id;
+  late final String id;
 
   /// 名前
-  final String name;
+  late String name;
 
   /// かな
-  final String ruby;
+  late String ruby;
 
   /// 得意言語
-  final List<String> favoriteSkill;
+  late List<String> favoriteSkill;
 
   /// イニシャル
-  final String initial;
+  late String initial;
 
   /// 性別
-  final int sex;
+  late int sex;
 
   /// 年齢
-  final int age;
+  late DateTime birthDay;
 
   /// 契約形態
-  final int contractType;
+  late int contractType;
 
   /// 概要・自己PR
-  final String description;
+  late String description;
 
   /// 駅
-  final String station;
+  late String station;
 
   /// 写真
-  final String image;
+  late String image;
 
   /// 経験年数
-  final int experience;
+  late int experience;
 
   /// 最終更新時刻
-  final DateTime lastUpdateDate;
+  late DateTime updateDate;
 
   /// OS経歴
-  final List<TechnicalOS>? technicalOSList;
+  late List<TechnicalOS>? technicalOSList;
 
   /// 言語経歴
-  final List<TechnicalSkill>? technicalSkillList;
+  late List<TechnicalSkill>? technicalSkillList;
 
   /// DB経歴
-  final List<TechnicalDB>? technicalDBList;
+  late List<TechnicalDB>? technicalDBList;
 
   /// 職務経歴
-  final List<JobCareer>? jobCareerList;
+  late List<JobCareer>? jobCareerList;
 
-  const Person({
+  Person({
     required this.id,
     required this.name,
     required this.ruby,
     required this.favoriteSkill,
     required this.initial,
     required this.sex,
-    required this.age,
+    required this.birthDay,
     required this.contractType,
     required this.description,
     required this.station,
     required this.image,
     required this.experience,
-    required this.lastUpdateDate,
+    required this.updateDate,
     this.technicalOSList,
     this.technicalSkillList,
     this.technicalDBList,

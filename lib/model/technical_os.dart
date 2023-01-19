@@ -1,12 +1,12 @@
 class TechnicalOS {
   /// OSID
-  final String osId;
+  String osId;
 
   /// OS経験年月
-  final int monthOfOS;
+  int month;
 
-  const TechnicalOS({
+  TechnicalOS({
     required this.osId,
-    required this.monthOfOS,
+    required this.month,
   });
 }

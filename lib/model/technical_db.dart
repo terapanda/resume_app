@@ -1,12 +1,12 @@
 class TechnicalDB {
   /// データベースID
-  final String dbId;
+  String dbId;
 
   /// データベース経験年月
-  final int monthOfDB;
+  int month;
 
-  const TechnicalDB({
+  TechnicalDB({
     required this.dbId,
-    required this.monthOfDB,
+    required this.month,
   });
 }
