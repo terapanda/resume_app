@@ -17,8 +17,7 @@ List<Person> exampleList = [
     favoriteSkill: ['React', 'Vue', 'java'],
     description:
         "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
-    image:
-        "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
+    image: "users/ymorinaga/profile_image.png",
     experience: 8,
     updateDate: DateTime(2022, 11, 11, 17, 30),
     technicalSkillList: [
@@ -68,8 +67,7 @@ List<Person> exampleList = [
           "＜身についた知識・スキル＞\n・業務用基幹システム構築業務で身につけたプロジェクト全体をマネジメントするスキル\n・社内関係部署の要望を把握し、協力会社との調整・折衝を経験したことから得た課題を把握する力、解決策を提示し遂行する力\n・システム全般に関する包括的な知識・スキル",
       station: "JRおおさか東線　高井田中央",
       favoriteSkill: ['COBOL', 'Vue', 'Python'],
-      image:
-          "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
+      image: "users/staniuchi/profile_image.png",
       experience: 8,
       updateDate: new DateTime(2021, 11, 12, 17, 30),
       technicalSkillList: [
@@ -189,8 +187,7 @@ List<Person> exampleList = [
           "●●業界向けのWEBアプリケーション開発を約●年経験しております。\n要件定義〜テスト、導入までの上流工程から下流工程まで幅広い経験があります。また、現在はリーダー職を務めております。",
       station: "地下鉄御堂筋線　東三国",
       favoriteSkill: ['vba'],
-      image:
-          "https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg",
+      image: "",
       experience: 6,
       updateDate: new DateTime(2022, 2, 2, 2, 2),
       technicalOSList: [

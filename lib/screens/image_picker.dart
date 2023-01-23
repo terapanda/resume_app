@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
@@ -20,7 +21,7 @@ enum AppState {
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   late AppState state;
-  File? imageFile;
+  late File imageFile;
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Widget selectedItem() {
     if (state != AppState.free) {
       return Center(
-        child: imageFile != null ? Image.file(imageFile!) : Container(),
+        child: Image.file(imageFile),
       );
     } else {
       return Padding(
@@ -96,24 +97,20 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future<Null> _pickImageFromGallery() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    imageFile = pickedImage != null ? File(pickedImage.path) : null;
-    if (imageFile != null) {
-      setState(() {
-        state = AppState.picked;
-      });
-    }
+    imageFile = File(pickedImage!.path);
+    setState(() {
+      state = AppState.picked;
+    });
   }
 
   /// 「カメラから画像を取得」処理
   Future<Null> _pickImageFromCamera() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
-    imageFile = pickedImage != null ? File(pickedImage.path) : null;
-    if (imageFile != null) {
-      setState(() {
-        state = AppState.picked;
-      });
-    }
+    imageFile = File(pickedImage!.path);
+    setState(() {
+      state = AppState.picked;
+    });
   }
 
   /// 画像編集アイコン
@@ -128,7 +125,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   /// 画像編集処理
   Future<Null> _cropImage() async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
-        sourcePath: imageFile!.path,
+        sourcePath: imageFile.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
                 CropAspectRatioPreset.square,
@@ -167,15 +164,18 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   /// 保存のアイコン
   Widget saveItem() {
     if (state != AppState.free) {
-      return IconButton(icon: Icon(Icons.save), onPressed: () => _clearImage());
+      return IconButton(icon: Icon(Icons.save), onPressed: () => _saveImage());
     } else {
       return Container();
     }
   }
 
-  /// 保存処理（今はただ削除してるだけ。）
-  void _clearImage() {
-    imageFile = null;
+  /// 保存処理
+  void _saveImage() {
+    String userId = "staniuchi"; // TODO: staniuchi の部分をログイン中のUserIdにする。
+    FirebaseStorage.instance
+        .ref('users/$userId/profile_image.png')
+        .putFile(imageFile);
     setState(() {
       state = AppState.free;
     });
