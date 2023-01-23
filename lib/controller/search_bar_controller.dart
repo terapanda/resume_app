@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:resume_app/utils/age_calculator.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
-import '../example_data/search_screen_data.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/model/job_career.dart';
 import 'package:resume_app/model/technical_db.dart';
@@ -41,6 +39,13 @@ class SearchBarController extends ChangeNotifier {
     // exampleList = await hogehogeRepo.fetch();
     await firestore.collection('users').get().then((event) async {
       for (var doc in event.docs) {
+        // 画像パス取得
+        String imgURL = "users/noimage/noimage.png";
+        if (doc.data()['image'] != "") {
+          imgURL = doc.data()['image'];
+        }
+
+        // Person情報取得
         Person person = Person(
             id: doc.id,
             name: "${doc.data()['nameLast']}　${doc.data()['nameFirst']}",
@@ -54,8 +59,7 @@ class SearchBarController extends ChangeNotifier {
             contractType: doc.data()['contractType'] as int,
             description: doc.data()['description'] as String,
             station: doc.data()['station'] as String,
-            image:
-                'https://static.rtrp.jp/article/131658/images/131658a327d71f-736a-4fb7-8352-29be1f6da1e9_m.jpg', // doc.data()['image'] as String,
+            image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
             experience: 3, // doc.data()['experience'] as int,
             updateDate: (doc.data()['updateDate']).toDate() as DateTime,
             jobCareerList: await fetchJobCareerList(doc.id),
@@ -83,6 +87,7 @@ class SearchBarController extends ChangeNotifier {
     }
   }
 
+  /// jobCareerList取得
   Future<List<JobCareer>> fetchJobCareerList(String userId) async {
     List<JobCareer> jobCareerList = [];
     await firestore
@@ -112,6 +117,7 @@ class SearchBarController extends ChangeNotifier {
     return jobCareerList;
   }
 
+  /// jobCareerに紐づくスキル情報取得
   Future<List<TechnicalSkill>> fetchTechnicalSkillList(
       String userId, int jobCareerId) async {
     List<TechnicalSkill> technicalSkillList = [];
@@ -130,6 +136,7 @@ class SearchBarController extends ChangeNotifier {
     return technicalSkillList;
   }
 
+  /// jobCareerに紐づくOS情報取得
   Future<List<TechnicalOS>> fetchTechnicalOSList(
       String userId, int jobCareerId) async {
     List<TechnicalOS> technicalOSList = [];
@@ -148,6 +155,7 @@ class SearchBarController extends ChangeNotifier {
     return technicalOSList;
   }
 
+  /// jobCareerに紐づくDB情報取得
   Future<List<TechnicalDB>> fetchTechnicalDBList(
       String userId, int jobCareerId) async {
     List<TechnicalDB> technicalDBList = [];
