@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'size_config.dart';
 
 class InputForm extends StatefulWidget {
@@ -7,11 +8,13 @@ class InputForm extends StatefulWidget {
     this.hintText,
     this.isHalf = false,
     this.width = 100,
+    this.maxLength,
   }) : assert(isHalf != null);
   final String? inputType;
   final String? hintText;
   final bool isHalf;
   final double width;
+  final int? maxLength;
 
   @override
   State<InputForm> createState() => _InputFormState();
@@ -99,14 +102,15 @@ class _InputFormState extends State<InputForm> {
       width: MediaQuery.of(context).size.width * 0.448,
       height: MediaQuery.of(context).size.height * 0.06,
       child: TextFormField(
+        inputFormatters: [LengthLimitingTextInputFormatter(8)],
         keyboardType: TextInputType.number,
+        controller: myController,
         decoration: InputDecoration(
-          labelStyle: TextStyle(color: Colors.black54),
-          labelText: '2000/04/01',
-          border: const OutlineInputBorder(),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 2)),
-        ),
+            labelStyle: TextStyle(color: Colors.black54),
+            labelText: widget.hintText,
+            border: const OutlineInputBorder(),
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 2))),
       ),
     );
     return inputFormBirthDay;

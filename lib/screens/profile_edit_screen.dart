@@ -3,30 +3,27 @@ import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider/provider.dart';
+import 'package:resume_app/model/person.dart';
+import 'package:resume_app/provider/user_state.dart';
 import 'mypage_screen.dart';
 import 'package:resume_app/utils/input_form.dart';
 import 'package:resume_app/utils/unfocus_keybord.dart';
 import 'package:resume_app/utils/search_choices.dart';
-// import 'package:search_choices/search_choices.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/screens/image_picker.dart';
 
-class ProfileEditScreen extends StatefulWidget {
-  const ProfileEditScreen({super.key});
+class ProfileEditScreen extends ConsumerWidget {
+  ProfileEditScreen({super.key});
 
-  @override
-  State<ProfileEditScreen> createState() => _ProfileEditScreenState();
-}
-
-class _ProfileEditScreenState extends State<ProfileEditScreen> {
   int sex = 1;
   List __selectVal = [];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final focusNode = FocusNode();
     return Scaffold(
       appBar: AppBar(
@@ -118,9 +115,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           margin: EdgeInsets.only(top: 5, bottom: 5),
                           child: Text("生年月日")),
                       InputForm(
-                        inputType: 'int',
+                        inputType: 'birth',
                         hintText: '2000/04/01',
-                        isHalf: true,
+                        isHalf: false,
                       ),
                     ],
                   ),
@@ -178,9 +175,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             ),
                           ],
                           onChanged: (int? value) {
-                            setState(() {
-                              sex = value!;
-                            });
+                            // setState(() {
+                            //   sex = value!;
+                            // });
                           },
                           value: sex,
                         ),
@@ -254,9 +251,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         borderRadius: BorderRadius.circular(4),
       ),
       onChanged: (value) {
-        setState(() {
-          // __selectVal = value;
-        });
+        // setState(() {
+        //   // __selectVal = value;
+        // });
       },
       doneButton: (selectedItemsDone, doneContext) {
         return (ElevatedButton(
@@ -265,9 +262,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     print("doneContext");
                     print(selectedItemsDone);
                     Navigator.pop(doneContext);
-                    setState(() {
-                      __selectVal = selectedItemsDone;
-                    });
+                    // setState(() {
+                    //   __selectVal = selectedItemsDone;
+                    // });
                   }
                 : null,
             child: Text("決定")));
