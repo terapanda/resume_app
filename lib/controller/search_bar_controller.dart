@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:resume_app/utils/age_calculator.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
 import 'package:resume_app/model/person.dart';
@@ -13,6 +14,7 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class SearchBarController extends ChangeNotifier {
   final globalKey = GlobalKey<ScaffoldState>();
+  late DateTime experienceDateTime;
 
   /// state
   bool isLoading = true;
@@ -60,12 +62,13 @@ class SearchBarController extends ChangeNotifier {
             description: doc.data()['description'] as String,
             station: doc.data()['station'] as String,
             image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
-            experience: 3, // doc.data()['experience'] as int,
             updateDate: (doc.data()['updateDate']).toDate() as DateTime,
             jobCareerList: await fetchJobCareerList(doc.id),
             technicalOSList: null,
             technicalSkillList: null,
-            technicalDBList: null);
+            technicalDBList: null,
+            experience: AgeCalculator.age(experienceDateTime).years // 勤続年数追加
+            );
 
         person.technicalSkillList =
             getAddingUpTechnicalSkillList(person); // 言語経歴追加
@@ -94,6 +97,10 @@ class SearchBarController extends ChangeNotifier {
         .collection('/users/$userId/jobCareer')
         .get()
         .then((event) async {
+      // 勤続年数をここで取得
+      experienceDateTime =
+          (event.docs[0].data()['careerPeriodFrom']).toDate() as DateTime;
+
       for (var doc in event.docs) {
         JobCareer jobCareer = JobCareer(
           careerId: int.parse(doc.id),
