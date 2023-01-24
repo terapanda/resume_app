@@ -66,7 +66,7 @@ dependencies:
   modal_bottom_sheet: ^2.1.2
   search_choices: ^2.1.8
   url_launcher: ^6.1.7
-  firebase_storage: ^10.3.11
+  firebase_storage: ^11.0.10
 
 dev_dependencies:
   flutter_test:
