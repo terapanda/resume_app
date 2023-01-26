@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'home_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:resume_app/provider/user_state.dart';
 
-class TopScreen extends StatefulWidget {
-  const TopScreen({super.key});
+class TopScreen extends ConsumerWidget {
+  TopScreen({super.key});
 
   @override
-  State<TopScreen> createState() => _TopScreenState();
-}
-
-class _TopScreenState extends State<TopScreen> {
-  final _auth = FirebaseAuth.instance;
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -22,7 +18,7 @@ class _TopScreenState extends State<TopScreen> {
           ElevatedButton.icon(
               onPressed: (() async {
                 try {
-                  final userCredential = await signInWithGoogle();
+                  final userCredential = await signInWithGoogle(ref);
                   Navigator.of(context).push(
                     PageRouteBuilder(
                         pageBuilder: (context, animation, secondaryAnimation) {
@@ -56,7 +52,7 @@ class _TopScreenState extends State<TopScreen> {
   }
 }
 
-Future<UserCredential> signInWithGoogle() async {
+Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -70,6 +66,14 @@ Future<UserCredential> signInWithGoogle() async {
     idToken: googleAuth?.idToken,
   );
 
+  final _googleUser = {
+    'id': googleUser!.id,
+    'email': googleUser.email,
+    'name': googleUser.displayName
+  };
+
+  // ログインしたユーザー情報を退避
+  ref.read(userProvider.notifier).state = _googleUser;
   // Once signed in, return the UserCredential
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }

@@ -24,6 +24,8 @@ class ProfileEditScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var userInfo = ref.watch(userProvider);
+
     final focusNode = FocusNode();
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +34,33 @@ class ProfileEditScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: () {},
+            onPressed: () {
+              // // var username = ref.watch(personProvider);
+              // // print(username.id);
+              // // print(username.name);
+              // var name = ref.watch(userProvider);
+              // print(name);
+              // // ref.read(userProvider.notifier).update((state) => state = 'asu');
+              // ref.read(userProvider.notifier).state = 'asu';
+              // var wame = ref.watch(userProvider);
+              // print(wame);
+
+              // var username = ref.watch(personProvider);
+              // print(username.id);
+              // ref.read(personProvider.notifier).state = 3;
+
+              var use = ref.watch(userProvider);
+              print(use);
+
+              Person username = ref.watch(personProvider);
+              // username.id = 3;
+              print(username.name);
+              username.name = '4';
+              print(username.name);
+              ref.read(personProvider.notifier).state = username;
+              Person user2 = ref.watch(personProvider);
+              print(user2.name);
+            },
           )
         ],
       ),

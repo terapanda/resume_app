@@ -5,7 +5,8 @@ import 'package:resume_app/model/person.dart';
 import '../model/technical_os.dart';
 import '../model/technical_skill.dart';
 
-final userProvider = StateProvider((ref) => 'tani');
+final userProvider = StateProvider<Map<dynamic, dynamic>>(
+    (ref) => {'id': '', 'email': '', 'name': ''});
 
 final personProvider = StateProvider((ref) => Person(
     id: "staniuchi",
