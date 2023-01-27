@@ -6,8 +6,14 @@ import 'dart:io';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:resume_app/screens/profile_edit_screen.dart';
 
 class ImagePickerWidget extends StatefulWidget {
+  final String pickImageType; //上位Widgetから受け取りたいデータ
+
+  const ImagePickerWidget({Key? key, required this.pickImageType})
+      : super(key: key);
+
   @override
   _ImagePickerWidgetState createState() => _ImagePickerWidgetState();
 }
@@ -27,6 +33,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   void initState() {
     super.initState();
     state = AppState.free;
+    if (widget.pickImageType == 'gallery') {
+      _pickImageFromGallery();
+    } else {
+      _pickImageFromCamera();
+    }
   }
 
   @override
@@ -53,23 +64,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     } else {
       return Padding(
         padding: const EdgeInsets.all(20),
-        child: Container(
-          color: Colors.blue,
-          width: double.infinity,
-          child: TextButton(
-            onPressed: () async {
-              var result = await showModalBottomSheet<int>(
-                context: context,
-                builder: (BuildContext context) {
-                  return bottomMenu(context);
-                },
-              );
-            },
-            child: const Text("Open Pop Bottom Menu",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white)),
-          ),
-        ),
+        child: Container(),
       );
     }
   }
@@ -176,8 +171,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     FirebaseStorage.instance
         .ref('users/$userId/profile_image.png')
         .putFile(imageFile);
-    setState(() {
-      state = AppState.free;
-    });
+    Navigator.of(context).pop();
   }
 }

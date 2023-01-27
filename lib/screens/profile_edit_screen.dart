@@ -1,19 +1,14 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:provider/provider.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/provider/user_state.dart';
-import 'mypage_screen.dart';
 import 'package:resume_app/utils/input_form.dart';
 import 'package:resume_app/utils/unfocus_keybord.dart';
 import 'package:resume_app/utils/search_choices.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/screens/image_picker.dart';
 
 class ProfileEditScreen extends ConsumerWidget {
@@ -21,6 +16,7 @@ class ProfileEditScreen extends ConsumerWidget {
 
   int sex = 1;
   List __selectVal = [];
+  late String personImage = "";
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,22 +72,21 @@ class ProfileEditScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ImagePickerWidget(),
-                      ),
-                    ),
+                    onTap: () async {
+                      await showModalBottomSheet<int>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return bottomMenu(context);
+                        },
+                      );
+                    },
                     child: Container(
                       margin: EdgeInsets.only(top: 5),
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         // color: Colors.yellow,
                       ),
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 110,
-                      ),
+                      child: selectImage(),
                     ),
                   ),
                 ],
@@ -232,6 +227,26 @@ class ProfileEditScreen extends ConsumerWidget {
     );
   }
 
+  /// ユーザ画像
+  Widget selectImage() {
+    personImage = ""; // TODO ユーザデータのimageを挿入する
+    if (personImage == "") {
+      return const Icon(
+        Icons.account_circle,
+        size: 110,
+      );
+    } else {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(45),
+        child: Image.network(
+          personImage,
+          width: 22,
+          height: 22,
+        ),
+      );
+    }
+  }
+
   Widget ViewSelectDevelopMentLanguage(selectLang) {
     return Row(
       children: [
@@ -301,6 +316,49 @@ class ProfileEditScreen extends ConsumerWidget {
         return ("キャンセル");
       },
       isExpanded: true,
+    );
+  }
+
+  /// モーダルボトムシート表示処理
+  Column bottomMenu(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.photo),
+          title: Text('ギャラリーから画像を取得'),
+          onTap: () async => await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ImagePickerWidget(
+                pickImageType: 'gallery',
+              ),
+            ),
+          ).then((value) async => {
+                personImage = await FirebaseStorage.instance
+                    .ref(
+                        "users/staniuchi/profile_image.png") // TODO ユーザ情報から取得するよう変更
+                    .getDownloadURL()
+              }),
+          // onTap: () => _pickImageFromGallery(),
+        ),
+        ListTile(
+          leading: Icon(Icons.camera_alt),
+          title: Text('カメラから画像を取得'),
+          onTap: () async => await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  const ImagePickerWidget(pickImageType: 'camera'),
+            ),
+          ).then((value) async => {
+                personImage = await FirebaseStorage.instance
+                    .ref(
+                        "users/staniuchi/profile_image.png") // TODO ユーザ情報から取得するよう変更
+                    .getDownloadURL()
+              }),
+        ),
+      ],
     );
   }
 }
