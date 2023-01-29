@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../services/firebaseService.dart';
 import 'home_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,6 +75,10 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
 
   // ログインしたユーザー情報を退避
   ref.read(userProvider.notifier).state = _googleUser;
+
+  var loginUserInfo = await FirebaseService.fetchConvertPerson();
+  ref.read(personProvider.notifier).state = loginUserInfo;
+
   // Once signed in, return the UserCredential
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }

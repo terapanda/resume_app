@@ -9,12 +9,14 @@ class InputForm extends StatefulWidget {
     this.isHalf = false,
     this.width = 100,
     this.maxLength,
+    this.initialValue,
   }) : assert(isHalf != null);
   final String? inputType;
   final String? hintText;
   final bool isHalf;
   final double width;
   final int? maxLength;
+  final initialValue;
 
   @override
   State<InputForm> createState() => _InputFormState();
@@ -62,7 +64,8 @@ class _InputFormState extends State<InputForm> {
       width: _width(),
       height: MediaQuery.of(context).size.height * 0.06,
       child: TextFormField(
-        controller: myController,
+        initialValue: widget.initialValue,
+        // controller: myController,
         keyboardType: _inputType(),
         decoration: InputDecoration(
             labelStyle: TextStyle(color: Colors.black54),
@@ -82,7 +85,8 @@ class _InputFormState extends State<InputForm> {
       width: MediaQuery.of(context).size.width * 0.448,
       height: MediaQuery.of(context).size.height * 0.06,
       child: TextFormField(
-        controller: myController,
+        initialValue: widget.initialValue,
+        // controller: myController,
         keyboardType: _inputType(),
         decoration: InputDecoration(
             labelStyle: TextStyle(color: Colors.black54),
@@ -102,9 +106,10 @@ class _InputFormState extends State<InputForm> {
       width: MediaQuery.of(context).size.width * 0.448,
       height: MediaQuery.of(context).size.height * 0.06,
       child: TextFormField(
+        initialValue: widget.initialValue,
         inputFormatters: [LengthLimitingTextInputFormatter(8)],
         keyboardType: TextInputType.number,
-        controller: myController,
+        // controller: myController,
         decoration: InputDecoration(
             labelStyle: TextStyle(color: Colors.black54),
             labelText: widget.hintText,
