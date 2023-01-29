@@ -15,6 +15,9 @@ import 'package:resume_app/utils/hex_color.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/screens/image_picker.dart';
+import 'package:resume_app/utils/date_format.dart';
+import 'package:resume_app/services/firebaseService.dart';
+import 'package:resume_app/model/person_converter.dart';
 
 class ProfileEditScreen extends ConsumerWidget {
   ProfileEditScreen({super.key});
@@ -25,7 +28,9 @@ class ProfileEditScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var userInfo = ref.watch(userProvider);
-
+    Person personInfo = ref.watch(personProvider);
+    if (personInfo.favoriteSkill.length > 0)
+      __selectVal.addAll(personInfo.favoriteSkill);
     final focusNode = FocusNode();
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +39,10 @@ class ProfileEditScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: () {
+            onPressed: () async {
+              // print(person.runtimeType);
+              // var convertPerson = PersonConverter.convert(person);
+              // print(convertPerson);
               // // var username = ref.watch(personProvider);
               // // print(username.id);
               // // print(username.name);
@@ -44,22 +52,19 @@ class ProfileEditScreen extends ConsumerWidget {
               // ref.read(userProvider.notifier).state = 'asu';
               // var wame = ref.watch(userProvider);
               // print(wame);
-
+              // print(userInfo['id']);
               // var username = ref.watch(personProvider);
               // print(username.id);
               // ref.read(personProvider.notifier).state = 3;
 
-              var use = ref.watch(userProvider);
-              print(use);
-
-              Person username = ref.watch(personProvider);
+              // Person username = ref.watch(personProvider);
               // username.id = 3;
-              print(username.name);
-              username.name = '4';
-              print(username.name);
-              ref.read(personProvider.notifier).state = username;
-              Person user2 = ref.watch(personProvider);
-              print(user2.name);
+              // print(personInfo.name);
+              // personInfo.name = '4';
+              // print(personInfo.name);
+              // ref.read(personProvider.notifier).state = username;
+              // Person user2 = ref.watch(personProvider);
+              // print(user2.name);
             },
           )
         ],
@@ -109,11 +114,13 @@ class ProfileEditScreen extends ConsumerWidget {
                     inputType: 'name',
                     hintText: '姓を入力',
                     isHalf: true,
+                    initialValue: personInfo.name,
                   ),
                   InputForm(
                     inputType: 'name',
                     hintText: '名を入力',
                     isHalf: true,
+                    initialValue: personInfo.name,
                   ),
                 ],
               ),
@@ -126,11 +133,13 @@ class ProfileEditScreen extends ConsumerWidget {
                     inputType: 'name',
                     hintText: 'セイを入力',
                     isHalf: true,
+                    initialValue: personInfo.ruby,
                   ),
                   InputForm(
                     inputType: 'name',
                     hintText: 'メイを入力',
                     isHalf: true,
+                    initialValue: personInfo.ruby,
                   )
                 ],
               ),
@@ -146,6 +155,7 @@ class ProfileEditScreen extends ConsumerWidget {
                         inputType: 'birth',
                         hintText: '2000/04/01',
                         isHalf: false,
+                        initialValue: formatString(personInfo.birthDay),
                       ),
                     ],
                   ),
@@ -207,7 +217,7 @@ class ProfileEditScreen extends ConsumerWidget {
                             //   sex = value!;
                             // });
                           },
-                          value: sex,
+                          value: personInfo.sex,
                         ),
                       ),
                     ],
@@ -219,6 +229,7 @@ class ProfileEditScreen extends ConsumerWidget {
                   child: Text("最寄駅")),
               InputForm(
                 hintText: '最寄駅を入力',
+                initialValue: personInfo.station,
               ),
               Container(
                   margin: EdgeInsets.only(top: 5, bottom: 5),
@@ -244,7 +255,7 @@ class ProfileEditScreen extends ConsumerWidget {
               border: Border.all(color: HexColor()),
               borderRadius: BorderRadius.circular(45),
             ),
-            child: Text(lang['text'].toString()),
+            child: Text(lang.toString()),
           ),
       ],
     );
