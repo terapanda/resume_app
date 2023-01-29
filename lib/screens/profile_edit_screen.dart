@@ -14,6 +14,8 @@ import 'package:resume_app/utils/date_format.dart';
 import 'package:resume_app/services/firebaseService.dart';
 import 'package:resume_app/model/person_converter.dart';
 
+import '../utils/person_utils/image_widget.dart';
+
 class ProfileEditScreen extends ConsumerWidget {
   ProfileEditScreen({super.key});
 
@@ -24,9 +26,9 @@ class ProfileEditScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var userInfo = ref.watch(userProvider);
-    Person personInfo = ref.watch(personProvider);
-    if (personInfo.favoriteSkill.length > 0)
-      __selectVal.addAll(personInfo.favoriteSkill);
+    Person personData = ref.watch(personProvider);
+    if (personData.favoriteSkill.length > 0)
+      __selectVal.addAll(personData.favoriteSkill);
     final focusNode = FocusNode();
     return Scaffold(
       appBar: AppBar(
@@ -55,9 +57,9 @@ class ProfileEditScreen extends ConsumerWidget {
 
               // Person username = ref.watch(personProvider);
               // username.id = 3;
-              // print(personInfo.name);
-              // personInfo.name = '4';
-              // print(personInfo.name);
+              // print(personData.name);
+              // personData.name = '4';
+              // print(personData.name);
               // ref.read(personProvider.notifier).state = username;
               // Person user2 = ref.watch(personProvider);
               // print(user2.name);
@@ -91,7 +93,7 @@ class ProfileEditScreen extends ConsumerWidget {
                         shape: BoxShape.circle,
                         // color: Colors.yellow,
                       ),
-                      child: selectImage(),
+                      child: selectImage(personData.image),
                     ),
                   ),
                 ],
@@ -109,13 +111,13 @@ class ProfileEditScreen extends ConsumerWidget {
                     inputType: 'name',
                     hintText: '姓を入力',
                     isHalf: true,
-                    initialValue: personInfo.name,
+                    initialValue: personData.name,
                   ),
                   InputForm(
                     inputType: 'name',
                     hintText: '名を入力',
                     isHalf: true,
-                    initialValue: personInfo.name,
+                    initialValue: personData.name,
                   ),
                 ],
               ),
@@ -128,13 +130,13 @@ class ProfileEditScreen extends ConsumerWidget {
                     inputType: 'name',
                     hintText: 'セイを入力',
                     isHalf: true,
-                    initialValue: personInfo.ruby,
+                    initialValue: personData.ruby,
                   ),
                   InputForm(
                     inputType: 'name',
                     hintText: 'メイを入力',
                     isHalf: true,
-                    initialValue: personInfo.ruby,
+                    initialValue: personData.ruby,
                   )
                 ],
               ),
@@ -150,7 +152,7 @@ class ProfileEditScreen extends ConsumerWidget {
                         inputType: 'birth',
                         hintText: '2000/04/01',
                         isHalf: false,
-                        initialValue: formatString(personInfo.birthDay),
+                        initialValue: formatString(personData.birthDay),
                       ),
                     ],
                   ),
@@ -212,7 +214,7 @@ class ProfileEditScreen extends ConsumerWidget {
                             //   sex = value!;
                             // });
                           },
-                          value: personInfo.sex,
+                          value: personData.sex,
                         ),
                       ),
                     ],
@@ -224,7 +226,7 @@ class ProfileEditScreen extends ConsumerWidget {
                   child: Text("最寄駅")),
               InputForm(
                 hintText: '最寄駅を入力',
-                initialValue: personInfo.station,
+                initialValue: personData.station,
               ),
               Container(
                   margin: EdgeInsets.only(top: 5, bottom: 5),
@@ -239,9 +241,9 @@ class ProfileEditScreen extends ConsumerWidget {
   }
 
   /// ユーザ画像
-  Widget selectImage() {
-    personImage = ""; // TODO ユーザデータのimageを挿入する
-    if (personImage == "") {
+  Widget selectImage(imageUrl) {
+    // imageUrl = "";
+    if (imageUrl == "") {
       return const Icon(
         Icons.account_circle,
         size: 110,
@@ -250,9 +252,9 @@ class ProfileEditScreen extends ConsumerWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(45),
         child: Image.network(
-          personImage,
-          width: 22,
-          height: 22,
+          imageUrl,
+          width: 90,
+          height: 90,
         ),
       );
     }
