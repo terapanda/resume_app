@@ -12,44 +12,49 @@ class TopScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton.icon(
-              onPressed: (() async {
-                try {
-                  final userCredential = await signInWithGoogle(ref);
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                      return HomeScreen();
-                    }, transitionsBuilder:
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+          ),
+          body: Center(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ElevatedButton.icon(
+                  onPressed: (() async {
+                    try {
+                      final userCredential = await signInWithGoogle(ref);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(pageBuilder:
+                            (context, animation, secondaryAnimation) {
+                          return HomeScreen();
+                        }, transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
-                      final Offset begin = Offset(0.0, 1.0);
-                      final Offset end = Offset.zero;
-                      final Animatable<Offset> tween =
-                          Tween(begin: begin, end: end)
-                              .chain(CurveTween(curve: Curves.easeInOut));
-                      final Animation<Offset> offsetAnimation =
-                          animation.drive(tween);
-                      return SlideTransition(
-                          position: offsetAnimation, child: child);
-                    }),
-                  );
-                } on FirebaseAuthException catch (e) {
-                  print('FirebaseAuthException');
-                  print('${e.code}');
-                } on Exception catch (e) {
-                  print('Other Exception');
-                  print('${e.toString()}');
-                }
-              }),
-              icon: Icon(FontAwesomeIcons.google),
-              label: Text("サインイン"))
-        ]),
-      ),
-    );
+                          final Offset begin = Offset(0.0, 1.0);
+                          final Offset end = Offset.zero;
+                          final Animatable<Offset> tween =
+                              Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: Curves.easeInOut));
+                          final Animation<Offset> offsetAnimation =
+                              animation.drive(tween);
+                          return SlideTransition(
+                              position: offsetAnimation, child: child);
+                        }),
+                      );
+                    } on FirebaseAuthException catch (e) {
+                      print('FirebaseAuthException');
+                      print('${e.code}');
+                    } on Exception catch (e) {
+                      print('Other Exception');
+                      print('${e.toString()}');
+                    }
+                  }),
+                  icon: Icon(FontAwesomeIcons.google),
+                  label: Text("サインイン"))
+            ]),
+          ),
+        ));
   }
 }
 

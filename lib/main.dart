@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:resume_app/screens/app_splash_screen.dart';
 import 'firebase_options.dart';
-import 'screens/top_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         onGenerateRoute: (RouteSettings settings) {
           return MaterialWithModalsPageRoute(
-              builder: (_) => TopScreen(), settings: settings);
+              builder: (_) => const AppSplashScreen(), settings: settings);
         });
   }
 }

@@ -75,5 +75,7 @@
 		<string>sms</string>
 		<string>tel</string>
 	</array>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>
