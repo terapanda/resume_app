@@ -16,7 +16,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   void initState() {
     super.initState();
     Future(() async {
-      await Future<void>.delayed(const Duration(seconds: 8));
+      await Future<void>.delayed(const Duration(seconds: 8, milliseconds: 0));
       setState(() {
         // 8秒後にsplashをまだスキップしてなければ強制画面遷移
         if (_isLoading) {

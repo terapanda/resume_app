@@ -68,6 +68,14 @@ dependencies:
   url_launcher: ^6.1.7
   firebase_storage: ^11.0.10
   rive: ^0.10.1
+  flutter_launcher_icons: ^0.11.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon_ios.png"
+  adaptive_icon_foreground: "assets/icon_android.png"
+  adaptive_icon_background: "#46B4EB"
 
 dev_dependencies:
   flutter_test:
