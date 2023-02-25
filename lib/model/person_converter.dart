@@ -10,8 +10,7 @@ import 'package:resume_app/utils/age_calculator.dart';
 class PersonConverter {
   static late DateTime experienceDateTime;
 
-  static Future<Person> convert(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc) async {
+  static Future<Person> convert(dynamic doc) async {
     // 画像パス取得
     String imgURL = "users/noimage/noimage.png";
     if (doc.data()['image'] != "") {

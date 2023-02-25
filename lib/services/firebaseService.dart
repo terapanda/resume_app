@@ -14,20 +14,12 @@ class FirebaseService {
   // personデータに整形したデータを取得
   static Future fetchConvertPerson() async {
     print("fetchperson");
-    Person? ConvertPerson;
     var person = await FirebaseFirestore.instance
         .collection('users')
-        // .doc('staniuchi')
-        .get()
-        .then((event) async {
-      for (var doc in event.docs) {
-        // 取得したuserデータをPersonの形に置き換える
-        if (doc.id == 'staniuchi') {
-          ConvertPerson = await PersonConverter.convert(doc);
-        }
-      }
-    });
-    return ConvertPerson;
+        .doc('staniuchi')
+        .get();
+
+    return await PersonConverter.convert(person);
   }
   // saveを作る
 
