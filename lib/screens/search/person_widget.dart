@@ -4,6 +4,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:resume_app/component/popup_card/popup_card.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/screens/create_pdf/preview_page.dart';
+import 'package:resume_app/services/firebaseService.dart';
 import 'package:resume_app/services/pdf_creator.dart';
 import 'package:resume_app/services/save_helper/save_helper.dart';
 import 'package:resume_app/utils/hex_color.dart';
@@ -40,77 +41,110 @@ class PersonWidget extends StatelessWidget {
   }
 
   Widget _cardItemBody(BuildContext context) {
-    return Material(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      child: Dismissible(
-        key: UniqueKey(),
-        direction: DismissDirection.endToStart,
-        background: Container(
-          alignment: AlignmentDirectional.centerEnd,
-          color: Colors.red,
-          child: const Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-            //Padding配下にchildを足し、Iconを配置
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
-            ), //ここまで追加
-          ),
-        ),
-        child: Card(
-          child: Padding(
-            padding:
-                const EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-            child: Column(
-              children: [
-                Row(children: [
-                  ImageWidget().get(personList[index], 56),
-                  NameWidget().get(personList[index], 16),
-                  PopupMenuButton(
-                    icon: const Icon(Icons.more_vert),
-                    itemBuilder: (context) {
-                      return [
-                        makePopupMenuItem('edit', FontAwesomeIcons.userPen),
-                        makePopupMenuItem('pdf', FontAwesomeIcons.filePdf),
-                        makePopupMenuDownloadItem(
-                            context, personList[index].initial),
-                      ];
-                    },
-                    onSelected: (String value) {
-                      if (value == 'edit') {
-                        Navigator.push(
-                          context,
-                          MaterialWithModalsPageRoute(
-                            builder: (context) => const ProjectListScreen(),
-                          ),
-                        );
-                      } else if (value == 'pdf') {
-                        Navigator.push(
-                          context,
-                          MaterialWithModalsPageRoute(
-                            builder: (context) =>
-                                PreviewPage(person: personList[index]),
-                          ),
-                        );
-                      }
-                    },
-                  )
-                ]),
-                const Divider(),
-                const Padding(padding: EdgeInsets.only(top: 8)),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AgeWidget().get(true, personList[index]),
-                      ExperienceWidget().get(true, personList[index]),
-                    ]),
-                SexWidget().get(true, personList[index]),
-                StationWidget().get(true, personList[index]),
-                FavoriteSkillWidget().get(true, personList[index]),
-                LastUpdateDateWidget().get(true, personList[index]),
-              ],
+    // TODO 権限設定追加予定
+    if (true) {
+      return Material(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        child: Dismissible(
+          key: UniqueKey(),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            alignment: AlignmentDirectional.centerEnd,
+            color: Colors.red,
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+              //Padding配下にchildを足し、Iconを配置
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ), //ここまで追加
             ),
           ),
+          child: cardItemWidget(context),
+          onDismissed: (direction) {
+            FirebaseService.deletePerson(personList[index].id);
+          },
+          confirmDismiss: (direction) async {
+            return await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('重要'),
+                  content: Text('「${personList[index].name}」を削除しますか'),
+                  actions: [
+                    SimpleDialogOption(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text('キャンセル'),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text('続行'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      );
+    } else {
+      return Material(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        child: cardItemWidget(context),
+      );
+    }
+  }
+
+  Widget cardItemWidget(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
+        child: Column(
+          children: [
+            Row(children: [
+              ImageWidget().get(personList[index], 56),
+              NameWidget().get(personList[index], 16),
+              PopupMenuButton(
+                icon: const Icon(Icons.more_vert),
+                itemBuilder: (context) {
+                  return [
+                    makePopupMenuItem('edit', FontAwesomeIcons.userPen),
+                    makePopupMenuItem('pdf', FontAwesomeIcons.filePdf),
+                    makePopupMenuDownloadItem(
+                        context, personList[index].initial),
+                  ];
+                },
+                onSelected: (String value) {
+                  if (value == 'edit') {
+                    Navigator.push(
+                      context,
+                      MaterialWithModalsPageRoute(
+                        builder: (context) => const ProjectListScreen(),
+                      ),
+                    );
+                  } else if (value == 'pdf') {
+                    Navigator.push(
+                      context,
+                      MaterialWithModalsPageRoute(
+                        builder: (context) =>
+                            PreviewPage(person: personList[index]),
+                      ),
+                    );
+                  }
+                },
+              )
+            ]),
+            const Divider(),
+            const Padding(padding: EdgeInsets.only(top: 8)),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              AgeWidget().get(true, personList[index]),
+              ExperienceWidget().get(true, personList[index]),
+            ]),
+            SexWidget().get(true, personList[index]),
+            StationWidget().get(true, personList[index]),
+            FavoriteSkillWidget().get(true, personList[index]),
+            LastUpdateDateWidget().get(true, personList[index]),
+          ],
         ),
       ),
     );

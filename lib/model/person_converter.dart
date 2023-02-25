@@ -54,9 +54,13 @@ class PersonConverter {
         .collection('/users/$userId/jobCareer')
         .get()
         .then((event) async {
-      // 勤続年数をここで取得
-      experienceDateTime =
-          (event.docs[0].data()['careerPeriodFrom']).toDate() as DateTime;
+      // 勤続年数計算のための値を取得（最初の案件の開始日）
+      if (event.docs.isNotEmpty) {
+        experienceDateTime =
+            (event.docs[0].data()['careerPeriodFrom']).toDate() as DateTime;
+      } else {
+        experienceDateTime = DateTime.now();
+      }
 
       for (var doc in event.docs) {
         JobCareer jobCareer = JobCareer(

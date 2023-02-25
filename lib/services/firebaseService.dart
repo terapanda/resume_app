@@ -30,4 +30,16 @@ class FirebaseService {
     return ConvertPerson;
   }
   // saveを作る
+
+  /// user delete
+  static Future deletePerson(String userId) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .delete()
+        .then(
+          (doc) => print("Document deleted"),
+          onError: (e) => print("Error updating document $e"),
+        );
+  }
 }
