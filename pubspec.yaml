@@ -64,7 +64,7 @@ dependencies:
   image_cropper: ^3.0.1
   logger: ^1.1.0
   modal_bottom_sheet: ^3.0.0-pre
-  search_choices: ^2.1.8
+  search_choices: ^2.2.2
   url_launcher: ^6.1.7
   firebase_storage: ^11.0.10
   rive: ^0.10.1

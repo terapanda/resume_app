@@ -1,157 +1,9 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
-
-const EdgeInsetsGeometry _kAlignedButtonPadding =
-    EdgeInsetsDirectional.only(start: 16.0, end: 4.0);
-const EdgeInsets _kUnalignedButtonPadding = EdgeInsets.zero;
-
-/// Class mainly used internally to set a value to NotGiven by its type
-class NotGiven {
-  /// Simplest constructor ever
-  const NotGiven();
-}
-
-/// Class used internally as a tuple with 2 items.
-class Tuple2<E1, E2> {
-  /// First item of the tuple
-  E1 item1;
-
-  /// Second item of the tuple
-  E2 item2;
-  Tuple2(this.item1, this.item2);
-}
-
-/// Class used internally as a tuple with 3 items.
-class Tuple3<E1, E2, E3> {
-  /// First item of the tuple
-  E1 item1;
-
-  /// Second item of the tuple
-  E2 item2;
-
-  /// Third item of the tuple
-  E3 item3;
-  Tuple3(this.item1, this.item2, this.item3);
-}
-
-/// Class used to send pointers to variables instead of the variable directly so
-/// that the called function can update the variable value
-class PointerThisPlease<T> {
-  /// Value to be pointed to that can be changed by the called method.
-  T value;
-
-  /// Simple constructor that sets the value that can be updated by a called
-  /// method.
-  PointerThisPlease(this.value);
-}
-
-/// Function mainly called internally to transform an [object] (either a Widget,
-/// a String or a Function returning a Widget or a String) to a Widget
-/// If a Function is passed as [object], it can have as arguments either nothing
-/// or:
-/// * [parameter], [context], [updateParent]
-/// * [parameter], [context]
-/// * [parameter], [updateParent]
-/// * [context], [updateParent]
-/// * [parameter]
-/// * [context]
-/// * [updateParent]
-Widget? prepareWidget(dynamic object,
-    {dynamic parameter = const NotGiven(),
-    Function? updateParent,
-    BuildContext? context,
-    Function? stringToWidgetFunction}) {
-  if (object == null) {
-    return (null);
-  }
-  if (object is Widget) {
-    return (object);
-  }
-  if (object is String) {
-    if (stringToWidgetFunction == null) {
-      return (Text(
-        object,
-      ));
-    } else {
-      return (stringToWidgetFunction(object));
-    }
-  }
-  if (object is Function) {
-    dynamic objectResult = NotGiven();
-    if (!(parameter is NotGiven) && context != null && updateParent != null) {
-      try {
-        objectResult = object(parameter, context, updateParent);
-      } on NoSuchMethodError {
-        objectResult = NotGiven();
-      }
-    }
-    if (objectResult is NotGiven &&
-        !(parameter is NotGiven) &&
-        context != null) {
-      try {
-        objectResult = object(parameter, context);
-      } on NoSuchMethodError {
-        objectResult = NotGiven();
-      }
-    }
-    if (objectResult is NotGiven &&
-        !(parameter is NotGiven) &&
-        updateParent != null) {
-      try {
-        objectResult = object(parameter, updateParent);
-      } on NoSuchMethodError {
-        objectResult = NotGiven();
-      }
-    }
-    if (objectResult is NotGiven && context != null && updateParent != null) {
-      try {
-        objectResult = object(context, updateParent);
-      } on NoSuchMethodError {
-        objectResult = NotGiven();
-      }
-    }
-    if (objectResult is NotGiven && !(parameter is NotGiven)) {
-      try {
-        objectResult = object(parameter);
-      } on NoSuchMethodError {
-        objectResult = NotGiven();
-      }
-    }
-    if (objectResult is NotGiven && context != null) {
-      try {
-        objectResult = object(context);
-      } on NoSuchMethodError {
-        objectResult = NotGiven();
-      }
-    }
-    if (objectResult is NotGiven && updateParent != null) {
-      try {
-        objectResult = object(updateParent);
-      } on NoSuchMethodError {
-        objectResult = NotGiven();
-      }
-    }
-    if (objectResult is NotGiven) {
-      try {
-        objectResult = object();
-      } on NoSuchMethodError {
-        objectResult = Text(
-          "Call failed",
-          style: TextStyle(color: Colors.red),
-        );
-      }
-    }
-    return (prepareWidget(objectResult,
-        stringToWidgetFunction: stringToWidgetFunction));
-  }
-  return (Text(
-    "Unknown type: ${object.runtimeType.toString()}",
-    style: TextStyle(color: Colors.red),
-  ));
-}
+import './dropdown/dropdown_dialog.dart';
+import './dropdown/helper_classes.dart';
+import './dropdown/prepare_widget.dart';
+import './dropdown/constants.dart';
 
 /// SearchChoices widget that allows the opening of a searchable dropdown.
 /// Use the [SearchChoices.single] factory if only one item needs to be
@@ -258,8 +110,6 @@ class SearchChoices<T> extends FormField<T> {
 
   /// [selectedItems] indexes of items to be preselected.
   final List selectedItems;
-
-  final List itemInfo;
 
   /// [displayItem] [Function] with parameters: __item__, __selected__ returning
   /// [Widget] to be displayed in the search list.
@@ -866,7 +716,6 @@ class SearchChoices<T> extends FormField<T> {
     List<DropdownMenuItem<T>>? items,
     Function? onChanged,
     List selectedItems = const [],
-    List itemInfo = const [],
     TextStyle? style,
     dynamic searchHint,
     dynamic hint,
@@ -971,7 +820,6 @@ class SearchChoices<T> extends FormField<T> {
       searchFn: searchFn,
       multipleSelection: true,
       selectedItems: selectedItems,
-      itemInfo: itemInfo,
       doneButton: doneButton,
       onChanged: onChanged,
       displayItem: displayItem,
@@ -1041,7 +889,6 @@ class SearchChoices<T> extends FormField<T> {
     this.searchFn,
     this.multipleSelection = false,
     this.selectedItems = const [],
-    this.itemInfo = const [],
     this.doneButton,
     this.displayItem,
     required this.dialogBox,
@@ -1113,8 +960,8 @@ class SearchChoices<T> extends FormField<T> {
             "use either underline or fieldDecoration"),
         assert(fieldPresentationFn == null || underline == null,
             "use either underline or fieldPresentationFn"),
-        // assert(fieldDecoration == null || padding == null,
-        //     "use either padding or fieldDecoration"),
+        assert(fieldDecoration == null || padding == null,
+            "use either padding or fieldDecoration"),
         assert(fieldPresentationFn == null || padding == null,
             "use either padding or fieldPresentationFn"),
         assert(dialogBox || showDialogFn == null,
@@ -1140,7 +987,6 @@ class SearchChoices<T> extends FormField<T> {
 
 class _SearchChoicesState<T> extends FormFieldState<T> {
   List? selectedItems;
-  List? itemInfo;
   PointerThisPlease<bool> displayMenu = PointerThisPlease<bool>(false);
   Function? updateParent;
 
@@ -1151,7 +997,7 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
   @override
   SearchChoices<T> get widget => super.widget as SearchChoices<T>;
 
-  giveMeThePop(Function pop) {
+  void giveMeThePop(Function pop) {
     this.pop = pop;
     if (widget.giveMeThePop != null) {
       widget.giveMeThePop!(pop);
@@ -1161,10 +1007,10 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
   TextStyle get _textStyle =>
       widget.style ??
       (_enabled && !(widget.readOnly)
-          ? Theme.of(context).textTheme.subtitle1
+          ? Theme.of(context).textTheme.titleMedium
           : Theme.of(context)
               .textTheme
-              .subtitle1!
+              .titleMedium!
               .copyWith(color: _disabledIconColor)) ??
       TextStyle();
   bool get _enabled => widget.isEnabled;
@@ -1238,7 +1084,7 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
             : null);
   }
 
-  updateSelectedItems({dynamic sel = const NotGiven()}) {
+  void updateSelectedItems({dynamic sel = const NotGiven()}) {
     if (widget.futureSearchFn != null) {
       return;
     }
@@ -1270,7 +1116,7 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
     });
   }
 
-  updateSelectedValues({dynamic sel = const NotGiven()}) {
+  void updateSelectedValues({dynamic sel = const NotGiven()}) {
     if (widget.futureSearchFn == null) {
       return;
     }
@@ -1307,15 +1153,24 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
     }));
   }
 
-  sendSelection(dynamic selection, [BuildContext? onChangeContext]) {
-    try {
-      didChange(selection);
-    } catch (e, st) {
-      debugPrint(
-          "Warning: didChange call threw an error: ${e.toString()} ${st.toString()} You may want to reconsider the declared types otherwise the form validation may not consider this field properly.");
+  void sendSelection(dynamic selection, [BuildContext? onChangeContext]) {
+    if (widget.validator != null || widget.listValidator != null) {
+      try {
+        didChange(selection);
+      } catch (e, st) {
+        if (!widget.multipleSelection) {
+          debugPrint(
+              "Warning: didChange call threw an error: ${e.toString()} ${st.toString()} You may want to reconsider the declared types otherwise the form validation may not consider this field properly.");
+        } else {
+          // We should try to make this work in multiple selection as well
+          // see https://github.com/lcuis/search_choices/issues/97
+          debugPrint(
+              "Warning: SearchChoices multipleSelection doesn't fully support Form didChange call.");
+        }
+      }
     }
     try {
-      widget.onChanged!(selection);
+      widget.onChanged!();
     } catch (e) {
       try {
         widget.onChanged!(selection, onChangeContext);
@@ -1394,7 +1249,6 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
         searchFn: widget.searchFn,
         multipleSelection: widget.multipleSelection,
         selectedItems: selectedItems,
-        itemInfo: itemInfo,
         doneButton: widget.doneButton,
         displayItem: widget.displayItem,
         validator: widget.validator,
@@ -1442,7 +1296,8 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
     });
   }
 
-  showDialogOrMenu(String searchTerms, {bool closeMenu = false}) async {
+  Future<void> showDialogOrMenu(String searchTerms,
+      {bool closeMenu = false}) async {
     if (widget.dialogBox) {
       if (widget.showDialogFn != null) {
         await widget.showDialogFn!(
@@ -1502,129 +1357,81 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
         ),
       ));
     }
-    Widget innerItemsWidget;
-    List<Widget> list = [];
-    if (widget.futureSearchFn == null) {
-      selectedItems?.forEach((item) {
-        if (!(item is NotGiven)) {
-          list.add(widget.selectedValueWidgetFn != null
-              ? widget.selectedValueWidgetFn!(widget.items![item].value)
-              : items[item]);
-        }
-      });
-    } else {
-      futureSelectedValues.forEach((element) {
-        if (!(element is NotGiven)) {
-          list.add(widget.selectedValueWidgetFn != null
-              ? widget.selectedValueWidgetFn!(element)
-              : element is String
-                  ? Text(element)
-                  : element);
-        }
-      });
-    }
-    if ((list.isEmpty && hintIndex != null) ||
-        (list.length == 1 && list.first is NotGiven)) {
-      innerItemsWidget = items[hintIndex ?? 0];
-    } else {
-      innerItemsWidget = widget.selectedAggregateWidgetFn != null
-          ? widget.selectedAggregateWidgetFn!(list)
-          : Column(
-              children: list,
-            );
-    }
-    final EdgeInsetsGeometry padding = ButtonTheme.of(context).alignedDropdown
-        ? _kAlignedButtonPadding
-        : _kUnalignedButtonPadding;
-    Widget? clickable = !_enabled &&
-            prepareWidget(widget.disabledHint,
-                    parameter: updateParentWithOptionalPop) !=
-                null
-        ? prepareWidget(widget.disabledHint,
-            parameter: updateParentWithOptionalPop)
-        : InkWell(
-            key: Key("clickableResultPlaceHolder"),
-            //this key is used for running automated tests
-            onTap: widget.readOnly || !_enabled
-                ? null
-                : () async {
-                    if (widget.onTap != null) {
-                      widget.onTap!();
-                    }
-                    await showDialogOrMenu("",
-                        closeMenu: !widget.dialogBox && displayMenu.value);
-                  },
-            child: Row(
-              textDirection:
-                  widget.rightToLeft ? TextDirection.rtl : TextDirection.ltr,
-              children: <Widget>[
-                widget.isExpanded
-                    ? Expanded(child: innerItemsWidget)
-                    : innerItemsWidget,
-                IconTheme(
-                  data: IconThemeData(
-                    color: _iconColor,
-                    size: widget.iconSize,
-                  ),
-                  child:
-                      prepareWidget(widget.icon, parameter: selectedResult) ??
-                          SizedBox.shrink(),
-                ),
-              ],
-            ));
+    // Widget innerItemsWidget;
+    // List<Widget> list = [];
+    // if (widget.futureSearchFn == null) {
+    //   selectedItems?.forEach((item) {
+    //     if (!(item is NotGiven)) {
+    //       list.add(widget.selectedValueWidgetFn != null
+    //           ? widget.selectedValueWidgetFn!(widget.items![item].value)
+    //           : items[item]);
+    //     }
+    //   });
+    // } else {
+    //   futureSelectedValues.forEach((element) {
+    //     if (!(element is NotGiven)) {
+    //       list.add(widget.selectedValueWidgetFn != null
+    //           ? widget.selectedValueWidgetFn!(element)
+    //           : element is String
+    //               ? Text(element)
+    //               : element);
+    //     }
+    //   });
+    // }
+    // if ((list.isEmpty && hintIndex != null) ||
+    //     (list.length == 1 && list.first is NotGiven)) {
+    //   innerItemsWidget = items[hintIndex ?? 0];
+    // } else {
+    //   innerItemsWidget = widget.selectedAggregateWidgetFn != null
+    //       ? widget.selectedAggregateWidgetFn!(list)
+    //       : Column(
+    //           children: list,
+    //         );
+    // }
+    Widget? clickable = InkWell(
+      key: Key("clickableResultPlaceHolder"),
+      //this key is used for running automated tests
+      onTap: widget.readOnly || !_enabled
+          ? null
+          : () async {
+              if (widget.onTap != null) {
+                widget.onTap!();
+              }
+              await showDialogOrMenu("",
+                  closeMenu: !widget.dialogBox && displayMenu.value);
+            },
+      child: Row(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            // color: Colors.amber,
+            height: 40,
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: Text("選択"),
+          )
+        ],
+      ),
+    );
 
-    Widget result = DefaultTextStyle(
+    DefaultTextStyle result = DefaultTextStyle(
       style: _textStyle,
       child: Container(
-        padding: padding.resolve(Directionality.of(context)),
+        width: MediaQuery.of(context).size.width * 0.2,
+        // color: Colors.blue,
+        // padding: padding.resolve(Directionality.of(context)),
         child: Row(
-          textDirection:
-              widget.rightToLeft ? TextDirection.rtl : TextDirection.ltr,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             widget.isExpanded
                 ? Expanded(child: clickable ?? SizedBox.shrink())
                 : clickable ?? SizedBox.shrink(),
-            !widget.displayClearIcon
-                ? SizedBox()
-                : InkWell(
-                    onTap: hasSelection && _enabled && !widget.readOnly
-                        ? () {
-                            clearSelection();
-                          }
-                        : null,
-                    child: Container(
-                      padding: padding.resolve(Directionality.of(context)),
-                      child: Row(
-                        textDirection: widget.rightToLeft
-                            ? TextDirection.rtl
-                            : TextDirection.ltr,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          IconTheme(
-                            data: IconThemeData(
-                              color:
-                                  hasSelection && _enabled && !widget.readOnly
-                                      ? _enabledIconColor
-                                      : _disabledIconColor,
-                              size: widget.iconSize,
-                            ),
-                            child: widget.clearIcon,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
           ],
         ),
       ),
     );
 
     final double bottom = 8.0;
-    var validatorOutput = validResult;
-    var labelOutput = prepareWidget(widget.label, parameter: selectedResult,
+    String? validatorOutput = validResult;
+    Widget? labelOutput = prepareWidget(widget.label, parameter: selectedResult,
         stringToWidgetFunction: (string) {
       return (Text(string,
           textDirection:
@@ -1632,11 +1439,11 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
           style: TextStyle(color: Colors.blueAccent, fontSize: 13)));
     });
     Widget? fieldPresentation;
-    var treatedPadding = widget.padding is EdgeInsets
+    EdgeInsets treatedPadding = widget.padding is EdgeInsets
         ? widget.padding
         : EdgeInsets.all(widget.padding is int
             ? widget.padding.toDouble()
-            : widget.padding ?? 10.0);
+            : widget.padding ?? 0);
     if (widget.fieldPresentationFn != null) {
       fieldPresentation = widget.fieldPresentationFn!(
         result,
@@ -1679,6 +1486,7 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
       );
     }
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         labelOutput ?? SizedBox.shrink(),
@@ -1696,7 +1504,7 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
     );
   }
 
-  clearSelection() {
+  void clearSelection() {
     if (widget.futureSearchFn == null) {
       selectedItems?.clear();
     } else {
@@ -1709,1392 +1517,5 @@ class _SearchChoicesState<T> extends FormFieldState<T> {
       widget.onClear!();
     }
     setState(() {});
-  }
-}
-
-/// Class mainly used internally to display the available choices. Cannot be
-/// made private because of automated testing.
-class DropdownDialog<T> extends StatefulWidget {
-  /// See SearchChoices class.
-  final List<DropdownMenuItem<T>>? items;
-
-  /// See SearchChoices class.
-  final Widget? hint;
-
-  /// See SearchChoices class.
-  final bool isCaseSensitiveSearch;
-
-  /// See SearchChoices class.
-  final dynamic closeButton;
-
-  /// See SearchChoices class.
-  final TextInputType? keyboardType;
-
-  /// See SearchChoices class.
-  final Function? searchFn;
-
-  /// See SearchChoices class.
-  final bool multipleSelection;
-
-  /// See SearchChoices class.
-  final List? selectedItems;
-
-  final List? itemInfo;
-
-  /// See SearchChoices class.
-  final Function? displayItem;
-
-  /// See SearchChoices class.
-  final dynamic doneButton;
-
-  /// See SearchChoices class.
-  final Function? validator;
-
-  /// See SearchChoices class.
-  final bool dialogBox;
-
-  /// See SearchChoices class.
-  final PointerThisPlease<bool> displayMenu;
-
-  /// See SearchChoices class.
-  final BoxConstraints? menuConstraints;
-
-  /// Function to be called whenever the dialogBox is popped or the menu gets
-  /// closed.
-  final Function? callOnPop;
-
-  /// See SearchChoices class.
-  final Color? menuBackgroundColor;
-
-  /// Function called to update the parent screen when necessary. Calls
-  /// setState.
-  final Function? updateParent;
-
-  /// See SearchChoices class.
-  final TextStyle? style;
-
-  /// See SearchChoices class.
-  final Color? iconEnabledColor;
-
-  /// See SearchChoices class.
-  final Color? iconDisabledColor;
-
-  /// See SearchChoices class.
-  final bool rightToLeft;
-
-  /// See SearchChoices class.
-  final bool autofocus;
-
-  /// Used for the setOpenDialog. This allows the dialogBox to be opened with
-  /// search terms preset from an external button as shown in example `Single
-  /// dialog open and set search terms`.
-  final String initialSearchTerms;
-
-  /// See SearchChoices class.
-  final Widget Function(
-    Widget titleBar,
-    Widget searchBar,
-    Widget list,
-    Widget closeButton,
-    BuildContext dropDownContext,
-  )? buildDropDownDialog;
-
-  /// See SearchChoices class.
-  final EdgeInsets? dropDownDialogPadding;
-
-  /// See SearchChoices class.
-  final InputDecoration? searchInputDecoration;
-
-  /// See SearchChoices class.
-  final int? itemsPerPage;
-
-  /// See SearchChoices class.
-  final PointerThisPlease<int>? currentPage;
-
-  /// See SearchChoices class.
-  final Widget Function(Widget listWidget, int totalFilteredItemsNb,
-      Function updateSearchPage)? customPaginationDisplay;
-
-  /// See SearchChoices class.
-  final Future<Tuple2<List<DropdownMenuItem>, int>> Function(
-      String? keyword,
-      String? orderBy,
-      bool? orderAsc,
-      List<Tuple2<String, String>>? filters,
-      int? pageNb)? futureSearchFn;
-
-  /// See SearchChoices class.
-  final Map<String, Map<String, dynamic>>? futureSearchOrderOptions;
-
-  /// See SearchChoices class.
-  final Map<String, Map<String, Object>>? futureSearchFilterOptions;
-
-  /// See SearchChoices class.
-  final List<T>? futureSelectedValues;
-
-  /// See SearchChoices class.
-  final dynamic emptyListWidget;
-
-  /// See SearchChoices class.
-  final Function? onTap;
-
-  /// See SearchChoices class.
-  final Function? futureSearchRetryButton;
-
-  /// Allows to reset the scroll to the top of the list after changing the page
-  final ScrollController listScrollController = ScrollController();
-
-  /// See SearchChoices class.
-  final int? searchDelay;
-
-  /// Assigns the pop function.
-  final Function giveMeThePop;
-
-  /// See SearchChoices class.
-  final Widget? clearSearchIcon;
-
-  /// See SearchChoices class.
-  final String? Function(List<T?>)? listValidator;
-
-  DropdownDialog({
-    Key? key,
-    this.items,
-    this.hint,
-    this.isCaseSensitiveSearch = false,
-    this.closeButton,
-    this.keyboardType,
-    this.searchFn,
-    required this.multipleSelection,
-    this.selectedItems,
-    this.itemInfo,
-    this.displayItem,
-    this.doneButton,
-    this.validator,
-    required this.dialogBox,
-    required this.displayMenu,
-    this.menuConstraints,
-    this.callOnPop,
-    this.menuBackgroundColor,
-    this.updateParent,
-    this.style,
-    this.iconEnabledColor,
-    this.iconDisabledColor,
-    required this.rightToLeft,
-    required this.autofocus,
-    required this.initialSearchTerms,
-    this.buildDropDownDialog,
-    this.dropDownDialogPadding,
-    this.searchInputDecoration,
-    this.itemsPerPage,
-    this.currentPage,
-    this.customPaginationDisplay,
-    this.futureSearchFn,
-    this.futureSearchOrderOptions,
-    this.futureSearchFilterOptions,
-    this.futureSelectedValues,
-    this.emptyListWidget,
-    this.onTap,
-    this.futureSearchRetryButton,
-    this.searchDelay,
-    required this.giveMeThePop,
-    this.clearSearchIcon,
-    this.listValidator,
-  }) : super(key: key);
-
-  _DropdownDialogState<T> createState() => _DropdownDialogState<T>();
-}
-
-class _DropdownDialogState<T> extends State<DropdownDialog> {
-  TextEditingController txtSearch = TextEditingController();
-  TextStyle defaultButtonStyle = TextStyle(
-    color: Colors.black,
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-  );
-  List<int> shownIndexes = [];
-  Function? searchFn;
-  String? latestKeyword;
-
-  bool futureSearch = false;
-
-  String? orderBy;
-
-  bool? orderAsc;
-
-  List<Tuple2<String, String>>? filters;
-
-  Future<Tuple2<List<DropdownMenuItem>, int>>? latestFutureResult;
-  List<dynamic>? latestFutureSearchArgs;
-
-  int searchCount = 0;
-
-  _DropdownDialogState();
-
-  dynamic get selectedResult {
-    if (futureSearch) {
-      if (widget.multipleSelection) {
-        return (widget.futureSelectedValues);
-      }
-      if (widget.futureSelectedValues!.isNotEmpty) {
-        return (widget.futureSelectedValues!.first);
-      }
-      return (null);
-    }
-    return (widget.multipleSelection
-        ? widget.selectedItems
-        : widget.selectedItems?.isNotEmpty ?? false
-            ? widget.items![widget.selectedItems?.first ?? 0].value
-            : null);
-  }
-
-  Widget get futureSearchOrderOptionsWidget {
-    if (widget.futureSearchOrderOptions == null ||
-        widget.futureSearchOrderOptions!.isEmpty) {
-      return (SizedBox.shrink());
-    }
-    Widget icon = Icon(
-      Icons.sort,
-      size: 17,
-    );
-    void Function() onPressed = () {
-      showMenu(
-          context: context,
-          position: RelativeRect.fromLTRB(100, 30, 20, 100),
-          items: widget.futureSearchOrderOptions!
-              .map<String, PopupMenuItem>((k, v) {
-                return (MapEntry(
-                    k,
-                    PopupMenuItem(
-                      child: SizedBox(
-                        height: 30,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            widget.currentPage?.value = 1;
-                            if (k.isEmpty) {
-                              orderAsc = true;
-                              orderBy = null;
-                            } else {
-                              if (orderBy == k) {
-                                orderAsc = (!(orderAsc ?? false));
-                              } else {
-                                orderAsc = widget.futureSearchOrderOptions![k]
-                                        ?["asc"] ??
-                                    true;
-                              }
-                              setState(() {
-                                orderBy = k;
-                              });
-                            }
-                            Navigator.pop(context);
-                          },
-                          child: Row(
-                            children: [
-                              widget.rightToLeft && k == orderBy
-                                  ? orderArrowWidget
-                                  : SizedBox.shrink(),
-                              prepareWidget(
-                                    v["icon"],
-                                    parameter: orderAsc,
-                                    updateParent: updateParentWithOptionalPop,
-                                    context: context,
-                                  ) ??
-                                  Text(k),
-                              !widget.rightToLeft && k == orderBy
-                                  ? orderArrowWidget
-                                  : SizedBox.shrink()
-                            ],
-                          ),
-                        ),
-                      ),
-                      value: k,
-                    )));
-              })
-              .values
-              .toList()
-            ..insert(
-                0,
-                PopupMenuItem(
-                  child: SizedBox(
-                    height: 30,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          setState(() {
-                            widget.currentPage?.value = 1;
-                            orderBy = null;
-                            orderAsc = null;
-                          });
-                        },
-                        child: Icon(
-                          Icons.clear,
-                          size: 17,
-                        )),
-                  ),
-                )));
-    };
-
-    return SizedBox(
-      height: 25,
-      width: orderBy == null ? 48 : 70,
-      child: (orderBy == null
-          ? ElevatedButton(
-              child: icon,
-              onPressed: onPressed,
-            )
-          : ElevatedButton.icon(
-              label: orderArrowWidget,
-              icon: icon,
-              onPressed: onPressed,
-            )),
-    );
-  }
-
-  Widget get futureSearchFilterOptionsWidget {
-    if (widget.futureSearchFilterOptions == null ||
-        widget.futureSearchFilterOptions!.isEmpty) {
-      return (SizedBox.shrink());
-    }
-    return SizedBox(
-      height: 25,
-      width: 48,
-      child: (ElevatedButton(
-        child: Icon(
-          filters == null || filters!.isEmpty
-              ? Icons.filter
-              : filters!.length == 1
-                  ? Icons.filter_1
-                  : filters!.length == 2
-                      ? Icons.filter_2
-                      : filters!.length == 3
-                          ? Icons.filter_3
-                          : filters!.length == 4
-                              ? Icons.filter_4
-                              : filters!.length == 5
-                                  ? Icons.filter_5
-                                  : filters!.length == 6
-                                      ? Icons.filter_6
-                                      : filters!.length == 7
-                                          ? Icons.filter_7
-                                          : filters!.length == 8
-                                              ? Icons.filter_8
-                                              : filters!.length == 9
-                                                  ? Icons.filter_9
-                                                  : Icons.filter_9_plus_sharp,
-          size: 17,
-        ),
-        onPressed: () {
-          showMenu(
-              context: context,
-              position: RelativeRect.fromLTRB(100, 30, 20, 100),
-              items: widget.futureSearchFilterOptions!
-                  .map<String, PopupMenuItem>((k, v) {
-                    bool exclusive = v.containsKey("exclusive")
-                        ? v["exclusive"] as bool
-                        : false;
-                    return (MapEntry(
-                        k,
-                        PopupMenuItem(
-                            child: Column(
-                          children: ((v["values"] ?? []) as List<dynamic>)
-                              .map<Widget>((
-                            value,
-                          ) {
-                            Widget inner;
-                            String fk;
-                            if (value is Map<String, dynamic>) {
-                              assert((value).length == 1,
-                                  "filter object not well built");
-                              fk = (value).keys.first;
-                              dynamic fv = (value).values.first ?? null;
-
-                              inner = (prepareWidget(
-                                    fv ?? fk,
-                                    parameter: filters,
-                                    updateParent: updateParentWithOptionalPop,
-                                    context: context,
-                                  ) ??
-                                  fk) as Widget;
-                            } else {
-                              fk = value;
-                              inner = prepareWidget(
-                                    value,
-                                    parameter: filters,
-                                    updateParent: updateParentWithOptionalPop,
-                                    context: context,
-                                  ) ??
-                                  value;
-                            }
-                            bool isSelected = false;
-                            if (filters?.any((Tuple2<String, String> element) {
-                                  return (element.item1 == k &&
-                                      element.item2 == fk);
-                                }) ??
-                                false) {
-                              isSelected = true;
-                            }
-                            return (Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: (SizedBox(
-                                height: 30,
-                                child: (ElevatedButton(
-                                  child: Row(
-                                    children: [
-                                      widget.rightToLeft && isSelected
-                                          ? Icon(Icons.check)
-                                          : SizedBox.shrink(),
-                                      inner,
-                                      !widget.rightToLeft && isSelected
-                                          ? Icon(Icons.check)
-                                          : SizedBox.shrink()
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    widget.currentPage?.value = 1;
-                                    if (filters == null) {
-                                      filters = [];
-                                    }
-                                    bool isSelected = false;
-                                    if (filters?.any(
-                                            (Tuple2<String, String> element) {
-                                          return (element.item1 == k &&
-                                              element.item2 == fk);
-                                        }) ??
-                                        false) {
-                                      isSelected = true;
-                                    }
-                                    if (isSelected) {
-                                      filters!.removeWhere((element) =>
-                                          element.item1 == k &&
-                                          element.item2 == fk);
-                                    } else {
-                                      if (exclusive) {
-                                        filters!.removeWhere(
-                                            (element) => element.item1 == k);
-                                      }
-                                      filters!.add(Tuple2(k, fk));
-                                    }
-                                    if (widget.dialogBox) {
-                                      setState(() {});
-                                    }
-                                    Navigator.pop(context);
-                                    if (!widget.dialogBox) {
-                                      setState(() {});
-                                    }
-                                  },
-                                )),
-                              )),
-                            ));
-                          }).toList()
-                            ..insert(
-                              0,
-                              PopupMenuItem(
-                                child: SizedBox(
-                                  height: 30,
-                                  child: prepareWidget(
-                                        v["icon"] ?? k,
-                                        parameter: filters,
-                                        updateParent:
-                                            updateParentWithOptionalPop,
-                                        context: context,
-                                      ) ??
-                                      Text(k),
-                                ),
-                              ),
-                            ),
-                        ))));
-                  })
-                  .values
-                  .toList()
-                ..insert(
-                    0,
-                    PopupMenuItem(
-                      child: SizedBox(
-                        height: 30,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              widget.currentPage?.value = 1;
-                              filters?.clear();
-                              Navigator.pop(context);
-                              if (!widget.dialogBox) {
-                                setState(() {});
-                              }
-                            },
-                            child: Icon(
-                              Icons.clear,
-                              size: 17,
-                            )),
-                      ),
-                    )));
-        },
-      )),
-    );
-  }
-
-  Widget get orderArrowWidget {
-    if (orderBy == null) {
-      return (SizedBox.shrink());
-    }
-    return (Icon(
-      orderAsc ?? true ? Icons.arrow_upward : Icons.arrow_downward,
-      size: 17,
-    ));
-  }
-
-  void _updateShownIndexes(
-    String? keyword,
-  ) {
-    assert(
-        !futureSearch,
-        "cannot update shown indexes while doing a network search as all"
-        "returned are displayed (potentially with pagination)");
-    if (keyword != null) {
-      latestKeyword = keyword;
-    }
-    if (latestKeyword != null) {
-      shownIndexes = searchFn!(latestKeyword, widget.items);
-    }
-  }
-
-  @override
-  void initState() {
-    widget.giveMeThePop(pop);
-    if (widget.futureSearchFn != null) {
-      futureSearch = true;
-    } else {
-      if (widget.searchFn != null) {
-        searchFn = widget.searchFn;
-      } else {
-        Function matchFn;
-        if (widget.isCaseSensitiveSearch) {
-          matchFn = (item, keyword) {
-            return (item.value.toString().contains(keyword));
-          };
-        } else {
-          matchFn = (item, keyword) {
-            return (item.child.data
-                .toString()
-                .toLowerCase()
-                .contains(keyword.toLowerCase()));
-          };
-        }
-        searchFn = (keyword, items) {
-          List<int> shownIndexes = [];
-          int i = 0;
-          widget.items!.forEach((item) {
-            if (matchFn(item, keyword) || (keyword?.isEmpty ?? true)) {
-              shownIndexes.add(i);
-            }
-            i++;
-          });
-          return (shownIndexes);
-        };
-      }
-      assert(searchFn != null);
-    }
-    widget.currentPage?.value = 1;
-    if (widget.initialSearchTerms.isNotEmpty) {
-      txtSearch.text = widget.initialSearchTerms;
-      searchForKeyword(
-        txtSearch.text,
-        immediate: true,
-      );
-    } else {
-      searchForKeyword(
-        '',
-        immediate: true,
-      );
-    }
-    super.initState();
-  }
-
-  Widget wrapMenuIfDialogBox(Widget menuWidget) {
-    if (!widget.dialogBox || SearchChoices.dialogBoxMenuWrapper == null) {
-      return (menuWidget);
-    }
-    return (SearchChoices.dialogBoxMenuWrapper!(menuWidget));
-  }
-
-  @override
-  Widget build(BuildContext dropdownDialogContext) {
-    if (widget.buildDropDownDialog != null) {
-      return (wrapMenuIfDialogBox(widget.buildDropDownDialog!(
-        titleBar(),
-        searchBar(),
-        listWithPagination(),
-        closeButtonWrapper(),
-        dropdownDialogContext,
-      )));
-    }
-    return wrapMenuIfDialogBox(AnimatedContainer(
-      padding: widget.dropDownDialogPadding ??
-          MediaQuery.of(dropdownDialogContext).viewInsets,
-      duration: const Duration(milliseconds: 300),
-      child: Card(
-        color: widget.menuBackgroundColor,
-        margin: EdgeInsets.symmetric(
-            vertical: widget.dialogBox ? 10 : 5,
-            horizontal: widget.dialogBox ? 10 : 4),
-        child: Container(
-          constraints: widget.menuConstraints,
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              titleBar(),
-              searchBar(),
-              listWithPagination(),
-              closeButtonWrapper(),
-            ],
-          ),
-        ),
-      ),
-    ));
-  }
-
-  bool get valid {
-    return (validResult == null);
-  }
-
-  String? get validResult {
-    if (widget.listValidator != null) {
-      return (widget.listValidator!(selectedResult));
-    }
-    if (widget.validator != null) {
-      return (widget.validator!(selectedResult));
-    }
-    return (null);
-  }
-
-  /// Widget displayed above the search bar.
-  Widget titleBar() {
-    var validatorOutput = validResult;
-
-    Widget validatorOutputWidget = validatorOutput == null || !widget.dialogBox
-        ? SizedBox.shrink()
-        : Text(
-            validatorOutput,
-            textDirection:
-                widget.rightToLeft ? TextDirection.rtl : TextDirection.ltr,
-            style: TextStyle(color: Colors.red, fontSize: 13),
-          );
-
-    Widget? doneButtonWidget =
-        widget.multipleSelection || widget.doneButton != null
-            ? prepareWidget(widget.doneButton,
-                parameter: selectedResult,
-                context: context,
-                updateParent: updateParentWithOptionalPop,
-                stringToWidgetFunction: (string) {
-                return (TextButton.icon(
-                    onPressed: !valid
-                        ? null
-                        : () {
-                            pop();
-                            setState(() {});
-                          },
-                    icon: Icon(Icons.close),
-                    label: Text(
-                      string,
-                      textDirection: widget.rightToLeft
-                          ? TextDirection.rtl
-                          : TextDirection.ltr,
-                    )));
-              })
-            : SizedBox.shrink();
-    Widget futureOrderAndFilterButtons = Row(
-      children: <Widget>[
-        widget.futureSearchOrderOptions == null
-            ? SizedBox.shrink()
-            : futureSearchOrderOptionsWidget,
-        widget.futureSearchOrderOptions != null &&
-                widget.futureSearchFilterOptions != null
-            ? SizedBox(
-                width: 10,
-              )
-            : SizedBox.shrink(),
-        widget.futureSearchFilterOptions == null
-            ? SizedBox.shrink()
-            : futureSearchFilterOptionsWidget,
-      ],
-    );
-    return (widget.hint != null ||
-            widget.futureSearchOrderOptions != null ||
-            widget.futureSearchFilterOptions != null)
-        ? Container(
-            margin: EdgeInsets.only(bottom: 8),
-            child: Row(
-                textDirection:
-                    widget.rightToLeft ? TextDirection.rtl : TextDirection.ltr,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  prepareWidget(widget.hint) ?? SizedBox.shrink(),
-                  futureOrderAndFilterButtons,
-                  Column(
-                    children: <Widget>[
-                      doneButtonWidget ?? SizedBox.shrink(),
-                      validatorOutputWidget
-                    ],
-                  ),
-                ]),
-          )
-        : Container(
-            child: Column(
-              children: <Widget>[
-                doneButtonWidget ?? SizedBox.shrink(),
-                validatorOutputWidget
-              ],
-            ),
-          );
-  }
-
-  /// Basically splits the search between the searchFn and the futureSearchFn
-  /// cases. Also applies searchDelay if any unless immediate is true.
-  void searchForKeyword(
-    String? keyword, {
-    bool immediate = false,
-  }) {
-    Function doSearch = () {
-      if (futureSearch) {
-        if (keyword != null) {
-          latestKeyword = keyword;
-        }
-        _doFutureSearch(keyword);
-      } else {
-        _updateShownIndexes(keyword);
-      }
-      if (widget.listScrollController.hasClients) {
-        widget.listScrollController.jumpTo(0);
-      }
-    };
-    if ((widget.searchDelay ?? 0) > 0) {
-      searchCount++;
-      if (!immediate) {
-        Future.delayed(Duration(milliseconds: widget.searchDelay ?? 0))
-            .whenComplete(() {
-          if (searchCount == 1) {
-            doSearch();
-            setState(() {});
-          }
-          searchCount--;
-        });
-      } else {
-        doSearch();
-        searchCount--;
-      }
-    } else {
-      doSearch();
-    }
-  }
-
-  /// Refreshes the displayed list with the network search results.
-  Future<Tuple2<List<DropdownMenuItem>, int>>? _doFutureSearch(String? keyword,
-      {bool force = false}) {
-    bool filtersMatch = false;
-    if (!force &&
-        latestFutureSearchArgs != null &&
-        (latestFutureSearchArgs![0] == (keyword ?? "") &&
-            latestFutureSearchArgs![1] == (orderBy ?? "") &&
-            latestFutureSearchArgs![2] == (orderAsc ?? true) &&
-            latestFutureSearchArgs![4] == (widget.currentPage?.value ?? 1))) {
-      if ((filters == null || filters?.length == 0) &&
-          (latestFutureSearchArgs![3] == null ||
-              (latestFutureSearchArgs![3] as List<Tuple2<String, String>>)
-                      .length ==
-                  0)) {
-        filtersMatch = true;
-      } else {
-        filtersMatch = true;
-        List<dynamic> oldFiltersDyn =
-            (latestFutureSearchArgs![3] ?? []) as List<dynamic>;
-        List<Tuple2<String, String>> oldFilters = [];
-        if (oldFiltersDyn.isNotEmpty) {
-          oldFilters = oldFiltersDyn
-              .map<Tuple2<String, String>>((e) => Tuple2<String, String>(
-                  (e as Tuple2<String, String>).item1, (e).item2))
-              .toList();
-        }
-        filters?.forEach((filter) {
-          if (!oldFilters.any((element) => (element.item1 == filter.item1 &&
-              element.item2 == filter.item2))) {
-            filtersMatch = false;
-          }
-        });
-        if (filtersMatch) {
-          oldFilters.forEach((filter) {
-            if (!filters!.any((element) => (element.item1 == filter.item1 &&
-                element.item2 == filter.item2))) {
-              filtersMatch = false;
-            }
-          });
-        }
-      }
-    }
-    if (filtersMatch) {
-      return (latestFutureResult);
-    }
-    latestFutureSearchArgs = [
-      String.fromCharCodes(keyword?.runes ?? []),
-      String.fromCharCodes(orderBy?.runes ?? []),
-      orderAsc ?? true ? true : false,
-      filters
-          ?.map((e) => Tuple2<String, String>(
-              String.fromCharCodes(e.item1.runes),
-              String.fromCharCodes(e.item2.runes)))
-          .toList(),
-      widget.currentPage?.value ?? 1
-    ];
-    latestFutureResult = widget.futureSearchFn!(
-      keyword,
-      orderBy,
-      orderAsc,
-      filters,
-      widget.currentPage?.value ?? 1,
-    );
-    return (latestFutureResult);
-  }
-
-  /// Search bar where the user can type text to look for the items to select.
-  Widget searchBar() {
-    return Container(
-      child: Stack(
-        children: <Widget>[
-          TextField(
-            textDirection:
-                widget.rightToLeft ? TextDirection.rtl : TextDirection.ltr,
-            controller: txtSearch,
-            decoration: widget.searchInputDecoration != null
-                ? widget.searchInputDecoration
-                : widget.rightToLeft
-                    ? InputDecoration(
-                        suffixIcon: Icon(
-                          Icons.search,
-                          size: 24,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
-                      )
-                    : InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          size: 24,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
-                      ),
-            style: widget.style,
-            autofocus: widget.autofocus,
-            onChanged: (value) {
-              widget.currentPage?.value = 1;
-              searchForKeyword(value);
-              setState(() {});
-            },
-            keyboardType: widget.keyboardType,
-          ),
-          txtSearch.text.isNotEmpty
-              ? Positioned(
-                  right: widget.rightToLeft ? null : 0,
-                  left: widget.rightToLeft ? 0 : null,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: InkWell(
-                      onTap: () {
-                        widget.currentPage?.value = 1;
-                        searchForKeyword(
-                          '',
-                          immediate: true,
-                        );
-                        setState(() {
-                          txtSearch.text = '';
-                        });
-                      },
-                      borderRadius: BorderRadius.all(Radius.circular(32)),
-                      child: widget.clearSearchIcon ??
-                          Container(
-                            width: 32,
-                            height: 32,
-                            child: Center(
-                              child: Icon(
-                                Icons.close,
-                                size: 24,
-                                color: widget.iconEnabledColor,
-                              ),
-                            ),
-                          ),
-                    ),
-                  ),
-                )
-              : Container(),
-        ],
-      ),
-    );
-  }
-
-  /// Closes the dialog box or the menu depending on the selected mode.
-  pop() {
-    if (widget.dialogBox) {
-      Navigator.pop(context);
-    } else {
-      widget.displayMenu.value = false;
-      if (widget.callOnPop != null) {
-        widget.callOnPop!();
-      }
-    }
-  }
-
-  void deselectItem(int index, T value) {
-    if (futureSearch) {
-      if (value is Map) {
-        widget.futureSelectedValues
-            ?.removeWhere((element) => mapEquals(element, value));
-      } else {
-        widget.futureSelectedValues?.remove(value);
-      }
-    } else {
-      for (int i = 0; i < widget.selectedItems!.length; i++) {
-        if (widget.selectedItems![i]['value'] == index) {
-          widget.selectedItems?.removeAt(i);
-        }
-      }
-      // widget.selectedItems?.remove(index);
-    }
-  }
-
-  void selectItem(int index, T value, selectItemInfo) {
-    if (!widget.multipleSelection) {
-      if (futureSearch) {
-        widget.futureSelectedValues?.clear();
-      } else {
-        widget.selectedItems?.clear();
-      }
-    }
-    if (futureSearch) {
-      widget.futureSelectedValues?.add(value);
-    } else {
-      widget.selectedItems?.add(selectItemInfo);
-      // widget.selectedItems?.add(index);
-    }
-  }
-
-  void itemTapped(int index, T value, bool itemSelected, Map selectItemInfo) {
-    if (!futureSearch) {
-      if (widget.items?[index].onTap != null) {
-        widget.items?[index].onTap!();
-      }
-    }
-    if (widget.multipleSelection && itemSelected) {
-      setState(() {
-        deselectItem(index, value);
-      });
-    } else {
-      selectItem(index, value, selectItemInfo);
-      if (!widget.multipleSelection && widget.doneButton == null) {
-        pop();
-      } else {
-        setState(() {});
-      }
-    }
-  }
-
-  /// Returns whether an item is selected. Relies on index in case of non future
-  /// list of items.
-  bool isItemSelected(int index, T value) {
-    bool isSelect = false;
-    // widget.selectedItems?.map((e) => e.value.contains(index) ?? false);
-    if (futureSearch) {
-      if (value is Map) {
-        return (widget.futureSelectedValues!
-            .any((element) => mapEquals(element, value)));
-      }
-      return (widget.futureSelectedValues!.contains(value));
-    }
-    // return (widget.selectedItems?.contains(index) ?? false);
-
-    if (widget.selectedItems != null) {
-      for (Map selectItem in widget.selectedItems!) {
-        if (selectItem['value'] == index) isSelect = true;
-      }
-    }
-    return isSelect;
-  }
-
-  /// Returns the Widget as displayed in the list of items from the selected or
-  /// non selected DropdownMenuItem.
-  Widget displayItem(
-    DropdownMenuItem item,
-    bool isItemSelected,
-  ) {
-    Widget? displayItemResult;
-    if (widget.displayItem != null) {
-      try {
-        displayItemResult = widget.displayItem!(item, isItemSelected);
-      } on NoSuchMethodError {
-        displayItemResult = widget.displayItem!(item, isItemSelected, (
-          value, [
-          bool pop = false,
-        ]) {
-          updateParentWithOptionalPop(value, pop);
-          widget.currentPage?.value = 1;
-          searchForKeyword(
-            null,
-            immediate: true,
-          );
-        });
-      }
-      return (displayItemResult!);
-    }
-    return widget.multipleSelection
-        ? (Row(
-            textDirection:
-                widget.rightToLeft ? TextDirection.rtl : TextDirection.ltr,
-            children: [
-                Icon(
-                  isItemSelected
-                      ? Icons.check_box
-                      : Icons.check_box_outline_blank,
-                ),
-                SizedBox(
-                  width: 7,
-                ),
-                Flexible(child: item),
-              ]))
-        : item;
-  }
-
-  /// Builds the list display from the given list of [DropdownMenuItem] along
-  /// with the [bool] indicating whether the item is selected or not and the
-  /// [int] as the index in the [selectedItems] list.
-  Widget listDisplay(
-      List<Tuple3<int, DropdownMenuItem<dynamic>, bool>> itemsToDisplay) {
-    return Expanded(
-      child: Scrollbar(
-        controller: widget.listScrollController,
-        thumbVisibility: widget.itemsPerPage == null ? false : true,
-        child: itemsToDisplay.length == 0
-            ? emptyList()
-            : ListView.builder(
-                controller: widget.listScrollController,
-                itemBuilder: (context, index) {
-                  int itemIndex = itemsToDisplay[index].item1;
-                  DropdownMenuItem item = itemsToDisplay[index].item2;
-                  bool isItemSelected = itemsToDisplay[index].item3;
-                  Map selectItemInfo = {
-                    "text": itemsToDisplay[index].item2.value,
-                    "value": itemsToDisplay[index].item1
-                  };
-                  return InkWell(
-                    onTap: () {
-                      itemTapped(itemIndex, item.value, isItemSelected,
-                          selectItemInfo);
-                    },
-                    child: displayItem(
-                      item,
-                      isItemSelected,
-                    ),
-                  );
-                },
-                itemCount: itemsToDisplay.length,
-              ),
-      ),
-    );
-  }
-
-  /// Is the current page the first page (==1)?
-  bool isFirstPage() {
-    return (widget.currentPage!.value == 1);
-  }
-
-  /// Is the current page the last one? The [totalNbItemsToPage] argument is the
-  /// total number of items to be displayed once the filters are applied on all
-  /// the pages.
-  bool isLastPage(int totalNbItemsToPage) {
-    return (widget.currentPage!.value >=
-        (totalNbItemsToPage / widget.itemsPerPage!).ceil());
-  }
-
-  /// Provides a button to go to previous page taking into account the RTL. The
-  /// button updates the search page through the given [updateSearchPage].
-  Widget previousPageButton(Function updateSearchPage) {
-    return (IconButton(
-      icon: Icon(
-        widget.rightToLeft ? Icons.chevron_right : Icons.chevron_left,
-        color: isFirstPage() ? Colors.grey : Colors.blue,
-      ),
-      onPressed: isFirstPage()
-          ? null
-          : () {
-              widget.currentPage!.value--;
-              updateSearchPage();
-            },
-    ));
-  }
-
-  /// Provides a button to go to next page taking into account the RTL. The
-  /// button updates the search page through the given [updateSearchPage]. The
-  /// [totalNbItemsToPage] argument is the total number of items to be displayed
-  /// once the filters are applied on all the pages.
-  Widget nextPageButton(Function updateSearchPage, int totalNbItemsToPage) {
-    return (IconButton(
-      icon: Icon(
-        widget.rightToLeft ? Icons.chevron_left : Icons.chevron_right,
-        color: isLastPage(totalNbItemsToPage) ? Colors.grey : Colors.blue,
-      ),
-      onPressed: isLastPage(totalNbItemsToPage)
-          ? null
-          : () {
-              widget.currentPage!.value++;
-              updateSearchPage();
-            },
-    ));
-  }
-
-  /// Returns the [Widget] with the given [scrollBar] paginated either through
-  /// the widget.customPaginationDisplay function or through the standard
-  /// pagination function which takes into account RTL. The button updates the
-  /// search page through the given [updateSearchPage]. The [totalNbItemsToPage]
-  /// argument is the total number of items to be displayed once the filters are
-  /// applied on all the pages.
-  Widget paginatedResults(
-      Widget scrollBar, Function updateSearchPage, int totalNbItemsToPage) {
-    if (widget.customPaginationDisplay != null) {
-      return (widget.customPaginationDisplay!(
-          scrollBar, totalNbItemsToPage, updateSearchPage));
-    }
-
-    return (Expanded(
-        child: Column(children: [
-      SizedBox(
-        height: 10,
-      ),
-      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        widget.rightToLeft
-            ? nextPageButton(updateSearchPage, totalNbItemsToPage)
-            : previousPageButton(updateSearchPage),
-        Text("${widget.currentPage!.value}" +
-            "/${(totalNbItemsToPage / widget.itemsPerPage!).ceil()}"),
-        widget.rightToLeft
-            ? previousPageButton(updateSearchPage)
-            : nextPageButton(updateSearchPage, totalNbItemsToPage),
-      ]),
-      scrollBar,
-    ])));
-  }
-
-  /// Returns what is displayed in case the list is empty
-  Widget emptyList() {
-    if (widget.emptyListWidget != null) {
-      Widget? ret = prepareWidget(
-        widget.emptyListWidget,
-        parameter: latestKeyword,
-        updateParent: () {
-          setState(() {});
-        },
-        context: context,
-        stringToWidgetFunction: (String message) => Center(
-          child: Text(
-            message,
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        ),
-      );
-      if (ret != null) {
-        return (ret);
-      }
-    }
-    if (futureSearch) {
-      return (Text("-"));
-    }
-    return (SizedBox.shrink());
-  }
-
-  /// Displays the list of items filtered based on the search terms with
-  /// pagination.
-  Widget listWithPagination() {
-    List<int> pagedShownIndexes = [];
-    bool displayPages = true;
-    if (!futureSearch) {
-      if (widget.itemsPerPage == null ||
-          widget.itemsPerPage! >= shownIndexes.length) {
-        pagedShownIndexes = shownIndexes;
-        displayPages = false;
-      } else {
-        if (widget.currentPage!.value < 1 ||
-            widget.currentPage!.value >
-                (shownIndexes.length / widget.itemsPerPage!).ceil()) {
-          widget.currentPage!.value = 1;
-        }
-        for (int i = widget.itemsPerPage! * (widget.currentPage!.value - 1);
-            i < widget.itemsPerPage! * (widget.currentPage!.value) &&
-                i < shownIndexes.length;
-            i++) {
-          pagedShownIndexes.add(shownIndexes[i]);
-        }
-      }
-    } else {
-      if (widget.itemsPerPage == null) {
-        displayPages = false;
-      }
-    }
-
-    List<Tuple3<int, DropdownMenuItem<dynamic>, bool>> itemsToDisplay;
-
-    Function updateSearchPage = () {
-      searchForKeyword(
-        latestKeyword,
-        immediate: true,
-      );
-      setState(() {});
-    };
-
-    if (futureSearch) {
-      Widget? errorRetryButton;
-      if (widget.futureSearchRetryButton != null) {
-        errorRetryButton = prepareWidget(
-          widget.futureSearchRetryButton,
-          parameter: () {
-            _doFutureSearch(latestKeyword, force: true);
-          },
-        );
-      } else {
-        errorRetryButton = Column(children: [
-          SizedBox(height: 15),
-          Center(
-            child: ElevatedButton.icon(
-                onPressed: () {
-                  _doFutureSearch(latestKeyword, force: true);
-                },
-                icon: Icon(Icons.repeat),
-                label: Text("Error - retry")),
-          )
-        ]);
-      }
-      return (FutureBuilder(
-        future: _doFutureSearch(latestKeyword),
-        builder: (context,
-            AsyncSnapshot<Tuple2<List<DropdownMenuItem>, int>> snapshot) {
-          if (snapshot.hasError) {
-            return (errorRetryButton!);
-          }
-          if (!snapshot.hasData ||
-              snapshot.connectionState == ConnectionState.waiting) {
-            return (Column(children: [
-              SizedBox(height: 15),
-              Center(
-                child: CircularProgressIndicator(),
-              )
-            ]));
-          }
-          if (snapshot.data == null) {
-            return (Column(children: [
-              SizedBox(height: 15),
-              Center(
-                child: Text("-"),
-              )
-            ]));
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            Tuple2<List<DropdownMenuItem>, int> data = snapshot.data!;
-            int nbResults = data.item2;
-            if (data.item1.length == 0) {
-              return (Column(children: [
-                SizedBox(height: 15),
-                Center(
-                  child: emptyList(),
-                )
-              ])); //no results
-            }
-            itemsToDisplay = data.item1
-                .map<Tuple3<int, DropdownMenuItem<dynamic>, bool>>(
-                    (DropdownMenuItem item) {
-              return (Tuple3<int, DropdownMenuItem<dynamic>, bool>(
-                  -1, item, isItemSelected(-1, item.value!)));
-            }).toList();
-            Widget scrollBar = listDisplay(itemsToDisplay);
-            if (widget.itemsPerPage == null ||
-                nbResults <= itemsToDisplay.length) {
-              return (scrollBar);
-            }
-
-            // Handle the pagination
-            return (paginatedResults(
-              scrollBar,
-              updateSearchPage,
-              nbResults,
-            ));
-          }
-          print("connection state: ${snapshot.connectionState.toString()}");
-          return (errorRetryButton!);
-        },
-      ));
-    }
-
-    itemsToDisplay = pagedShownIndexes
-        .map<Tuple3<int, DropdownMenuItem<T>, bool>>((int index) {
-      return (Tuple3<int, DropdownMenuItem<T>, bool>(
-          index,
-          widget.items![index] as DropdownMenuItem<T>,
-          isItemSelected(index, widget.items![index].value)));
-    }).toList();
-    Widget scrollBar = listDisplay(itemsToDisplay);
-
-    if (!displayPages) {
-      return (scrollBar);
-    }
-
-    return (paginatedResults(
-      scrollBar,
-      updateSearchPage,
-      shownIndexes.length,
-    ));
-  }
-
-  /// Returns the close button after the list of items or its replacement.
-  Widget closeButtonWrapper() {
-    return (prepareWidget(widget.closeButton,
-            parameter: selectedResult, context: context, updateParent: (
-          sel, [
-          bool pop = false,
-        ]) {
-          updateParentWithOptionalPop(sel, pop);
-          setState(() {});
-        }, stringToWidgetFunction: (string) {
-          return (Container(
-            child: Row(
-              textDirection:
-                  widget.rightToLeft ? TextDirection.rtl : TextDirection.ltr,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    pop();
-                  },
-                  child: Container(
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width / 2),
-                      child: Text(
-                        string,
-                        textDirection: widget.rightToLeft
-                            ? TextDirection.rtl
-                            : TextDirection.ltr,
-                        style: defaultButtonStyle,
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                )
-              ],
-            ),
-          ));
-        }) ??
-        SizedBox.shrink());
-  }
-
-  updateParentWithOptionalPop(
-    value, [
-    bool pop = false,
-  ]) {
-    widget.updateParent!(value);
-    if (pop) {
-      this.pop();
-    }
   }
 }

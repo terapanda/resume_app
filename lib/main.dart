@@ -36,14 +36,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: white,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        onGenerateRoute: (RouteSettings settings) {
-          return MaterialWithModalsPageRoute(
-              builder: (_) => const AppSplashScreen(), settings: settings);
-        });
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: white,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialWithModalsPageRoute(
+            builder: (_) => const AppSplashScreen(), settings: settings);
+      },
+    );
   }
 }
