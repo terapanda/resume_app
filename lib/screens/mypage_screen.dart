@@ -29,7 +29,7 @@ class MypageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Person Persondata = ref.watch(personProvider);
+    final personData = ref.watch(personStreamProvider);
 
     final double deviceHeight = MediaQuery.of(context).size.height;
     void _save(Persondata) async {
@@ -43,8 +43,7 @@ class MypageScreen extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-        body: CupertinoScaffold(
+    return CupertinoScaffold(
       body: Builder(
         builder: (context) => CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
@@ -65,8 +64,10 @@ class MypageScreen extends ConsumerWidget {
                   children: <Widget>[ProfileEditScreen()],
                 ),
               ),
-              child: Text('編集',
-                  style: TextStyle(color: Colors.black, fontSize: 18)),
+              child: Text(
+                '編集',
+                style: TextStyle(color: Colors.black, fontSize: 18),
+              ),
             ),
           ),
           child: SizedBox.expand(
@@ -83,36 +84,43 @@ class MypageScreen extends ConsumerWidget {
                 tag: 'tag1',
                 child: Column(
                   children: [
-                    Row(children: [
-                      ImageWidget().get(Persondata, 88),
-                      Expanded(
-                        child: SizedBox(
-                          height: 88,
-                          child: Column(children: [
-                            NameWidget().get(Persondata, 24),
-                            ExperienceWidget().get(true, Persondata),
-                          ]),
-                        ),
-                      )
-                    ]),
+                    Row(
+                      children: [
+                        ImageWidget().get(personData.value, 88),
+                        Expanded(
+                          child: SizedBox(
+                            height: 88,
+                            child: Column(
+                              children: [
+                                NameWidget().get(personData.value, 24),
+                                ExperienceWidget().get(true, personData.value),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                     HeadlineWidget().get('プロフィール'),
                     const Padding(padding: EdgeInsets.only(top: 8)),
-                    Row(children: [
-                      AgeWidget().get(false, Persondata),
-                      SexWidget().get(false, Persondata),
-                    ]),
+                    Row(
+                      children: [
+                        AgeWidget().get(false, personData.value),
+                        SexWidget().get(false, personData.value),
+                      ],
+                    ),
                     Container(
-                        margin: const EdgeInsets.only(left: 48.0),
-                        child: const Divider()),
-                    StationWidget().get(false, Persondata),
-                    FavoriteSkillWidget().get(false, Persondata),
+                      margin: const EdgeInsets.only(left: 48.0),
+                      child: const Divider(),
+                    ),
+                    StationWidget().get(false, personData.value),
+                    FavoriteSkillWidget().get(false, personData.value),
                     const Divider(),
                     const Padding(padding: EdgeInsets.only(top: 8)),
                     HeadlineWidget().get('言語経歴'),
-                    TechnicalSkillWidget().get(Persondata, 'os'),
-                    TechnicalSkillWidget().get(Persondata, 'skill'),
-                    TechnicalSkillWidget().get(Persondata, 'db'),
-                    TechnicalSkillWidget().get(Persondata, ''),
+                    TechnicalSkillWidget().get(personData.value, 'os'),
+                    TechnicalSkillWidget().get(personData.value, 'skill'),
+                    TechnicalSkillWidget().get(personData.value, 'db'),
+                    TechnicalSkillWidget().get(personData.value, ''),
                   ],
                 ),
               ),
@@ -120,7 +128,7 @@ class MypageScreen extends ConsumerWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 
   void onLeadingPressed(context) {

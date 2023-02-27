@@ -21,6 +21,7 @@ class FirebaseService {
 
     return await PersonConverter.convert(person);
   }
+
   // saveを作る
 
   /// user delete
@@ -33,5 +34,24 @@ class FirebaseService {
           (doc) => print("Document deleted"),
           onError: (e) => print("Error updating document $e"),
         );
+  }
+
+  static Future savePersonProfile(userId, person) async {
+    inspect(person);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final doc = _firestore.doc('users/$userId');
+    await doc.update({
+      'birthDay': person.birthDay,
+      'contractType': person.contractType,
+      'description': person.description,
+      'favoriteSkill': person.favoriteSkill,
+      'initial': person.initial,
+      'nameFirst': person.nameFirst,
+      'nameLast': person.nameLast,
+      'rubyFirst': person.rubyFirst,
+      'rubyLast': person.rubyLast,
+      'sex': person.sex,
+      'station': person.station,
+    });
   }
 }
