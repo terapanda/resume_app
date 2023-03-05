@@ -21,12 +21,12 @@ import 'package:resume_app/utils/person_utils/station_widget.dart';
 import 'package:resume_app/utils/person_utils/technical_skill_widget.dart';
 
 class PersonWidget extends StatelessWidget {
-  final List<Person> personList;
+  final Person person;
   final int index;
 
   const PersonWidget({
     Key? key,
-    required this.personList,
+    required this.person,
     required this.index,
   }) : super(key: key);
 
@@ -62,7 +62,7 @@ class PersonWidget extends StatelessWidget {
           ),
           child: cardItemWidget(context),
           onDismissed: (direction) {
-            FirebaseService.deletePerson(personList[index].id);
+            FirebaseService.deletePerson(person.id);
           },
           confirmDismiss: (direction) async {
             return await showDialog(
@@ -70,7 +70,7 @@ class PersonWidget extends StatelessWidget {
               builder: (context) {
                 return AlertDialog(
                   title: const Text('重要'),
-                  content: Text('「${personList[index].name}」を削除しますか'),
+                  content: Text('「${person.name}」を削除しますか'),
                   actions: [
                     SimpleDialogOption(
                       onPressed: () => Navigator.of(context).pop(false),
@@ -102,16 +102,15 @@ class PersonWidget extends StatelessWidget {
         child: Column(
           children: [
             Row(children: [
-              ImageWidget().get(personList[index], 56),
-              NameWidget().get(personList[index], 16),
+              ImageWidget().get(person, 56),
+              NameWidget().get(person, 16),
               PopupMenuButton(
                 icon: const Icon(Icons.more_vert),
                 itemBuilder: (context) {
                   return [
                     makePopupMenuItem('edit', FontAwesomeIcons.userPen),
                     makePopupMenuItem('pdf', FontAwesomeIcons.filePdf),
-                    makePopupMenuDownloadItem(
-                        context, personList[index].initial),
+                    makePopupMenuDownloadItem(context, person.initial),
                   ];
                 },
                 onSelected: (String value) {
@@ -126,8 +125,7 @@ class PersonWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialWithModalsPageRoute(
-                        builder: (context) =>
-                            PreviewPage(person: personList[index]),
+                        builder: (context) => PreviewPage(person: person),
                       ),
                     );
                   }
@@ -137,13 +135,13 @@ class PersonWidget extends StatelessWidget {
             const Divider(),
             const Padding(padding: EdgeInsets.only(top: 8)),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              AgeWidget().get(true, personList[index]),
-              ExperienceWidget().get(true, personList[index]),
+              AgeWidget().get(true, person),
+              ExperienceWidget().get(true, person),
             ]),
-            SexWidget().get(true, personList[index]),
-            StationWidget().get(true, personList[index]),
-            FavoriteSkillWidget().get(true, personList[index]),
-            LastUpdateDateWidget().get(true, personList[index]),
+            SexWidget().get(true, person),
+            StationWidget().get(true, person),
+            FavoriteSkillWidget().get(true, person),
+            LastUpdateDateWidget().get(true, person),
           ],
         ),
       ),
@@ -154,9 +152,9 @@ class PersonWidget extends StatelessWidget {
     final double deviceHeight = MediaQuery.of(context).size.height;
 
     void _save() async {
-      final pdf = await PdfCreator.create(personList[index], false, true);
+      final pdf = await PdfCreator.create(person, false, true);
       final bytes = await pdf.save();
-      final fileName = '技術経歴書${personList[index].initial}.pdf';
+      final fileName = '技術経歴書${person.initial}.pdf';
       await SaveHelper.save(
         bytes: bytes,
         fileName: fileName,
@@ -183,13 +181,13 @@ class PersonWidget extends StatelessWidget {
         child: Column(
           children: [
             Row(children: [
-              ImageWidget().get(personList[index], 88),
+              ImageWidget().get(person, 88),
               Expanded(
                 child: SizedBox(
                   height: 88,
                   child: Column(children: [
-                    NameWidget().get(personList[index], 24),
-                    ExperienceWidget().get(true, personList[index]),
+                    NameWidget().get(person, 24),
+                    ExperienceWidget().get(true, person),
                   ]),
                 ),
               )
@@ -197,21 +195,21 @@ class PersonWidget extends StatelessWidget {
             HeadlineWidget().get('プロフィール'),
             const Padding(padding: EdgeInsets.only(top: 8)),
             Row(children: [
-              AgeWidget().get(false, personList[index]),
-              SexWidget().get(false, personList[index]),
+              AgeWidget().get(false, person),
+              SexWidget().get(false, person),
             ]),
             Container(
                 margin: const EdgeInsets.only(left: 48.0),
                 child: const Divider()),
-            StationWidget().get(false, personList[index]),
-            FavoriteSkillWidget().get(false, personList[index]),
+            StationWidget().get(false, person),
+            FavoriteSkillWidget().get(false, person),
             const Divider(),
             const Padding(padding: EdgeInsets.only(top: 8)),
             HeadlineWidget().get('言語経歴'),
-            TechnicalSkillWidget().get(personList[index], 'os'),
-            TechnicalSkillWidget().get(personList[index], 'skill'),
-            TechnicalSkillWidget().get(personList[index], 'db'),
-            TechnicalSkillWidget().get(personList[index], ''),
+            TechnicalSkillWidget().get(person, 'os'),
+            TechnicalSkillWidget().get(person, 'skill'),
+            TechnicalSkillWidget().get(person, 'db'),
+            TechnicalSkillWidget().get(person, ''),
           ],
         ),
       ),
@@ -250,7 +248,7 @@ class PersonWidget extends StatelessWidget {
     const itemValue = 'download';
 
     void _save() async {
-      final pdf = await PdfCreator.create(personList[index], false, true);
+      final pdf = await PdfCreator.create(person, false, true);
       final bytes = await pdf.save();
       final fileName = '技術経歴書($initial).pdf';
       await SaveHelper.save(

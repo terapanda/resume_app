@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:resume_app/screens/auth_edit/auth_edit_screen.dart';
 import 'package:resume_app/screens/image_picker.dart';
+import 'package:resume_app/utils/hex_color.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'search/search_screen.dart';
 import 'package:resume_app/utils/size_config.dart';
@@ -26,18 +28,31 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(onPressed: () => {}, icon: const Icon(Icons.chat)),
-          IconButton(
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MypageScreen(),
-                ),
-              )
+          PopupMenuButton(
+            icon: const Icon(Icons.more_vert),
+            itemBuilder: (context) {
+              return [
+                makePopupMenuItem('edit', Icons.account_circle, ''),
+                if (true) makePopupMenuItem('auth', Icons.account_circle, "権限"),
+              ];
             },
-            icon: const Icon(
-              Icons.account_circle,
-            ),
+            onSelected: (String value) {
+              if (value == 'edit') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MypageScreen(),
+                  ),
+                );
+              } else if (value == 'auth') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AuthEditScreen(),
+                  ),
+                );
+              }
+            },
           )
         ],
       ),
@@ -55,24 +70,35 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.close),
         onPressed: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) {
-              return SearchScreen(searchValue: '');
-            }, transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-              final Offset begin = Offset(0.0, 1.0);
-              final Offset end = Offset.zero;
-              final Animatable<Offset> tween = Tween(begin: begin, end: end)
-                  .chain(CurveTween(curve: Curves.easeInOut));
-              final Animation<Offset> offsetAnimation = animation.drive(tween);
-              return SlideTransition(position: offsetAnimation, child: child);
-            }),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchScreen(searchValue: ''),
+            ),
           );
         },
       ),
     );
   }
+}
+
+PopupMenuItem<String> makePopupMenuItem(
+    String itemValue, IconData icon, String title) {
+  return PopupMenuItem(
+    value: itemValue,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Icon(
+          icon,
+          size: 24,
+          color: HexColor(),
+        ),
+        const Padding(padding: EdgeInsets.only(right: 16)),
+        Text(title.isNotEmpty ? title : itemValue.toUpperCase()),
+      ],
+    ),
+  );
 }
 
 Future<void> _launchUrl(url) async {

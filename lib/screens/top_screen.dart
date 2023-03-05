@@ -88,6 +88,7 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
 // loginしているユーザー情報取得
   final streamPerson = ref.read(personStreamProvider);
 
+  final masterData = ref.read(masterDataProvider);
   // Once signed in, return the UserCredential
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }

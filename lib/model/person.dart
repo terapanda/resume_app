@@ -7,6 +7,12 @@ class Person {
   /// 社員番号
   late final String id;
 
+  /// 部署
+  late String department;
+
+  /// 支社
+  late String? branchOffice;
+
   /// 名前
   late String name;
 
@@ -55,8 +61,16 @@ class Person {
   /// 職務経歴
   late List<JobCareer>? jobCareerList;
 
+  /// 権限
+  late int authority;
+
+  /// プログラマーフラグ
+  late bool isProgrammer;
+
   Person({
     required this.id,
+    required this.department,
+    this.branchOffice,
     required this.name,
     required this.ruby,
     required this.favoriteSkill,
@@ -73,5 +87,7 @@ class Person {
     this.technicalSkillList,
     this.technicalDBList,
     this.jobCareerList,
+    required this.authority,
+    required this.isProgrammer,
   });
 }

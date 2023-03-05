@@ -6,57 +6,62 @@ import 'package:resume_app/model/technical_skill.dart';
 
 List<Person> exampleList = [
   Person(
-    id: "ymorinaga",
-    name: "渡部　悠貴",
-    ruby: "わたなべ　ゆうき",
-    initial: "Y.W",
-    sex: 1,
-    birthDay: DateTime(1992, 11, 19),
-    contractType: 1,
-    station: "地下鉄御堂筋線　江坂",
-    favoriteSkill: ['React', 'Vue', 'java'],
-    description:
-        "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
-    image: "users/ymorinaga/profile_image.png",
-    experience: 8,
-    updateDate: DateTime(2022, 11, 11, 17, 30),
-    technicalSkillList: [
-      TechnicalSkill(skillId: 'react', month: 38),
-      TechnicalSkill(skillId: 'vue', month: 38),
-      TechnicalSkill(skillId: 'java', month: 65),
-      TechnicalSkill(skillId: 'php', month: 12),
-      TechnicalSkill(skillId: 'flutter', month: 12),
-      TechnicalSkill(skillId: 'vba', month: 12)
-    ],
-    jobCareerList: [
-      JobCareer(
-          careerId: 1,
-          careerPeriodFrom: DateTime(2019, 11, 01),
-          careerPeriodTo: DateTime(2019, 12, 31),
-          content: "高速道路に表示する電光掲示の遠隔操作システム",
-          phase: [1, 2, 3, 4, 5],
-          role: 4,
-          usedTechnicalSkillList: [
-            TechnicalSkill(skillId: 'vue', month: 2),
-          ]),
-      JobCareer(
-          careerId: 2,
-          careerPeriodFrom: DateTime(2020, 01, 01),
-          careerPeriodTo: DateTime(2021, 08, 31),
-          content: "空調機器設置遠隔操作システム",
-          phase: [3, 4, 5],
-          role: 4,
-          usedTechnicalOSList: [
-            TechnicalOS(osId: 'mac', month: 8),
-          ],
-          usedTechnicalSkillList: [
-            TechnicalSkill(skillId: 'react', month: 8),
-            TechnicalSkill(skillId: 'type_script', month: 7),
-          ])
-    ],
-  ),
+      id: "ymorinaga",
+      department: "システム本部",
+      branchOffice: "関西支社",
+      name: "渡部　悠貴",
+      ruby: "わたなべ　ゆうき",
+      initial: "Y.W",
+      sex: 1,
+      birthDay: DateTime(1992, 11, 19),
+      contractType: 1,
+      station: "地下鉄御堂筋線　江坂",
+      favoriteSkill: ['React', 'Vue', 'java'],
+      description:
+          "××年間にわたり、情報システム部において社内ネットワークの構築・運用業務を担当。\n業務用基幹システムの要件定義から導入後の保守運用まで一連の業務を遂行しました。",
+      image: "users/ymorinaga/profile_image.png",
+      experience: 8,
+      updateDate: DateTime(2022, 11, 11, 17, 30),
+      technicalSkillList: [
+        TechnicalSkill(skillId: 'react', month: 38),
+        TechnicalSkill(skillId: 'vue', month: 38),
+        TechnicalSkill(skillId: 'java', month: 65),
+        TechnicalSkill(skillId: 'php', month: 12),
+        TechnicalSkill(skillId: 'flutter', month: 12),
+        TechnicalSkill(skillId: 'vba', month: 12)
+      ],
+      jobCareerList: [
+        JobCareer(
+            careerId: 1,
+            careerPeriodFrom: DateTime(2019, 11, 01),
+            careerPeriodTo: DateTime(2019, 12, 31),
+            content: "高速道路に表示する電光掲示の遠隔操作システム",
+            phase: [1, 2, 3, 4, 5],
+            role: 4,
+            usedTechnicalSkillList: [
+              TechnicalSkill(skillId: 'vue', month: 2),
+            ]),
+        JobCareer(
+            careerId: 2,
+            careerPeriodFrom: DateTime(2020, 01, 01),
+            careerPeriodTo: DateTime(2021, 08, 31),
+            content: "空調機器設置遠隔操作システム",
+            phase: [3, 4, 5],
+            role: 4,
+            usedTechnicalOSList: [
+              TechnicalOS(osId: 'mac', month: 8),
+            ],
+            usedTechnicalSkillList: [
+              TechnicalSkill(skillId: 'react', month: 8),
+              TechnicalSkill(skillId: 'type_script', month: 7),
+            ]),
+      ],
+      authority: 3,
+      isProgrammer: true),
   Person(
       id: "staniuchi",
+      department: "システム本部",
+      branchOffice: "関西支社",
       name: "谷内　伸輔神",
       ruby: "たにうち　しんすけ",
       initial: "S.T",
@@ -174,9 +179,13 @@ List<Person> exampleList = [
               TechnicalSkill(skillId: 'react', month: 8),
               TechnicalSkill(skillId: 'type_script', month: 7),
             ]),
-      ]),
+      ],
+      authority: 3,
+      isProgrammer: true),
   Person(
       id: "rtaira",
+      department: "システム本部",
+      branchOffice: "関西支社",
       name: "平　凌侑",
       ruby: "たいら　りょうすけ",
       initial: "R.T",
@@ -232,5 +241,7 @@ List<Person> exampleList = [
             TechnicalDB(dbId: 'mysql', month: 9),
           ],
         ),
-      ]),
+      ],
+      authority: 3,
+      isProgrammer: true),
 ];

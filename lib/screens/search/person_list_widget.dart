@@ -26,7 +26,7 @@ class PersonListWidget extends StatelessWidget {
           : ListView.builder(
               itemCount: itemList.length,
               itemBuilder: (context, index) {
-                return PersonWidget(personList: itemList, index: index);
+                return PersonWidget(person: itemList[index], index: index);
               },
             ),
     );

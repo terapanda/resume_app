@@ -16,6 +16,10 @@ final personStreamProvider = FutureProvider((ref) async {
   return await FirebaseService.fetchConvertPerson();
 });
 
+final masterDataProvider = FutureProvider((ref) async {
+  return await FirebaseService.fetchMasterData();
+});
+
 // final personProvider = StateProvider((ref) => Person(
 //     id: "staniuchi",
 //     name: "谷内　伸輔神",
@@ -136,4 +140,6 @@ final personStreamProvider = FutureProvider((ref) async {
 //             TechnicalSkill(skillId: 'react', month: 8),
 //             TechnicalSkill(skillId: 'type_script', month: 7),
 //           ]),
-//     ]));
+//     ],
+//    authority: 3,
+//    isProgrammer: true));

@@ -20,16 +20,18 @@ class SearchBarController extends ChangeNotifier {
 
   final scrollController = ScrollController();
 
-  void init(String searchValue, String selectedSortItem) async {
+  void init(
+      String searchValue, String selectedSortItem, String screenName) async {
     // データとってきたときにローディング何秒間出すか？
     await Future.delayed(const Duration(seconds: 1)).then((_) {
-      fetch(searchValue, selectedSortItem);
+      fetch(searchValue, selectedSortItem, screenName);
     });
   }
 
-  Future<void> fetch(String searchValue, String selectedSortItem) async {
+  Future<void> fetch(
+      String searchValue, String selectedSortItem, String screenName) async {
     // fetch data
-    List<Person> personList = await fetchPersonList();
+    List<Person> personList = await fetchPersonList(screenName);
 
     allItemList = sortList(selectedSortItem, personList);
 
@@ -41,13 +43,26 @@ class SearchBarController extends ChangeNotifier {
     }
   }
 
-  static Future<List<Person>> fetchPersonList() async {
+  static Future<List<Person>> fetchPersonList(String screenName) async {
     List<Person> personList = [];
     await FirebaseFirestore.instance
         .collection('users')
         .get()
         .then((event) async {
       for (var doc in event.docs) {
+        if (doc.id == "115248843070739863999") {
+          continue;
+        }
+        // プログラマーのみ表示
+        if (screenName == "SearchScreen" && !doc.data()['isProgrammer']) {
+          continue;
+        }
+        if (screenName == "AuthEditScreen" &&
+            doc.data()['authority'] != null &&
+            doc.data()['authority'] == 1) {
+          continue;
+        }
+
         // 取得したuserデータをPersonの形に置き換える
         Person person = await PersonConverter.convert(doc);
         personList.add(person);
@@ -76,6 +91,11 @@ class SearchBarController extends ChangeNotifier {
     // 全件検索
     searchedItemList.addAll(allItemList.where(
       (element) =>
+          element.department.toLowerCase().contains(searchText.toLowerCase()) ||
+          (element.branchOffice != null &&
+              element.branchOffice!
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase())) ||
           element.name.toLowerCase().contains(searchText.toLowerCase()) ||
           element.ruby.toLowerCase().contains(searchText.toLowerCase()) ||
           element.favoriteSkill

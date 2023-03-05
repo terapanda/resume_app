@@ -19,26 +19,33 @@ class PersonConverter {
 
     // Person情報取得
     Person person = Person(
-        id: doc.id,
-        name: "${doc.data()['nameLast']}　${doc.data()['nameFirst']}",
-        ruby: "${doc.data()['rubyLast']}　${doc.data()['rubyFirst']}",
-        favoriteSkill: (doc.data()['favoriteSkill'] as List)
-            .map((e) => e as String)
-            .toList(),
-        initial: doc.data()['initial'] as String,
-        sex: doc.data()['sex'] as int,
-        birthDay: (doc.data()['birthDay']).toDate(),
-        contractType: doc.data()['contractType'] as int,
-        description: doc.data()['description'] as String,
-        station: doc.data()['station'] as String,
-        image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
-        updateDate: (doc.data()['updateDate']).toDate() as DateTime,
-        jobCareerList: await fetchJobCareerList(doc.id),
-        technicalOSList: null,
-        technicalSkillList: null,
-        technicalDBList: null,
-        experience: AgeCalculator.age(experienceDateTime).years // 勤続年数追加
-        );
+      id: doc.id,
+      department: doc.data()['department'] as String,
+      name: "${doc.data()['nameLast']}　${doc.data()['nameFirst']}",
+      ruby: "${doc.data()['rubyLast']}　${doc.data()['rubyFirst']}",
+      favoriteSkill: (doc.data()['favoriteSkill'] as List)
+          .map((e) => e as String)
+          .toList(),
+      initial: doc.data()['initial'] as String,
+      sex: doc.data()['sex'] as int,
+      birthDay: (doc.data()['birthDay']).toDate(),
+      contractType: doc.data()['contractType'] as int,
+      description: doc.data()['description'] as String,
+      station: doc.data()['station'] as String,
+      image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
+      updateDate: (doc.data()['updateDate']).toDate() as DateTime,
+      jobCareerList: await fetchJobCareerList(doc.id),
+      technicalOSList: null,
+      technicalSkillList: null,
+      technicalDBList: null,
+      experience: AgeCalculator.age(experienceDateTime).years, // 勤続年数追加
+      authority: doc.data()['authority'] as int,
+      isProgrammer: doc.data()['isProgrammer'],
+    );
+
+    if (doc.data()['branchOffice'] != null) {
+      person.branchOffice = doc.data()['branchOffice'];
+    }
 
     person.technicalSkillList = getAddingUpTechnicalSkillList(person); // 言語経歴追加
     person.technicalOSList = getAddingUpTechnicalOSList(person); // OS経歴追加
