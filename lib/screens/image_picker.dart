@@ -1,5 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -8,7 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:resume_app/screens/profile_edit_screen.dart';
 
-class ImagePickerWidget extends StatefulWidget {
+import '../provider/user_state.dart';
+
+class ImagePickerWidget extends ConsumerStatefulWidget {
   final String pickImageType; //上位Widgetから受け取りたいデータ
 
   const ImagePickerWidget({Key? key, required this.pickImageType})
@@ -25,7 +28,7 @@ enum AppState {
   cropped,
 }
 
-class _ImagePickerWidgetState extends State<ImagePickerWidget> {
+class _ImagePickerWidgetState extends ConsumerState<ImagePickerWidget> {
   late AppState state;
   late File imageFile;
 
@@ -167,7 +170,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   /// 保存処理
   void _saveImage() {
-    String userId = "staniuchi"; // TODO: staniuchi の部分をログイン中のUserIdにする。
+    var userProviderState = ref.read(userProvider);
+    String userId = userProviderState['id'];
     FirebaseStorage.instance
         .ref('users/$userId/profile_image.png')
         .putFile(imageFile);

@@ -13,7 +13,8 @@ final userProvider = StateProvider<Map<dynamic, dynamic>>(
 
 final personStreamProvider = FutureProvider((ref) async {
   print("object");
-  return await FirebaseService.fetchConvertPerson();
+  var personData = ref.read(userProvider);
+  return await FirebaseService.fetchConvertPerson(userId: personData['id']);
 });
 
 final masterDataProvider = FutureProvider((ref) async {

@@ -14,13 +14,13 @@ class FirebaseService {
   // FirebaseService();
 
   // personデータに整形したデータを取得
-  static Future fetchConvertPerson() async {
+  static Future fetchConvertPerson({userId}) async {
     print("fetchperson");
-    var person = await FirebaseFirestore.instance
-        .collection('users')
-        .doc('staniuchi')
-        .get();
-
+    var person =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (!person.exists) {
+      return Person;
+    }
     return await PersonConverter.convert(person);
   }
 
@@ -42,7 +42,7 @@ class FirebaseService {
     inspect(person);
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final doc = _firestore.doc('users/$userId');
-    await doc.update({
+    await doc.set({
       'birthDay': person.birthDay,
       'contractType': person.contractType,
       'description': person.description,
@@ -54,6 +54,8 @@ class FirebaseService {
       'rubyLast': person.rubyLast,
       'sex': person.sex,
       'station': person.station,
+      'image': person.image,
+      'updateDate': DateTime.now(),
     });
   }
 

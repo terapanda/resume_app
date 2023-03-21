@@ -82,10 +82,10 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   // ログインしたユーザー情報を退避
   ref.read(userProvider.notifier).state = _googleUser;
 
-  Person loginUserInfo = await FirebaseService.fetchConvertPerson();
+  // Person loginUserInfo = await FirebaseService.fetchConvertPerson();
   // ref.read(personProvider.notifier).state = loginUserInfo;
 
-// loginしているユーザー情報取得
+  // loginしているユーザー情報取得
   final streamPerson = ref.read(personStreamProvider);
 
   final masterData = ref.read(masterDataProvider);
