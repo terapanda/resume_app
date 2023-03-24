@@ -222,9 +222,9 @@ class SearchBarController extends ChangeNotifier {
       }
     } else if (selectedSortItem.split('_')[1] == 'age') {
       if (selectedSortItem.split('_')[0] == 'up') {
-        itemList.sort((a, b) => a.birthDay.compareTo(b.birthDay));
+        itemList.sort((a, b) => a.age.compareTo(b.age));
       } else {
-        itemList.sort((a, b) => -a.birthDay.compareTo(b.birthDay));
+        itemList.sort((a, b) => -a.age.compareTo(b.age));
       }
     } else if (selectedSortItem.split('_')[1] == 'updateTime') {
       if (selectedSortItem.split('_')[0] == 'up') {

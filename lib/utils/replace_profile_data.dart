@@ -2,9 +2,9 @@ class ReplaceProfileData {
   static String replaceSex(int sex) {
     switch (sex) {
       case 1:
-        return '男';
+        return '男性';
       case 2:
-        return '女';
+        return '女性';
       case 3:
         return 'LGBTQ';
       default:

@@ -43,9 +43,8 @@ class TechnicalSkillWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        ReplaceTechnical.replaceTechnicalSkill(
-                                            personItem
-                                                .technicalOSList![index].osId),
+                                        personItem
+                                            .technicalOSList![index].osName,
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       Text(
@@ -98,10 +97,8 @@ class TechnicalSkillWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        ReplaceTechnical.replaceTechnicalSkill(
-                                            personItem
-                                                .technicalSkillList![index]
-                                                .skillId),
+                                        personItem.technicalSkillList![index]
+                                            .skillName,
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       Text(
@@ -155,9 +152,8 @@ class TechnicalSkillWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        ReplaceTechnical.replaceTechnicalSkill(
-                                            personItem
-                                                .technicalDBList![index].dbId),
+                                        personItem
+                                            .technicalDBList![index].dbName,
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       Text(

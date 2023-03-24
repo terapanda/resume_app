@@ -15,12 +15,18 @@ class PersonAuthListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final masterData = ref.watch(masterDataProvider);
-    var adminKey = masterData.value["authority"].keys.firstWhere(
-        (key) => masterData.value["authority"][key] == "管理者",
+    var adminKey = masterData.value!["authority"]?.keys.firstWhere(
+        (key) => masterData.value!["authority"]?[key] == "管理者",
         orElse: () => 3);
-    var uesrKey = masterData.value["authority"].keys.firstWhere(
-        (key) => masterData.value["authority"][key] == "ユーザ",
+    var uesrKey = masterData.value!["authority"]?.keys.firstWhere(
+        (key) => masterData.value!["authority"]?[key] == "ユーザ",
         orElse: () => 3);
+    var fullTimeEmployeeKey = masterData.value!["contractForm"]?.keys
+        .firstWhere((key) => masterData.value!["contractForm"]?[key] == "正社員",
+            orElse: () => 3);
+    var contractEmployeeKey = masterData.value!["contractForm"]?.keys
+        .firstWhere((key) => masterData.value!["contractForm"]?[key] == "契約社員",
+            orElse: () => 3);
     final itemList = (searchBarController.isSearching &&
             searchBarController.searchedText.isNotEmpty)
         ? searchBarController.searchedItemList
@@ -38,7 +44,9 @@ class PersonAuthListWidget extends ConsumerWidget {
                 return PersonAuthWidget(
                     person: itemList[index],
                     adminKey: adminKey,
-                    uesrKey: uesrKey);
+                    uesrKey: uesrKey,
+                    fullTimeEmployeeKey: fullTimeEmployeeKey,
+                    contractEmployeeKey: contractEmployeeKey);
               },
             ),
     );

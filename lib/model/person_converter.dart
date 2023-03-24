@@ -1,21 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:resume_app/model/job_career.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/model/technical_db.dart';
 import 'package:resume_app/model/technical_os.dart';
 import 'package:resume_app/model/technical_skill.dart';
+import 'package:resume_app/services/firebaseService.dart';
 import 'package:resume_app/utils/age_calculator.dart';
+import 'package:resume_app/utils/replace_profile_data.dart';
+import 'package:resume_app/utils/replace_technical.dart';
 
 class PersonConverter {
-  static late DateTime experienceDateTime;
+  static late DateTime experienceDateTime = DateTime.now();
 
-  static Future<Person> convert(dynamic doc) async {
+  final masterDataProvider = FutureProvider((ref) async {
+    return await FirebaseService.fetchMasterData();
+  });
+
+  static Future<Person> convert(
+    dynamic doc,
+  ) async {
     // 画像パス取得
     String imgURL = "users/noimage/noimage.png";
     if (doc.data()['image'] != "") {
       imgURL = doc.data()['image'];
     }
+    // 勤続年数取得
+    await fetchExperienceDateTime(doc.id);
+    // マスターデータ取得
+    await FirebaseService.fetchMasterData();
 
     // Person情報取得
     Person person = Person(
@@ -29,12 +43,13 @@ class PersonConverter {
       initial: doc.data()['initial'] as String,
       sex: doc.data()['sex'] as int,
       birthDay: (doc.data()['birthDay']).toDate(),
+      age: AgeCalculator.age((doc.data()['birthDay']).toDate()).years,
       contractType: doc.data()['contractType'] as int,
       description: doc.data()['description'] as String,
       station: doc.data()['station'] as String,
       image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
-      updateDate: (doc.data()['updateDate']).toDate() as DateTime,
-      jobCareerList: await fetchJobCareerList(doc.id),
+      updateDate: (doc.data()['updateDate']).toDate(),
+      // jobCareerList: await fetchJobCareerList(doc.id),
       technicalOSList: null,
       technicalSkillList: null,
       technicalDBList: null,
@@ -47,10 +62,51 @@ class PersonConverter {
       person.branchOffice = doc.data()['branchOffice'];
     }
 
-    person.technicalSkillList = getAddingUpTechnicalSkillList(person); // 言語経歴追加
-    person.technicalOSList = getAddingUpTechnicalOSList(person); // OS経歴追加
-    person.technicalDBList = getAddingUpTechnicalDBList(person); // DB経歴追加
+    person.technicalSkillList =
+        await fetchTotalTechnicalSkillList(doc.id); // 言語経歴追加
+
+    // person.technicalSkillList = getAddingUpTechnicalSkillList(person); // 言語経歴追加
+    // person.technicalOSList = getAddingUpTechnicalOSList(person); // OS経歴追加
+    // person.technicalDBList = getAddingUpTechnicalDBList(person); // DB経歴追加
     return person;
+  }
+
+  /// totalTechnicalSkillList取得
+  static Future<List<TechnicalSkill>> fetchTotalTechnicalSkillList(
+      String userId) async {
+    List<TechnicalSkill> totalTechnicalSkillList = [];
+    await FirebaseFirestore.instance
+        .collection('/users/$userId/totalTechnicalSkill')
+        .get()
+        .then((event) async {
+      for (var doc in event.docs) {
+        TechnicalSkill technicalSkill = TechnicalSkill(
+            skillId: doc.id,
+            skillName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
+            month: doc.data()['month'] as int);
+        totalTechnicalSkillList.add(technicalSkill);
+      }
+    });
+    // ソート
+    totalTechnicalSkillList.sort((a, b) => b.month.compareTo(a.month));
+
+    return totalTechnicalSkillList;
+  }
+
+  /// 勤続年数取得
+  static Future<void> fetchExperienceDateTime(String userId) async {
+    await FirebaseFirestore.instance
+        .collection('/users/$userId/jobCareer')
+        .get()
+        .then((event) async {
+      // 勤続年数計算のための値を取得（最初の案件の開始日）
+      if (event.docs.isNotEmpty) {
+        experienceDateTime =
+            (event.docs[0].data()['careerPeriodFrom']).toDate() as DateTime;
+      } else {
+        experienceDateTime = DateTime.now();
+      }
+    });
   }
 
   /// jobCareerList取得
@@ -101,6 +157,7 @@ class PersonConverter {
       technicalSkillList = event.docs
           .map((doc) => TechnicalSkill(
                 skillId: doc.id,
+                skillName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
                 month: doc.data()['month'] as int,
               ))
           .toList();
@@ -119,6 +176,7 @@ class PersonConverter {
       technicalOSList = event.docs
           .map((doc) => TechnicalOS(
                 osId: doc.id,
+                osName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
                 month: doc.data()['month'] as int,
               ))
           .toList();
@@ -137,6 +195,7 @@ class PersonConverter {
       technicalDBList = event.docs
           .map((doc) => TechnicalDB(
                 dbId: doc.id,
+                dbName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
                 month: doc.data()['month'] as int,
               ))
           .toList();

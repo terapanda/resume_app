@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resume_app/controller/search_bar_controller.dart';
 import 'package:resume_app/screens/auth_edit/person_auth_list_widget.dart';
-import 'package:resume_app/screens/search/person_list_widget.dart';
 import 'package:resume_app/utils/hex_color.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AuthEditScreen extends StatefulWidget {
   const AuthEditScreen({Key? key}) : super(key: key);
@@ -116,9 +114,9 @@ class _AuthEditScreenState extends State<AuthEditScreen> {
             },
           )
         : Text(
-            '検索リスト',
+            '権限変更',
             style: TextStyle(
-              color: HexColor(),
+              color: Colors.black,
             ),
           );
   }

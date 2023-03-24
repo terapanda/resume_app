@@ -103,7 +103,31 @@ class PersonWidget extends StatelessWidget {
           children: [
             Row(children: [
               ImageWidget().get(person, 56),
-              NameWidget().get(person, 16),
+              Flexible(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "${person.department}　${person.branchOffice ?? ""}",
+                        style: const TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        person.name,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
               PopupMenuButton(
                 icon: const Icon(Icons.more_vert),
                 itemBuilder: (context) {
@@ -186,6 +210,15 @@ class PersonWidget extends StatelessWidget {
                 child: SizedBox(
                   height: 88,
                   child: Column(children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "${person.department}　${person.branchOffice ?? ""}",
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                     NameWidget().get(person, 24),
                     ExperienceWidget().get(true, person),
                   ]),

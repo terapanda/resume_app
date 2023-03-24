@@ -41,9 +41,8 @@ class TechnicalSkillWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    ReplaceTechnical.replaceTechnicalSkill(
-                                        personItem.technicalSkillList![index]
-                                            .skillId),
+                                    personItem
+                                        .technicalSkillList![index].skillName,
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                   Text(

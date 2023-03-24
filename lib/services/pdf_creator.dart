@@ -34,7 +34,7 @@ class PdfCreator {
     late List<String> basicTableHeader = ['エンジニア名', '年齢', '性別', '最寄駅'];
     late List<String> basicTableBody = [
       showName ? person.name : person.initial,
-      AgeCalculator.age(person.birthDay).years.toString(),
+      person.age.toString(),
       ReplaceProfileData.replaceSex(person.sex),
       person.station
     ];
@@ -85,8 +85,8 @@ class PdfCreator {
               j < person.jobCareerList![i].usedTechnicalOSList!.length;
               j++) {
             technicals += "・";
-            technicals += ReplaceTechnical.replaceTechnicalSkill(
-                person.jobCareerList![i].usedTechnicalOSList![j].osId);
+            technicals +=
+                person.jobCareerList![i].usedTechnicalOSList![j].osName;
             technicals += "\n";
           }
         }
@@ -98,8 +98,8 @@ class PdfCreator {
               j < person.jobCareerList![i].usedTechnicalDBList!.length;
               j++) {
             technicals += "・";
-            technicals += ReplaceTechnical.replaceTechnicalSkill(
-                person.jobCareerList![i].usedTechnicalDBList![j].dbId);
+            technicals +=
+                person.jobCareerList![i].usedTechnicalDBList![j].dbName;
             technicals += "\n";
           }
         }
@@ -111,8 +111,8 @@ class PdfCreator {
               j < person.jobCareerList![i].usedTechnicalSkillList!.length;
               j++) {
             technicals += "・";
-            technicals += ReplaceTechnical.replaceTechnicalSkill(
-                person.jobCareerList![i].usedTechnicalSkillList![j].skillId);
+            technicals +=
+                person.jobCareerList![i].usedTechnicalSkillList![j].skillName;
             technicals += "\n";
           }
         }
@@ -232,8 +232,7 @@ class PdfCreator {
                               ? person.technicalSkillList!.length
                               : 0,
                           (index) => <dynamic>[
-                            ReplaceTechnical.replaceTechnicalSkill(
-                                person.technicalSkillList![index].skillId),
+                            person.technicalSkillList![index].skillName,
                             CalcMonth.calcMonth(
                                 person.technicalSkillList![index].month),
                           ],

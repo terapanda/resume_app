@@ -28,8 +28,11 @@ class Person {
   /// 性別
   late int sex;
 
-  /// 年齢
+  /// 誕生日
   late DateTime birthDay;
+
+  /// 年齢
+  late int age;
 
   /// 契約形態
   late int contractType;
@@ -77,6 +80,7 @@ class Person {
     required this.initial,
     required this.sex,
     required this.birthDay,
+    required this.age,
     required this.contractType,
     required this.description,
     required this.station,
