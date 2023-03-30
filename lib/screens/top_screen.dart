@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../model/person.dart';
+import '../provider/person_provider.dart';
 import '../services/firebaseService.dart';
 import 'home_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -80,13 +81,17 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   };
 
   // ログインしたユーザー情報を退避
-  ref.read(userProvider.notifier).state = _googleUser;
+  ref.read(GoogleUserInfoProvider.notifier).state = _googleUser;
 
   // Person loginUserInfo = await FirebaseService.fetchConvertPerson();
   // ref.read(personProvider.notifier).state = loginUserInfo;
 
   // loginしているユーザー情報取得
-  final streamPerson = ref.read(personStreamProvider);
+  final loginUserData = await FirebaseService.fetchUserData(googleUser.id);
+
+  ref.read(userStateProvider.notifier).state = loginUserData.data();
+
+  final userstate = ref.read(userStateProvider);
 
   final masterData = ref.read(masterDataProvider);
   // Once signed in, return the UserCredential

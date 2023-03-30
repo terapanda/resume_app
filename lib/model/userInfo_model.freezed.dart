@@ -52,12 +52,17 @@ mixin _$UserInfo {
   String get station => throw _privateConstructorUsedError;
 
   /// 写真
-  String get image => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
+
+  /// 支社名
+  String? get branchOffice => throw _privateConstructorUsedError;
+
+  /// 部署名
+  String? get department => throw _privateConstructorUsedError;
 
   /// 経験年数
   int? get experience => throw _privateConstructorUsedError;
   int get authority => throw _privateConstructorUsedError;
-  String get department => throw _privateConstructorUsedError;
   bool get isProgrammer => throw _privateConstructorUsedError;
 
   /// 最終更新時刻
@@ -99,10 +104,11 @@ abstract class $UserInfoCopyWith<$Res> {
       int contractType,
       String description,
       String station,
-      String image,
+      String? image,
+      String? branchOffice,
+      String? department,
       int? experience,
       int authority,
-      String department,
       bool isProgrammer,
       DateTime updateDate,
       List<TechnicalOS>? technicalOSList,
@@ -135,10 +141,11 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
     Object? contractType = null,
     Object? description = null,
     Object? station = null,
-    Object? image = null,
+    Object? image = freezed,
+    Object? branchOffice = freezed,
+    Object? department = freezed,
     Object? experience = freezed,
     Object? authority = null,
-    Object? department = null,
     Object? isProgrammer = null,
     Object? updateDate = null,
     Object? technicalOSList = freezed,
@@ -191,10 +198,18 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
           ? _value.station
           : station // ignore: cast_nullable_to_non_nullable
               as String,
-      image: null == image
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      branchOffice: freezed == branchOffice
+          ? _value.branchOffice
+          : branchOffice // ignore: cast_nullable_to_non_nullable
+              as String?,
+      department: freezed == department
+          ? _value.department
+          : department // ignore: cast_nullable_to_non_nullable
+              as String?,
       experience: freezed == experience
           ? _value.experience
           : experience // ignore: cast_nullable_to_non_nullable
@@ -203,10 +218,6 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
           ? _value.authority
           : authority // ignore: cast_nullable_to_non_nullable
               as int,
-      department: null == department
-          ? _value.department
-          : department // ignore: cast_nullable_to_non_nullable
-              as String,
       isProgrammer: null == isProgrammer
           ? _value.isProgrammer
           : isProgrammer // ignore: cast_nullable_to_non_nullable
@@ -254,10 +265,11 @@ abstract class _$$_UserInfoCopyWith<$Res> implements $UserInfoCopyWith<$Res> {
       int contractType,
       String description,
       String station,
-      String image,
+      String? image,
+      String? branchOffice,
+      String? department,
       int? experience,
       int authority,
-      String department,
       bool isProgrammer,
       DateTime updateDate,
       List<TechnicalOS>? technicalOSList,
@@ -288,10 +300,11 @@ class __$$_UserInfoCopyWithImpl<$Res>
     Object? contractType = null,
     Object? description = null,
     Object? station = null,
-    Object? image = null,
+    Object? image = freezed,
+    Object? branchOffice = freezed,
+    Object? department = freezed,
     Object? experience = freezed,
     Object? authority = null,
-    Object? department = null,
     Object? isProgrammer = null,
     Object? updateDate = null,
     Object? technicalOSList = freezed,
@@ -344,10 +357,18 @@ class __$$_UserInfoCopyWithImpl<$Res>
           ? _value.station
           : station // ignore: cast_nullable_to_non_nullable
               as String,
-      image: null == image
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      branchOffice: freezed == branchOffice
+          ? _value.branchOffice
+          : branchOffice // ignore: cast_nullable_to_non_nullable
+              as String?,
+      department: freezed == department
+          ? _value.department
+          : department // ignore: cast_nullable_to_non_nullable
+              as String?,
       experience: freezed == experience
           ? _value.experience
           : experience // ignore: cast_nullable_to_non_nullable
@@ -356,10 +377,6 @@ class __$$_UserInfoCopyWithImpl<$Res>
           ? _value.authority
           : authority // ignore: cast_nullable_to_non_nullable
               as int,
-      department: null == department
-          ? _value.department
-          : department // ignore: cast_nullable_to_non_nullable
-              as String,
       isProgrammer: null == isProgrammer
           ? _value.isProgrammer
           : isProgrammer // ignore: cast_nullable_to_non_nullable
@@ -403,10 +420,11 @@ class _$_UserInfo extends _UserInfo {
       required this.contractType,
       required this.description,
       required this.station,
-      required this.image,
+      this.image,
+      this.branchOffice,
+      this.department,
       this.experience,
       required this.authority,
-      required this.department,
       required this.isProgrammer,
       required this.updateDate,
       final List<TechnicalOS>? technicalOSList,
@@ -474,15 +492,21 @@ class _$_UserInfo extends _UserInfo {
 
   /// 写真
   @override
-  final String image;
+  final String? image;
+
+  /// 支社名
+  @override
+  final String? branchOffice;
+
+  /// 部署名
+  @override
+  final String? department;
 
   /// 経験年数
   @override
   final int? experience;
   @override
   final int authority;
-  @override
-  final String department;
   @override
   final bool isProgrammer;
 
@@ -545,7 +569,7 @@ class _$_UserInfo extends _UserInfo {
 
   @override
   String toString() {
-    return 'UserInfo(nameFirst: $nameFirst, nameLast: $nameLast, rubyFirst: $rubyFirst, rubyLast: $rubyLast, favoriteSkill: $favoriteSkill, initial: $initial, sex: $sex, birthDay: $birthDay, contractType: $contractType, description: $description, station: $station, image: $image, experience: $experience, authority: $authority, department: $department, isProgrammer: $isProgrammer, updateDate: $updateDate, technicalOSList: $technicalOSList, technicalSkillList: $technicalSkillList, technicalDBList: $technicalDBList, jobCareerList: $jobCareerList)';
+    return 'UserInfo(nameFirst: $nameFirst, nameLast: $nameLast, rubyFirst: $rubyFirst, rubyLast: $rubyLast, favoriteSkill: $favoriteSkill, initial: $initial, sex: $sex, birthDay: $birthDay, contractType: $contractType, description: $description, station: $station, image: $image, branchOffice: $branchOffice, department: $department, experience: $experience, authority: $authority, isProgrammer: $isProgrammer, updateDate: $updateDate, technicalOSList: $technicalOSList, technicalSkillList: $technicalSkillList, technicalDBList: $technicalDBList, jobCareerList: $jobCareerList)';
   }
 
   @override
@@ -573,12 +597,14 @@ class _$_UserInfo extends _UserInfo {
                 other.description == description) &&
             (identical(other.station, station) || other.station == station) &&
             (identical(other.image, image) || other.image == image) &&
+            (identical(other.branchOffice, branchOffice) ||
+                other.branchOffice == branchOffice) &&
+            (identical(other.department, department) ||
+                other.department == department) &&
             (identical(other.experience, experience) ||
                 other.experience == experience) &&
             (identical(other.authority, authority) ||
                 other.authority == authority) &&
-            (identical(other.department, department) ||
-                other.department == department) &&
             (identical(other.isProgrammer, isProgrammer) ||
                 other.isProgrammer == isProgrammer) &&
             (identical(other.updateDate, updateDate) ||
@@ -609,9 +635,10 @@ class _$_UserInfo extends _UserInfo {
         description,
         station,
         image,
+        branchOffice,
+        department,
         experience,
         authority,
-        department,
         isProgrammer,
         updateDate,
         const DeepCollectionEquality().hash(_technicalOSList),
@@ -647,10 +674,11 @@ abstract class _UserInfo extends UserInfo {
       required final int contractType,
       required final String description,
       required final String station,
-      required final String image,
+      final String? image,
+      final String? branchOffice,
+      final String? department,
       final int? experience,
       required final int authority,
-      required final String department,
       required final bool isProgrammer,
       required final DateTime updateDate,
       final List<TechnicalOS>? technicalOSList,
@@ -706,15 +734,21 @@ abstract class _UserInfo extends UserInfo {
   @override
 
   /// 写真
-  String get image;
+  String? get image;
+  @override
+
+  /// 支社名
+  String? get branchOffice;
+  @override
+
+  /// 部署名
+  String? get department;
   @override
 
   /// 経験年数
   int? get experience;
   @override
   int get authority;
-  @override
-  String get department;
   @override
   bool get isProgrammer;
   @override

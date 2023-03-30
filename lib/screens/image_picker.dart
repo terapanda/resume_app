@@ -170,7 +170,7 @@ class _ImagePickerWidgetState extends ConsumerState<ImagePickerWidget> {
 
   /// 保存処理
   void _saveImage() {
-    var userProviderState = ref.read(userProvider);
+    var userProviderState = ref.read(GoogleUserInfoProvider);
     String userId = userProviderState['id'];
     FirebaseStorage.instance
         .ref('users/$userId/profile_image.png')

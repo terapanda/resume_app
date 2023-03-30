@@ -8,12 +8,12 @@ import '../model/technical_os.dart';
 import '../model/technical_skill.dart';
 import '../services/firebaseService.dart';
 
-final userProvider = StateProvider<Map<dynamic, dynamic>>(
+final GoogleUserInfoProvider = StateProvider<Map<dynamic, dynamic>>(
     (ref) => {'id': '', 'email': '', 'name': ''});
 
 final personStreamProvider = FutureProvider((ref) async {
   print("object");
-  var personData = ref.read(userProvider);
+  var personData = ref.read(GoogleUserInfoProvider);
   return await FirebaseService.fetchConvertPerson(userId: personData['id']);
 });
 
