@@ -32,7 +32,7 @@ class ProfileEditScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
-  List __selectVal = [];
+  List<String> __selectVal = [];
 
   final _form = GlobalKey<FormState>();
   late String? birthDay;
@@ -44,6 +44,9 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   late String? lastNameRuby;
   late int? sex = 1;
   late String? station;
+  late String? initial;
+  late int? branchOffice;
+  late int? department;
 
   late List? favoriteLang = [];
 
@@ -57,7 +60,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   void initState() {
     super.initState();
     // ログインしたユーザー情報プロバイダー
-    userData = ref.read(userProvider);
+    userData = ref.read(GoogleUserInfoProvider);
   }
 
   @override
@@ -66,257 +69,430 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     final focusNode = FocusNode();
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.5,
         title: Text('プロフィールを編集'),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () async {
-              this._form.currentState!.save();
-
-              Profile saveProfileData = Profile(
-                  birthDay: formatDate(birthDay!),
-                  contractType: 1,
-                  description: description,
-                  favoriteSkill: favoriteLang,
-                  initial: "",
-                  nameFirst: firstName,
-                  nameLast: lastName,
-                  rubyFirst: firstNameRuby,
-                  rubyLast: lastNameRuby,
-                  sex: sex,
-                  station: station,
-                  image: "users/${userData['id']}/profile_image.png");
-              inspect(saveProfileData);
-              await FirebaseService.savePersonProfile(
-                  userData['id'], saveProfileData);
+              SaveUserInfo();
             },
           )
         ],
       ),
-      body: UnfocusKeybord(
-        child: Container(
-          margin: EdgeInsets.only(left: 20, right: 20),
-          child: Form(
-              key: _form,
-              child: user.when(
-                // 処理中は `loading` で指定したWidgetが表示される
-                loading: () => const CircularProgressIndicator(),
-                // エラーが発生した場合に表示されるWidgetを指定
-                error: (error, stack) => Text('Error: $error'),
-                // 取得した `users` が `data` で使用できる
-                data: (user) {
-                  final userDataJson = UserInfo.fromJson(user);
+      body: SingleChildScrollView(
+        child: UnfocusKeybord(
+          child: Container(
+            margin: EdgeInsets.only(left: 20, right: 20),
+            child: Form(
+                key: _form,
+                child: user.when(
+                  // 処理中は `loading` で指定したWidgetが表示される
+                  loading: () => const CircularProgressIndicator(),
+                  // エラーが発生した場合に表示されるWidgetを指定
+                  error: (error, stack) => Text('Error: $error'),
+                  // 取得した `users` が `data` で使用できる
+                  data: (user) {
+                    final userDataJson = UserInfo.fromJson(user);
 
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              await showModalBottomSheet<int>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return bottomMenu(context);
-                                },
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 5),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                // color: Colors.yellow,
-                              ),
-                              child: selectImage(userDataJson.image),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Text('プロフィール画像の編集')],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text("姓名"),
-                      ),
-                      Row(
-                        children: [
-                          InputForm(
-                            inputType: 'name',
-                            hintText: '姓を入力',
-                            isHalf: true,
-                            initialValue: userDataJson.nameFirst,
-                            onSaved: (value) {
-                              lastName = value;
-                            },
-                          ),
-                          InputForm(
-                            inputType: 'name',
-                            hintText: '名を入力',
-                            isHalf: true,
-                            initialValue: userDataJson.nameLast,
-                            onSaved: (value) {
-                              firstName = value;
-                            },
-                          ),
-                        ],
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(top: 5, bottom: 5),
-                          child: Text("セイメイ")),
-                      Row(
-                        children: [
-                          InputForm(
-                            inputType: 'name',
-                            hintText: 'セイを入力',
-                            isHalf: true,
-                            initialValue: userDataJson.rubyFirst,
-                            onSaved: (value) {
-                              lastNameRuby = value;
-                            },
-                          ),
-                          InputForm(
-                            inputType: 'name',
-                            hintText: 'メイを入力',
-                            isHalf: true,
-                            initialValue: userDataJson.rubyLast,
-                            onSaved: (value) {
-                              firstNameRuby = value;
-                            },
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                                  child: Text("生年月日")),
-                              InputForm(
-                                inputType: 'birth',
-                                hintText: '2000/04/01',
-                                isHalf: false,
-                                initialValue:
-                                    formatString(userDataJson.birthDay),
-                                onSaved: (value) {
-                                  birthDay = value;
-                                },
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                                  child: Text("性別")),
-                              Container(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.448,
-                                // height: MediaQuery.of(context).size.height * 0.08,
-                                padding: const EdgeInsets.all(3),
-                                child: DropdownButtonFormField2(
-                                  decoration: InputDecoration(
-                                      isDense: true,
-                                      contentPadding: EdgeInsets.zero,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.blue, width: 2))),
-                                  // isExpanded: false,
-                                  hint: const Text(
-                                    '性別',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black45,
-                                  ),
-                                  iconSize: 30,
-                                  buttonHeight:
-                                      MediaQuery.of(context).size.height * 0.07,
-                                  buttonPadding:
-                                      const EdgeInsets.only(right: 10),
-                                  dropdownDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(
-                                        color: Colors.blue, width: 2),
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: 1,
-                                      child: Text('男性'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 2,
-                                      child: Text('女性'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 3,
-                                      child: Text('その他'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    sex = int.parse(value.toString());
-                                  },
-                                  onSaved: (value) {
-                                    sex = int.parse(value.toString());
-                                  },
-                                  value: userDataJson.sex,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(top: 5, bottom: 5),
-                          child: Text("最寄駅")),
-                      InputForm(
-                        hintText: '最寄駅を入力',
-                        initialValue: userDataJson.station,
-                        onSaved: (value) {
-                          station = value;
-                        },
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text("自己PR"),
-                      ),
-                      InputForm(
-                        hintText: '自己PR',
-                        initialValue: userDataJson.description,
-                        onSaved: (value) {
-                          description = value;
-                        },
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text("得意な言語"),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.89,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ViewSelectDevelopMentLanguage(
-                                userDataJson.favoriteSkill),
-                            SelectDevelopMentLanguage(personData),
+                            InkWell(
+                              onTap: () async {
+                                await showModalBottomSheet<int>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return bottomMenu(context);
+                                  },
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 5),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // color: Colors.yellow,
+                                ),
+                                child: selectImage(userDataJson.image),
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ],
-                  );
-                },
-              )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [Text('プロフィール画像の編集')],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 5, bottom: 5),
+                          child: Text("姓名"),
+                        ),
+                        Row(
+                          children: [
+                            InputForm(
+                              inputType: 'name',
+                              hintText: '姓を入力',
+                              isHalf: true,
+                              initialValue: userDataJson.nameFirst,
+                              onSaved: (value) {
+                                lastName = value;
+                              },
+                            ),
+                            InputForm(
+                              inputType: 'name',
+                              hintText: '名を入力',
+                              isHalf: true,
+                              initialValue: userDataJson.nameLast,
+                              onSaved: (value) {
+                                firstName = value;
+                              },
+                            ),
+                          ],
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 5, bottom: 5),
+                            child: Text("セイメイ")),
+                        Row(
+                          children: [
+                            InputForm(
+                              inputType: 'name',
+                              hintText: 'セイを入力',
+                              isHalf: true,
+                              initialValue: userDataJson.rubyFirst,
+                              onSaved: (value) {
+                                lastNameRuby = value;
+                              },
+                            ),
+                            InputForm(
+                              inputType: 'name',
+                              hintText: 'メイを入力',
+                              isHalf: true,
+                              initialValue: userDataJson.rubyLast,
+                              onSaved: (value) {
+                                firstNameRuby = value;
+                              },
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: Text("生年月日")),
+                                InputForm(
+                                  inputType: 'birth',
+                                  hintText: '2000/04/01',
+                                  isHalf: false,
+                                  initialValue:
+                                      formatString(userDataJson.birthDay),
+                                  onSaved: (value) {
+                                    print("saveaaa");
+
+                                    birthDay = value ??
+                                        formatString(userDataJson.birthDay);
+                                  },
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: Text("性別")),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.448,
+                                  // height: MediaQuery.of(context).size.height * 0.08,
+                                  padding: const EdgeInsets.all(3),
+                                  child: DropdownButtonFormField2(
+                                    decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.zero,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2))),
+                                    // isExpanded: false,
+                                    hint: const Text(
+                                      '性別',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.black45,
+                                    ),
+                                    iconSize: 30,
+                                    buttonHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.07,
+                                    buttonPadding:
+                                        const EdgeInsets.only(right: 10),
+                                    dropdownDecoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                          color: Colors.blue, width: 2),
+                                    ),
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: 1,
+                                        child: Text('男性'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 2,
+                                        child: Text('女性'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 3,
+                                        child: Text('その他'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      sex = int.parse(value.toString());
+                                    },
+                                    onSaved: (value) {
+                                      sex = int.parse(value.toString());
+                                    },
+                                    value: userDataJson.sex,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: Text("イニシャル")),
+                                InputForm(
+                                  hintText: 'T,S (三 太郎)',
+                                  initialValue: userDataJson.initial,
+                                  isHalf: true,
+                                  onSaved: (value) {
+                                    initial = value;
+                                  },
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: Text("最寄駅")),
+                                InputForm(
+                                  hintText: '最寄駅を入力',
+                                  initialValue: userDataJson.station,
+                                  isHalf: true,
+                                  onSaved: (value) {
+                                    station = value;
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: Text("支社名")),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.448,
+                                  // height: MediaQuery.of(context).size.height * 0.08,
+                                  padding: const EdgeInsets.all(3),
+                                  child: DropdownButtonFormField2(
+                                    decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.zero,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2))),
+                                    // isExpanded: false,
+                                    hint: const Text(
+                                      '性別',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.black45,
+                                    ),
+                                    iconSize: 30,
+                                    buttonHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.07,
+                                    buttonPadding:
+                                        const EdgeInsets.only(right: 10),
+                                    dropdownDecoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                          color: Colors.blue, width: 2),
+                                    ),
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: 1,
+                                        child: Text('北海道支社'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 2,
+                                        child: Text('東京本社'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 3,
+                                        child: Text('中部支社'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 4,
+                                        child: Text('関西支社'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 5,
+                                        child: Text('中国支社'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 6,
+                                        child: Text('九州支社'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 7,
+                                        child: Text('バングラデシュ'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      branchOffice =
+                                          int.parse(value.toString());
+                                    },
+                                    onSaved: (value) {
+                                      branchOffice =
+                                          int.parse(value.toString());
+                                    },
+                                    value: userDataJson.branchOffice,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: Text("部署名")),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.448,
+                                  // height: MediaQuery.of(context).size.height * 0.08,
+                                  padding: const EdgeInsets.all(3),
+                                  child: DropdownButtonFormField2(
+                                    decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.zero,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2))),
+                                    // isExpanded: false,
+                                    hint: const Text(
+                                      '部署',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.black45,
+                                    ),
+                                    iconSize: 30,
+                                    buttonHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.07,
+                                    buttonPadding:
+                                        const EdgeInsets.only(right: 10),
+                                    dropdownDecoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                          color: Colors.blue, width: 2),
+                                    ),
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: 1,
+                                        child: Text('システム本部'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 2,
+                                        child: Text('営業部'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 3,
+                                        child: Text('経営企画部'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      sex = int.parse(value.toString());
+                                    },
+                                    onSaved: (value) {
+                                      sex = int.parse(value.toString());
+                                    },
+                                    value: userDataJson.sex,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 5, bottom: 5),
+                          child: Text("自己PR"),
+                        ),
+                        InputForm(
+                          hintText: '自己PR',
+                          initialValue: userDataJson.description,
+                          onSaved: (value) {
+                            description = value;
+                          },
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 5, bottom: 5),
+                          child: Text("得意な言語"),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.89,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ViewSelectDevelopMentLanguage(
+                                  __selectVal.length > 0
+                                      ? __selectVal
+                                      : userDataJson.favoriteSkill),
+                              SelectDevelopMentLanguage(personData),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                )),
+          ),
         ),
       ),
     );
@@ -363,6 +539,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     );
   }
 
+  // 言語選択
   Widget SelectDevelopMentLanguage(personData) {
     List<int> selectVal = [];
     return SearchChoices.multiple(
@@ -393,7 +570,6 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       ),
       onChanged: (value) {
         // setState(() {
-
         __selectVal = value;
         // });
       },
@@ -403,7 +579,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                 ? () {
                     Navigator.pop(doneContext);
                     // setState(() {
-                    List selectDevList = [];
+                    List<String> selectDevList = [];
                     for (var item in selectedItemsDone) {
                       selectDevList.add(item["value"]);
                     }
@@ -467,5 +643,28 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         ),
       ],
     );
+  }
+
+  // データ保存
+  void SaveUserInfo() {
+    UserInfo userInfo = UserInfo(
+      authority: 1,
+      birthDay: DateTime.parse("20001017"),
+      contractType: 1,
+      department: "システム部",
+      description: "齋藤飛鳥",
+      favoriteSkill: __selectVal,
+      initial: "S.T",
+      isProgrammer: true,
+      nameFirst: "飛鳥",
+      nameLast: "齋藤",
+      rubyFirst: "あすか",
+      rubyLast: "さいとう",
+      sex: 1,
+      station: "渋谷",
+      updateDate: DateTime.now(),
+      experience: 2,
+    );
+    FirebaseService.savePersonProfile('saito', userInfo);
   }
 }

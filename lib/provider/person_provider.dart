@@ -12,3 +12,5 @@ final usersStreamProvider =
 
   return data;
 });
+
+final userStateProvider = StateProvider((ref) => {});

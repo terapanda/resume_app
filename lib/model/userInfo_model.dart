@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -43,12 +45,17 @@ abstract class UserInfo with _$UserInfo {
     required String station,
 
     /// 写真
-    required String image,
+    String? image,
+
+    /// 支社名
+    String? branchOffice,
+
+    /// 部署名
+    String? department,
 
     /// 経験年数
     int? experience,
     required int authority,
-    required String department,
     required bool isProgrammer,
 
     /// 最終更新時刻

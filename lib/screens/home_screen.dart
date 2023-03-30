@@ -5,6 +5,7 @@ import 'package:resume_app/screens/auth_edit/auth_edit_screen.dart';
 import 'package:resume_app/utils/auth_check.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../provider/person_provider.dart';
 import 'search/search_screen.dart';
 import 'package:resume_app/utils/size_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,6 +20,13 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // ログインしたユーザー情報プロバイダー
+    final userstate = ref.read(userStateProvider);
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

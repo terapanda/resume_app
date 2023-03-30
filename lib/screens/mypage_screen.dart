@@ -43,87 +43,83 @@ class MypageScreen extends ConsumerWidget {
       );
     }
 
-    return CupertinoScaffold(
-      body: Builder(
-        builder: (context) => CupertinoPageScaffold(
-          navigationBar: CupertinoNavigationBar(
-            leading: CupertinoButton(
-              padding: EdgeInsets.only(left: 0),
-              // color: Colors.amber,
-              color: Color(0xFAFAFAFA),
-              child: const Icon(CupertinoIcons.left_chevron),
-              onPressed: () => onLeadingPressed(context),
+    return Scaffold(
+      appBar: AppBar(
+        leading: CupertinoButton(
+          padding: EdgeInsets.only(left: 0),
+          // color: Colors.amber,
+          color: Color(0xFAFAFAFA),
+          child: const Icon(CupertinoIcons.left_chevron),
+          onPressed: () => onLeadingPressed(context),
+        ),
+        title: Text('マイページ'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileEditScreen(),
+              ),
             ),
-            transitionBetweenRoutes: false,
-            middle: Text('マイページ'),
-            trailing: TextButton(
-              onPressed: () => CupertinoScaffold.showCupertinoModalBottomSheet(
-                context: context,
-                backgroundColor: const Color(0xFAFAFAFA),
-                builder: (context) => Stack(
-                  children: <Widget>[ProfileEditScreen()],
-                ),
-              ),
-              child: Text(
-                '編集',
-                style: TextStyle(color: Colors.black, fontSize: 18),
-              ),
+            child: Text(
+              '編集',
+              style: TextStyle(color: Colors.black, fontSize: 18),
             ),
           ),
-          child: SizedBox.expand(
-            child: SafeArea(
-              bottom: false,
-              child: PopUpItem(
-                height: deviceHeight,
-                outerPadding: EdgeInsets.all(0),
-                innerPadding: EdgeInsets.all(16),
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-                elevation: 2,
-                tag: 'tag1',
-                child: Column(
+        ],
+      ),
+      body: SizedBox.expand(
+        child: SafeArea(
+          bottom: false,
+          child: PopUpItem(
+            height: deviceHeight,
+            outerPadding: EdgeInsets.all(0),
+            innerPadding: EdgeInsets.all(16),
+            color: Colors.white,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            elevation: 2,
+            tag: 'tag1',
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        ImageWidget().get(personData.value, 88),
-                        Expanded(
-                          child: SizedBox(
-                            height: 88,
-                            child: Column(
-                              children: [
-                                NameWidget().get(personData.value, 24),
-                                ExperienceWidget().get(true, personData.value),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    HeadlineWidget().get('プロフィール'),
-                    const Padding(padding: EdgeInsets.only(top: 8)),
-                    Row(
-                      children: [
-                        AgeWidget().get(false, personData.value),
-                        SexWidget().get(false, personData.value),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 48.0),
-                      child: const Divider(),
-                    ),
-                    StationWidget().get(false, personData.value),
-                    FavoriteSkillWidget().get(false, personData.value),
-                    const Divider(),
-                    const Padding(padding: EdgeInsets.only(top: 8)),
-                    HeadlineWidget().get('言語経歴'),
-                    TechnicalSkillWidget().get(personData.value, 'os'),
-                    TechnicalSkillWidget().get(personData.value, 'skill'),
-                    TechnicalSkillWidget().get(personData.value, 'db'),
-                    TechnicalSkillWidget().get(personData.value, ''),
+                    ImageWidget().get(personData.value, 88),
+                    Expanded(
+                      child: SizedBox(
+                        height: 88,
+                        child: Column(
+                          children: [
+                            NameWidget().get(personData.value, 24),
+                            ExperienceWidget().get(true, personData.value),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
-              ),
+                HeadlineWidget().get('プロフィール'),
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                Row(
+                  children: [
+                    AgeWidget().get(false, personData.value),
+                    SexWidget().get(false, personData.value),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 48.0),
+                  child: const Divider(),
+                ),
+                StationWidget().get(false, personData.value),
+                FavoriteSkillWidget().get(false, personData.value),
+                const Divider(),
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                HeadlineWidget().get('言語経歴'),
+                TechnicalSkillWidget().get(personData.value, 'os'),
+                TechnicalSkillWidget().get(personData.value, 'skill'),
+                TechnicalSkillWidget().get(personData.value, 'db'),
+                TechnicalSkillWidget().get(personData.value, ''),
+              ],
             ),
           ),
         ),

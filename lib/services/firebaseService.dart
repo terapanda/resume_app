@@ -38,23 +38,27 @@ class FirebaseService {
         );
   }
 
-  static Future savePersonProfile(userId, person) async {
-    inspect(person);
+  static Future fetchUserData(userId) async {
+    return FirebaseFirestore.instance.collection('users').doc(userId).get();
+  }
+
+  static Future savePersonProfile(userId, user) async {
+    inspect(user);
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final doc = _firestore.doc('users/$userId');
     await doc.set({
-      'birthDay': person.birthDay,
-      'contractType': person.contractType,
-      'description': person.description,
-      'favoriteSkill': person.favoriteSkill,
-      'initial': person.initial,
-      'nameFirst': person.nameFirst,
-      'nameLast': person.nameLast,
-      'rubyFirst': person.rubyFirst,
-      'rubyLast': person.rubyLast,
-      'sex': person.sex,
-      'station': person.station,
-      'image': person.image,
+      'birthDay': user.birthDay,
+      'contractType': user.contractType,
+      'description': user.description,
+      'favoriteSkill': user.favoriteSkill,
+      'initial': user.initial,
+      'nameFirst': user.nameFirst,
+      'nameLast': user.nameLast,
+      'rubyFirst': user.rubyFirst,
+      'rubyLast': user.rubyLast,
+      'sex': user.sex,
+      'station': user.station,
+      'image': user.image,
       'updateDate': DateTime.now(),
     });
   }
