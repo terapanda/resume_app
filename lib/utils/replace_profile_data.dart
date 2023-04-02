@@ -1,18 +1,15 @@
+import 'package:resume_app/utils/use_shared_preferences.dart';
+
 class ReplaceProfileData {
-  static String replaceSex(int sex) {
-    switch (sex) {
-      case 1:
-        return '男性';
-      case 2:
-        return '女性';
-      case 3:
-        return 'LGBTQ';
-      default:
-        return 'その他';
-    }
+  String replaceSex(int val) {
+    final masterData = UseSharedPreferences.getUserDefaults('master');
+    return masterData["sex"]?.keys.firstWhere(
+        (key) => masterData["sex"]?[key] == val,
+        orElse: () => "その他");
   }
 
-  static String replaceContractType(int contractType) {
+  String replaceContractType(int contractType) {
+    final masterData = UseSharedPreferences.getUserDefaults('master');
     switch (contractType) {
       case 1:
         return '正社員';
@@ -23,7 +20,7 @@ class ReplaceProfileData {
     }
   }
 
-  static String replaceRole(int roleType) {
+  String replaceRole(int roleType) {
     switch (roleType) {
       case 1:
         return 'PM';

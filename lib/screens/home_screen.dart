@@ -20,15 +20,11 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // ログインしたユーザー情報プロバイダー
-    final userstate = ref.read(userStateProvider);
-  }
+  late final decodeData;
 
   @override
   Widget build(BuildContext context) {
+    final userstate = ref.read(userStateProvider);
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +36,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             itemBuilder: (context) {
               return [
                 makePopupMenuItem('edit', Icons.account_circle, ''),
-                if (allowAdmin(ref))
+                if (allowAdmin(userstate))
                   makePopupMenuItem('auth', Icons.account_circle, "権限"),
               ];
             },

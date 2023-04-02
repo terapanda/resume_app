@@ -4,6 +4,7 @@ import 'package:resume_app/controller/search_bar_controller.dart';
 import 'package:resume_app/screens/search/person_list_widget.dart';
 import 'package:resume_app/utils/hex_color.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:resume_app/utils/replace_profile_data.dart';
 
 class SearchScreen extends StatefulWidget {
   final String searchValue; //上位Widgetから受け取りたいデータ

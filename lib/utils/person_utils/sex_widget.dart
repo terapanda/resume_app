@@ -7,6 +7,7 @@ import 'package:resume_app/utils/replace_profile_data.dart';
 // 性別
 class SexWidget {
   Widget get(bool isCard, Person personItem) {
+    ReplaceProfileData replaceProfileData = ReplaceProfileData();
     if (isCard) {
       return Padding(
         padding: const EdgeInsets.only(top: 4),
@@ -14,10 +15,10 @@ class SexWidget {
           // Property
           children: [
             Icon(
-                personItem.sex == 0
-                    ? FontAwesomeIcons.venus
-                    : personItem.sex == 1
-                        ? FontAwesomeIcons.mars
+                personItem.sex == "男性"
+                    ? FontAwesomeIcons.mars
+                    : personItem.sex == "女性"
+                        ? FontAwesomeIcons.venus
                         : FontAwesomeIcons.question,
                 size: 20,
                 color: HexColor()),
@@ -26,7 +27,7 @@ class SexWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  ReplaceProfileData.replaceSex(personItem.sex),
+                  personItem.sex,
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
@@ -43,10 +44,10 @@ class SexWidget {
             // Property
             children: [
               Icon(
-                  personItem.sex == 0
-                      ? FontAwesomeIcons.venus
-                      : personItem.sex == 1
-                          ? FontAwesomeIcons.mars
+                  personItem.sex == "男性"
+                      ? FontAwesomeIcons.mars
+                      : personItem.sex == "女性"
+                          ? FontAwesomeIcons.venus
                           : FontAwesomeIcons.question,
                   size: 30,
                   color: HexColor()),
@@ -60,7 +61,7 @@ class SexWidget {
                         style: TextStyle(fontSize: 12, color: HexColor()),
                       ),
                       Text(
-                        ReplaceProfileData.replaceSex(personItem.sex),
+                        personItem.sex,
                         style: const TextStyle(fontSize: 16),
                       ),
                     ]),

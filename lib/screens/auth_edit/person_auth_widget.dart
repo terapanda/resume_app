@@ -6,18 +6,10 @@ import 'package:resume_app/utils/person_utils/name_widget.dart';
 
 class PersonAuthWidget extends StatefulWidget {
   final Person person;
-  final int adminKey;
-  final int uesrKey;
-  final int fullTimeEmployeeKey;
-  final int contractEmployeeKey;
 
   const PersonAuthWidget({
     Key? key,
     required this.person,
-    required this.adminKey,
-    required this.uesrKey,
-    required this.fullTimeEmployeeKey,
-    required this.contractEmployeeKey,
   }) : super(key: key);
 
   @override
@@ -34,12 +26,10 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
   void initState() {
     super.initState();
 
-    isAdmin = widget.person.authority == widget.adminKey;
+    isAdmin = widget.person.authority == 2;
     isProgramer = widget.person.isProgrammer;
-    isFullTimeEmployee =
-        widget.person.contractType == widget.fullTimeEmployeeKey;
-    isContractEmployeeKey =
-        widget.person.contractType == widget.contractEmployeeKey;
+    isFullTimeEmployee = widget.person.contractType == 1;
+    isContractEmployeeKey = widget.person.contractType == 2;
   }
 
   @override
@@ -81,8 +71,8 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
                         isAdmin = value ?? false;
                       });
 
-                      await FirebaseService.saveAuthority(widget.person.id,
-                          isAdmin ? widget.adminKey : widget.uesrKey);
+                      await FirebaseService.saveAuthority(
+                          widget.person.id, isAdmin ? 2 : 3);
                     },
                   ),
                 ),
@@ -148,10 +138,7 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
                       });
 
                       await FirebaseService.saveAuthority(
-                          widget.person.id,
-                          isContractEmployeeKey
-                              ? widget.fullTimeEmployeeKey
-                              : widget.contractEmployeeKey);
+                          widget.person.id, isContractEmployeeKey ? 1 : 2);
                     },
                   ),
                 ),

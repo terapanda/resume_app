@@ -46,20 +46,15 @@ class SearchBarController extends ChangeNotifier {
   static Future<List<Person>> fetchPersonList(String screenName) async {
     List<Person> personList = [];
     await FirebaseFirestore.instance
-        .collection('users')
+        .collection('search')
         .get()
         .then((event) async {
       for (var doc in event.docs) {
-        if (doc.id == "115248843070739863999") {
-          continue;
-        }
         // プログラマーのみ表示
         if (screenName == "SearchScreen" && !doc.data()['isProgrammer']) {
           continue;
         }
-        if (screenName == "AuthEditScreen" &&
-            doc.data()['authority'] != null &&
-            doc.data()['authority'] == 1) {
+        if (screenName == "AuthEditScreen" && doc.data()['authority'] == 1) {
           continue;
         }
 
@@ -84,6 +79,7 @@ class SearchBarController extends ChangeNotifier {
   }
 
   void searchOperation(String searchText, String selectedSortItem) {
+    ReplaceProfileData replaceProfileData = ReplaceProfileData();
     _searchedText = searchText;
 
     searchedItemList.clear();
@@ -98,22 +94,18 @@ class SearchBarController extends ChangeNotifier {
                   .contains(searchText.toLowerCase())) ||
           element.name.toLowerCase().contains(searchText.toLowerCase()) ||
           element.ruby.toLowerCase().contains(searchText.toLowerCase()) ||
-          element.favoriteSkill
+          element.favoriteSkill!
               .join(',')
               .toLowerCase()
               .contains(searchText.toLowerCase()) ||
           element.initial.toLowerCase().contains(searchText.toLowerCase()) ||
-          ReplaceProfileData.replaceSex(element.sex)
-              .toLowerCase()
-              .contains(searchText.toLowerCase()) ||
+          element.sex.contains(searchText.toLowerCase()) ||
           element.birthDay
               .toString()
               .toLowerCase()
               .contains(searchText.toLowerCase()) ||
-          ReplaceProfileData.replaceContractType(element.contractType)
-              .toLowerCase()
-              .contains(searchText.toLowerCase()) ||
-          element.description
+          element.contractType!.contains(searchText.toLowerCase()) ||
+          element.description!
               .toLowerCase()
               .contains(searchText.toLowerCase()) ||
           element.station.toLowerCase().contains(searchText.toLowerCase()) ||
@@ -144,7 +136,7 @@ class SearchBarController extends ChangeNotifier {
                   )) ||
           (element.jobCareerList != null &&
               element.jobCareerList!
-                  .map((e) => ReplaceProfileData.replaceRole(e.role))
+                  .map((e) => replaceProfileData.replaceRole(e.role))
                   .join(',')
                   .toLowerCase()
                   .contains(

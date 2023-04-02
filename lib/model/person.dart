@@ -20,13 +20,13 @@ class Person {
   late String ruby;
 
   /// 得意言語
-  late List<String> favoriteSkill;
+  late List<String>? favoriteSkill;
 
   /// イニシャル
   late String initial;
 
   /// 性別
-  late int sex;
+  late String sex;
 
   /// 誕生日
   late DateTime birthDay;
@@ -35,10 +35,10 @@ class Person {
   late int age;
 
   /// 契約形態
-  late int contractType;
+  late String? contractType;
 
   /// 概要・自己PR
-  late String description;
+  late String? description;
 
   /// 駅
   late String station;
@@ -47,7 +47,7 @@ class Person {
   late String image;
 
   /// 経験年数
-  late int experience;
+  late int? experience;
 
   /// 最終更新時刻
   late DateTime updateDate;
@@ -76,16 +76,16 @@ class Person {
     this.branchOffice,
     required this.name,
     required this.ruby,
-    required this.favoriteSkill,
+    this.favoriteSkill,
     required this.initial,
     required this.sex,
     required this.birthDay,
     required this.age,
-    required this.contractType,
-    required this.description,
+    this.contractType,
+    this.description,
     required this.station,
     required this.image,
-    required this.experience,
+    this.experience,
     required this.updateDate,
     this.technicalOSList,
     this.technicalSkillList,

@@ -20,6 +20,7 @@ const PdfColor lightGreen = PdfColor.fromInt(0xffcdf1e7);
 class PdfCreator {
   static Future<pw.Document> create(
       Person person, bool showName, bool showContractType) async {
+    ReplaceProfileData replaceProfileData = ReplaceProfileData();
     // Googleフォントを取得して埋め込むことも可能
     final pw.Font regular = await PdfGoogleFonts.mPLUS1pRegular();
     final pw.Font bold = await PdfGoogleFonts.mPLUS1pBold();
@@ -35,7 +36,7 @@ class PdfCreator {
     late List<String> basicTableBody = [
       showName ? person.name : person.initial,
       person.age.toString(),
-      ReplaceProfileData.replaceSex(person.sex),
+      person.sex,
       person.station
     ];
 
@@ -49,8 +50,7 @@ class PdfCreator {
 
     if (showContractType) {
       basicTableHeader.add('弊社契約形態');
-      basicTableBody
-          .add(ReplaceProfileData.replaceContractType(person.contractType));
+      basicTableBody.add(person.contractType!);
     }
 
     late List<List<String>> technicalTableBody = [];
@@ -74,7 +74,7 @@ class PdfCreator {
             person.jobCareerList![i].phase.toString());
 
         technicalTableBodyRecord
-            .add(ReplaceProfileData.replaceRole(person.jobCareerList![i].role));
+            .add(replaceProfileData.replaceRole(person.jobCareerList![i].role));
 
         late String technicals = "";
 
@@ -211,7 +211,7 @@ class PdfCreator {
                               border: pw.Border.all(),
                             ),
                             padding: const pw.EdgeInsets.all(8),
-                            child: pw.Text(person.description,
+                            child: pw.Text(person.description!,
                                 maxLines: 20,
                                 textAlign: TextAlign.left,
                                 style: const pw.TextStyle(fontSize: 10)))

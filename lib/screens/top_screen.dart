@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:resume_app/firebase_options.dart';
+import 'package:resume_app/utils/use_shared_preferences.dart';
 import '../model/person.dart';
 import '../provider/person_provider.dart';
 import '../services/firebaseService.dart';
@@ -62,7 +64,9 @@ class TopScreen extends ConsumerWidget {
 
 Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  final GoogleSignInAccount? googleUser = await GoogleSignIn(
+          clientId: DefaultFirebaseOptions.currentPlatform.iosClientId)
+      .signIn();
 
   // Obtain the auth details from the request
   final GoogleSignInAuthentication? googleAuth =
@@ -83,8 +87,11 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   // ログインしたユーザー情報を退避
   ref.read(GoogleUserInfoProvider.notifier).state = _googleUser;
 
-  // Person loginUserInfo = await FirebaseService.fetchConvertPerson();
-  // ref.read(personProvider.notifier).state = loginUserInfo;
+  // マスターデータ取得
+  final masterData = await FirebaseService.fetchMasterData();
+  final encodeData = UseSharedPreferences.encodeMasterMap(masterData);
+  // UseSharedPreferencesに保存
+  await UseSharedPreferences.saveUserDefaults('master', encodeData.toString());
 
   // loginしているユーザー情報取得
   final loginUserData = await FirebaseService.fetchUserData(googleUser.id);
@@ -92,8 +99,6 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   ref.read(userStateProvider.notifier).state = loginUserData.data();
 
   final userstate = ref.read(userStateProvider);
-
-  final masterData = ref.read(masterDataProvider);
   // Once signed in, return the UserCredential
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }

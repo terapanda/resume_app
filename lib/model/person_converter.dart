@@ -14,10 +14,6 @@ import 'package:resume_app/utils/replace_technical.dart';
 class PersonConverter {
   static late DateTime experienceDateTime = DateTime.now();
 
-  final masterDataProvider = FutureProvider((ref) async {
-    return await FirebaseService.fetchMasterData();
-  });
-
   static Future<Person> convert(
     dynamic doc,
   ) async {
@@ -28,8 +24,6 @@ class PersonConverter {
     }
     // 勤続年数取得
     await fetchExperienceDateTime(doc.id);
-    // マスターデータ取得
-    await FirebaseService.fetchMasterData();
 
     // Person情報取得
     Person person = Person(
@@ -37,15 +31,10 @@ class PersonConverter {
       department: doc.data()['department'] as String,
       name: "${doc.data()['nameLast']}　${doc.data()['nameFirst']}",
       ruby: "${doc.data()['rubyLast']}　${doc.data()['rubyFirst']}",
-      favoriteSkill: (doc.data()['favoriteSkill'] as List)
-          .map((e) => e as String)
-          .toList(),
       initial: doc.data()['initial'] as String,
-      sex: doc.data()['sex'] as int,
+      sex: doc.data()['sex'] as String,
       birthDay: (doc.data()['birthDay']).toDate(),
-      age: AgeCalculator.age((doc.data()['birthDay']).toDate()).years,
-      contractType: doc.data()['contractType'] as int,
-      description: doc.data()['description'] as String,
+      age: doc.data()['age'] as int,
       station: doc.data()['station'] as String,
       image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
       updateDate: (doc.data()['updateDate']).toDate(),
@@ -53,21 +42,36 @@ class PersonConverter {
       technicalOSList: null,
       technicalSkillList: null,
       technicalDBList: null,
-      experience: AgeCalculator.age(experienceDateTime).years, // 勤続年数追加
       authority: doc.data()['authority'] as int,
       isProgrammer: doc.data()['isProgrammer'],
     );
+
+    if (doc.data()['favoriteSkill'] != null) {
+      person.favoriteSkill = (doc.data()['favoriteSkill'] as List)
+          .map((e) => e as String)
+          .toList();
+    }
+
+    if (doc.data()['description'] != null) {
+      person.description = doc.data()['description'] as String;
+    }
+
+    if (doc.data()['contractType'] != null) {
+      person.contractType = doc.data()['contractType'] as String;
+    }
 
     if (doc.data()['branchOffice'] != null) {
       person.branchOffice = doc.data()['branchOffice'];
     }
 
+    if (doc.data()['experience'] != null) {
+      person.experience = doc.data()['experience'] as int; // 勤続年数追加
+    }
+
     person.technicalSkillList =
         await fetchTotalTechnicalSkillList(doc.id); // 言語経歴追加
-
-    // person.technicalSkillList = getAddingUpTechnicalSkillList(person); // 言語経歴追加
-    // person.technicalOSList = getAddingUpTechnicalOSList(person); // OS経歴追加
-    // person.technicalDBList = getAddingUpTechnicalDBList(person); // DB経歴追加
+    person.technicalDBList = await fetchTotalTechnicalDBList(doc.id); // DB経歴追加
+    person.technicalOSList = await fetchTotalTechnicalOSList(doc.id); // OS経歴追加
     return person;
   }
 
@@ -76,7 +80,7 @@ class PersonConverter {
       String userId) async {
     List<TechnicalSkill> totalTechnicalSkillList = [];
     await FirebaseFirestore.instance
-        .collection('/users/$userId/totalTechnicalSkill')
+        .collection('/search/$userId/totalTechnicalSkill')
         .get()
         .then((event) async {
       for (var doc in event.docs) {
@@ -91,6 +95,50 @@ class PersonConverter {
     totalTechnicalSkillList.sort((a, b) => b.month.compareTo(a.month));
 
     return totalTechnicalSkillList;
+  }
+
+  /// totalTechnicalDBList取得
+  static Future<List<TechnicalDB>> fetchTotalTechnicalDBList(
+      String userId) async {
+    List<TechnicalDB> totalTechnicalDBList = [];
+    await FirebaseFirestore.instance
+        .collection('/search/$userId/totalTechnicalDB')
+        .get()
+        .then((event) async {
+      for (var doc in event.docs) {
+        TechnicalDB technicalDB = TechnicalDB(
+            dbId: doc.id,
+            dbName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
+            month: doc.data()['month'] as int);
+        totalTechnicalDBList.add(technicalDB);
+      }
+    });
+    // ソート
+    totalTechnicalDBList.sort((a, b) => b.month.compareTo(a.month));
+
+    return totalTechnicalDBList;
+  }
+
+  /// totalTechnicalDBList取得
+  static Future<List<TechnicalOS>> fetchTotalTechnicalOSList(
+      String userId) async {
+    List<TechnicalOS> totalTechnicalOSList = [];
+    await FirebaseFirestore.instance
+        .collection('/search/$userId/totalTechnicalOS')
+        .get()
+        .then((event) async {
+      for (var doc in event.docs) {
+        TechnicalOS technicalOS = TechnicalOS(
+            osId: doc.id,
+            osName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
+            month: doc.data()['month'] as int);
+        totalTechnicalOSList.add(technicalOS);
+      }
+    });
+    // ソート
+    totalTechnicalOSList.sort((a, b) => b.month.compareTo(a.month));
+
+    return totalTechnicalOSList;
   }
 
   /// 勤続年数取得

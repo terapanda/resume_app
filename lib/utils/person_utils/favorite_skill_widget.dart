@@ -24,19 +24,22 @@ class FavoriteSkillWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
-                child: Wrap(
-                  children: personItem.favoriteSkill
-                      .map((favoriteSkillItem) => Container(
-                          margin: const EdgeInsets.only(bottom: 8, right: 16),
-                          padding: const EdgeInsets.only(
-                              top: 4, bottom: 4, left: 8, right: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: HexColor()),
-                            borderRadius: BorderRadius.circular(45),
-                          ),
-                          child: Text(favoriteSkillItem)))
-                      .toList(),
-                ),
+                child: personItem.favoriteSkill != null
+                    ? Wrap(
+                        children: personItem.favoriteSkill!
+                            .map((favoriteSkillItem) => Container(
+                                margin:
+                                    const EdgeInsets.only(bottom: 8, right: 16),
+                                padding: const EdgeInsets.only(
+                                    top: 4, bottom: 4, left: 8, right: 8),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: HexColor()),
+                                  borderRadius: BorderRadius.circular(45),
+                                ),
+                                child: Text(favoriteSkillItem)))
+                            .toList(),
+                      )
+                    : SizedBox(),
               ),
             ],
           ),
@@ -69,20 +72,22 @@ class FavoriteSkillWidget {
                           style: TextStyle(fontSize: 12, color: HexColor()),
                         ),
                       ),
-                      Wrap(
-                        children: personItem.favoriteSkill
-                            .map((favoriteSkillItem) => Container(
-                                margin:
-                                    const EdgeInsets.only(bottom: 4, right: 16),
-                                padding: const EdgeInsets.only(
-                                    top: 4, bottom: 4, left: 8, right: 8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: HexColor()),
-                                  borderRadius: BorderRadius.circular(45),
-                                ),
-                                child: Text(favoriteSkillItem)))
-                            .toList(),
-                      ),
+                      personItem.favoriteSkill != null
+                          ? Wrap(
+                              children: personItem.favoriteSkill!
+                                  .map((favoriteSkillItem) => Container(
+                                      margin: const EdgeInsets.only(
+                                          bottom: 4, right: 16),
+                                      padding: const EdgeInsets.only(
+                                          top: 4, bottom: 4, left: 8, right: 8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: HexColor()),
+                                        borderRadius: BorderRadius.circular(45),
+                                      ),
+                                      child: Text(favoriteSkillItem)))
+                                  .toList(),
+                            )
+                          : SizedBox(),
                     ]),
               ),
             )),

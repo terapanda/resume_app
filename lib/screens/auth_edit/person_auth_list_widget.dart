@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:resume_app/controller/search_bar_controller.dart';
 import 'package:resume_app/provider/user_state.dart';
 import 'package:resume_app/screens/auth_edit/person_auth_widget.dart';
+import 'package:resume_app/utils/use_shared_preferences.dart';
 
 class PersonAuthListWidget extends ConsumerWidget {
   final SearchBarController searchBarController;
@@ -14,19 +15,7 @@ class PersonAuthListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final masterData = ref.watch(masterDataProvider);
-    var adminKey = masterData.value!["authority"]?.keys.firstWhere(
-        (key) => masterData.value!["authority"]?[key] == "管理者",
-        orElse: () => 3);
-    var uesrKey = masterData.value!["authority"]?.keys.firstWhere(
-        (key) => masterData.value!["authority"]?[key] == "ユーザ",
-        orElse: () => 3);
-    var fullTimeEmployeeKey = masterData.value!["contractForm"]?.keys
-        .firstWhere((key) => masterData.value!["contractForm"]?[key] == "正社員",
-            orElse: () => 3);
-    var contractEmployeeKey = masterData.value!["contractForm"]?.keys
-        .firstWhere((key) => masterData.value!["contractForm"]?[key] == "契約社員",
-            orElse: () => 3);
+    final masterData = UseSharedPreferences.getUserDefaults('master');
     final itemList = (searchBarController.isSearching &&
             searchBarController.searchedText.isNotEmpty)
         ? searchBarController.searchedItemList
@@ -41,12 +30,7 @@ class PersonAuthListWidget extends ConsumerWidget {
           : ListView.builder(
               itemCount: itemList.length,
               itemBuilder: (context, index) {
-                return PersonAuthWidget(
-                    person: itemList[index],
-                    adminKey: adminKey,
-                    uesrKey: uesrKey,
-                    fullTimeEmployeeKey: fullTimeEmployeeKey,
-                    contractEmployeeKey: contractEmployeeKey);
+                return PersonAuthWidget(person: itemList[index]);
               },
             ),
     );

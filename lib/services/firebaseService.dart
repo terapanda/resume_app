@@ -8,14 +8,8 @@ import '../model/person.dart';
 import '../model/person_converter.dart';
 
 class FirebaseService {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  // FirebaseFirestore _database = FirebaseFirestore.instance;
-
-  // FirebaseService();
-
   // personデータに整形したデータを取得
   static Future fetchConvertPerson({userId}) async {
-    print("fetchperson");
     var person =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
     if (!person.exists) {
@@ -72,7 +66,7 @@ class FirebaseService {
   }
 
   // personデータに整形したデータを取得
-  static Future fetchMasterData() async {
+  static Future<Map<String, Map<dynamic, String>>> fetchMasterData() async {
     late Map<String, Map<dynamic, String>> masterMap = {};
     print("fetchMasterData");
     final departmentData = await FirebaseFirestore.instance
@@ -124,7 +118,6 @@ class FirebaseService {
     });
 
     masterMap['developLanguage'] = replaceMap;
-    print(masterMap);
 
     return masterMap;
   }
