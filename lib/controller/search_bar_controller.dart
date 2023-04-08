@@ -79,7 +79,7 @@ class SearchBarController extends ChangeNotifier {
   }
 
   void searchOperation(String searchText, String selectedSortItem) {
-    ReplaceProfileData replaceProfileData = ReplaceProfileData();
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     _searchedText = searchText;
 
     searchedItemList.clear();
@@ -112,7 +112,7 @@ class SearchBarController extends ChangeNotifier {
           element.experience.toString().contains(searchText.toLowerCase()) ||
           (element.technicalOSList != null &&
               element.technicalOSList!
-                  .map((e) => ReplaceTechnical.replaceTechnicalSkill(e.osId))
+                  .map((e) => replaceTechnical.replaceTechnicalSkill(e.osId))
                   .join(',')
                   .toLowerCase()
                   .contains(
@@ -120,7 +120,7 @@ class SearchBarController extends ChangeNotifier {
                   )) ||
           (element.technicalSkillList != null &&
               element.technicalSkillList!
-                  .map((e) => ReplaceTechnical.replaceTechnicalSkill(e.skillId))
+                  .map((e) => replaceTechnical.replaceTechnicalSkill(e.skillId))
                   .join(',')
                   .toLowerCase()
                   .contains(
@@ -128,7 +128,7 @@ class SearchBarController extends ChangeNotifier {
                   )) ||
           (element.technicalDBList != null &&
               element.technicalDBList!
-                  .map((e) => {ReplaceTechnical.replaceTechnicalSkill(e.dbId)})
+                  .map((e) => {replaceTechnical.replaceTechnicalSkill(e.dbId)})
                   .join(',')
                   .toLowerCase()
                   .contains(
@@ -136,7 +136,7 @@ class SearchBarController extends ChangeNotifier {
                   )) ||
           (element.jobCareerList != null &&
               element.jobCareerList!
-                  .map((e) => replaceProfileData.replaceRole(e.role))
+                  .map((e) => e.role)
                   .join(',')
                   .toLowerCase()
                   .contains(

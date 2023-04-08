@@ -16,10 +16,10 @@ class JobCareer {
   late String content;
 
   /// 担当フェーズ
-  late List<int> phase;
+  late List<String> phase;
 
   /// 役割
-  late int role;
+  late String role;
 
   /// OS経歴
   late List<TechnicalOS>? usedTechnicalOSList;

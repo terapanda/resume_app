@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:resume_app/component/popup_card/popup_card.dart';
 import 'package:resume_app/model/job_career.dart';
 import 'package:resume_app/model/person.dart';
+import 'package:resume_app/model/person_converter.dart';
 import 'package:resume_app/model/technical_os.dart';
 import 'package:resume_app/model/technical_skill.dart';
 import 'package:resume_app/services/pdf_creator.dart';
@@ -33,6 +34,8 @@ class MypageScreen extends ConsumerWidget {
 
     final double deviceHeight = MediaQuery.of(context).size.height;
     void _save(Persondata) async {
+      Persondata.jobCareerList =
+          await PersonConverter.fetchJobCareerList(Persondata.id);
       final pdf = await PdfCreator.create(Persondata, false, true);
       final bytes = await pdf.save();
       final fileName = '技術経歴書Y.W.pdf';

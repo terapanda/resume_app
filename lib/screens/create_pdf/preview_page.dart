@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:printing/printing.dart';
 import 'package:resume_app/model/person.dart';
+import 'package:resume_app/model/person_converter.dart';
 import 'package:resume_app/screens/create_pdf/dialog_widget.dart';
 
 import 'package:resume_app/services/save_helper/save_helper.dart';
@@ -75,6 +76,8 @@ class _PreviewPageState extends State<PreviewPage> {
         canDebug: false,
         loadingWidget: const LinearProgressIndicator(),
         build: (format) async {
+          widget.person.jobCareerList =
+              await PersonConverter.fetchJobCareerList(widget.person.id);
           final pdf = await PdfCreator.create(
               widget.person, showName, showContractType);
           return await pdf.save();

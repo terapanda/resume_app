@@ -28,40 +28,44 @@ class PersonConverter {
     // Person情報取得
     Person person = Person(
       id: doc.id,
+      age: doc.data()['age'] as int,
+      authority: doc.data()['authority'] as int,
+      birthDay: (doc.data()['birthDay']).toDate(),
       department: doc.data()['department'] as String,
+      image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
+      isProgrammer: doc.data()['isProgrammer'],
+      initial: doc.data()['initial'] as String,
       name: "${doc.data()['nameLast']}　${doc.data()['nameFirst']}",
       ruby: "${doc.data()['rubyLast']}　${doc.data()['rubyFirst']}",
-      initial: doc.data()['initial'] as String,
       sex: doc.data()['sex'] as String,
-      birthDay: (doc.data()['birthDay']).toDate(),
-      age: doc.data()['age'] as int,
       station: doc.data()['station'] as String,
-      image: await FirebaseStorage.instance.ref(imgURL).getDownloadURL(),
       updateDate: (doc.data()['updateDate']).toDate(),
       // jobCareerList: await fetchJobCareerList(doc.id),
-      technicalOSList: null,
-      technicalSkillList: null,
-      technicalDBList: null,
-      authority: doc.data()['authority'] as int,
-      isProgrammer: doc.data()['isProgrammer'],
+      // technicalOSList: null,
+      // technicalSkillList: null,
+      // technicalDBList: null,
     );
 
-    if (doc.data()['favoriteSkill'] != null) {
-      person.favoriteSkill = (doc.data()['favoriteSkill'] as List)
-          .map((e) => e as String)
-          .toList();
-    }
-
-    if (doc.data()['description'] != null) {
-      person.description = doc.data()['description'] as String;
+    if (doc.data()['branchOffice'] != null) {
+      person.branchOffice = doc.data()['branchOffice'];
     }
 
     if (doc.data()['contractType'] != null) {
       person.contractType = doc.data()['contractType'] as String;
     }
 
-    if (doc.data()['branchOffice'] != null) {
-      person.branchOffice = doc.data()['branchOffice'];
+    if (doc.data()['description'] != null) {
+      person.description = doc.data()['description'] as String;
+    }
+
+    if (doc.data()['experience'] != null) {
+      person.experience = doc.data()['experience'];
+    }
+
+    if (doc.data()['favoriteSkill'] != null) {
+      person.favoriteSkill = (doc.data()['favoriteSkill'] as List)
+          .map((e) => e as String)
+          .toList();
     }
 
     if (doc.data()['experience'] != null) {
@@ -78,6 +82,7 @@ class PersonConverter {
   /// totalTechnicalSkillList取得
   static Future<List<TechnicalSkill>> fetchTotalTechnicalSkillList(
       String userId) async {
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     List<TechnicalSkill> totalTechnicalSkillList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/totalTechnicalSkill')
@@ -86,7 +91,7 @@ class PersonConverter {
       for (var doc in event.docs) {
         TechnicalSkill technicalSkill = TechnicalSkill(
             skillId: doc.id,
-            skillName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
+            skillName: await replaceTechnical.replaceTechnicalSkill(doc.id),
             month: doc.data()['month'] as int);
         totalTechnicalSkillList.add(technicalSkill);
       }
@@ -100,6 +105,7 @@ class PersonConverter {
   /// totalTechnicalDBList取得
   static Future<List<TechnicalDB>> fetchTotalTechnicalDBList(
       String userId) async {
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     List<TechnicalDB> totalTechnicalDBList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/totalTechnicalDB')
@@ -108,7 +114,7 @@ class PersonConverter {
       for (var doc in event.docs) {
         TechnicalDB technicalDB = TechnicalDB(
             dbId: doc.id,
-            dbName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
+            dbName: await replaceTechnical.replaceTechnicalSkill(doc.id),
             month: doc.data()['month'] as int);
         totalTechnicalDBList.add(technicalDB);
       }
@@ -122,6 +128,7 @@ class PersonConverter {
   /// totalTechnicalDBList取得
   static Future<List<TechnicalOS>> fetchTotalTechnicalOSList(
       String userId) async {
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     List<TechnicalOS> totalTechnicalOSList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/totalTechnicalOS')
@@ -130,7 +137,7 @@ class PersonConverter {
       for (var doc in event.docs) {
         TechnicalOS technicalOS = TechnicalOS(
             osId: doc.id,
-            osName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
+            osName: await replaceTechnical.replaceTechnicalSkill(doc.id),
             month: doc.data()['month'] as int);
         totalTechnicalOSList.add(technicalOS);
       }
@@ -161,17 +168,9 @@ class PersonConverter {
   static Future<List<JobCareer>> fetchJobCareerList(String userId) async {
     List<JobCareer> jobCareerList = [];
     await FirebaseFirestore.instance
-        .collection('/users/$userId/jobCareer')
+        .collection('/search/$userId/jobCareer')
         .get()
         .then((event) async {
-      // 勤続年数計算のための値を取得（最初の案件の開始日）
-      if (event.docs.isNotEmpty) {
-        experienceDateTime =
-            (event.docs[0].data()['careerPeriodFrom']).toDate() as DateTime;
-      } else {
-        experienceDateTime = DateTime.now();
-      }
-
       for (var doc in event.docs) {
         JobCareer jobCareer = JobCareer(
           careerId: int.parse(doc.id),
@@ -179,8 +178,8 @@ class PersonConverter {
               (doc.data()['careerPeriodFrom']).toDate() as DateTime,
           careerPeriodTo: (doc.data()['careerPeriodTo']).toDate() as DateTime,
           content: doc.data()['content'] as String,
-          phase: [1, 2, 3], // doc.data()['phase'] as String,
-          role: doc.data()['role'] as int,
+          phase: (doc.data()['phase'] as List).map((e) => e as String).toList(),
+          role: doc.data()['role'],
           usedTechnicalDBList:
               await fetchTechnicalDBList(userId, int.parse(doc.id)),
           usedTechnicalOSList:
@@ -197,18 +196,21 @@ class PersonConverter {
   /// jobCareerに紐づくスキル情報取得
   static Future<List<TechnicalSkill>> fetchTechnicalSkillList(
       String userId, int jobCareerId) async {
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     List<TechnicalSkill> technicalSkillList = [];
     await FirebaseFirestore.instance
-        .collection('/users/$userId/jobCareer/$jobCareerId/technicalSkill')
+        .collection('/search/$userId/jobCareer/$jobCareerId/technicalSkill')
         .get()
         .then((event) async {
-      technicalSkillList = event.docs
-          .map((doc) => TechnicalSkill(
-                skillId: doc.id,
-                skillName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
-                month: doc.data()['month'] as int,
-              ))
-          .toList();
+      technicalSkillList = (event.docs
+              .map((doc) async => TechnicalSkill(
+                    skillId: doc.id,
+                    skillName:
+                        await replaceTechnical.replaceTechnicalSkill(doc.id),
+                    month: doc.data()['month'] as int,
+                  ))
+              .toList())
+          .cast<TechnicalSkill>();
     });
     return technicalSkillList;
   }
@@ -216,18 +218,21 @@ class PersonConverter {
   /// jobCareerに紐づくOS情報取得
   static Future<List<TechnicalOS>> fetchTechnicalOSList(
       String userId, int jobCareerId) async {
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     List<TechnicalOS> technicalOSList = [];
     await FirebaseFirestore.instance
-        .collection('/users/$userId/jobCareer/$jobCareerId/technicalOS')
+        .collection('/search/$userId/jobCareer/$jobCareerId/technicalOS')
         .get()
         .then((event) {
-      technicalOSList = event.docs
-          .map((doc) => TechnicalOS(
-                osId: doc.id,
-                osName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
-                month: doc.data()['month'] as int,
-              ))
-          .toList();
+      technicalOSList = (event.docs
+              .map((doc) async => TechnicalOS(
+                    osId: doc.id,
+                    osName:
+                        await replaceTechnical.replaceTechnicalSkill(doc.id),
+                    month: doc.data()['month'] as int,
+                  ))
+              .toList())
+          .cast<TechnicalOS>();
     });
     return technicalOSList;
   }
@@ -235,18 +240,21 @@ class PersonConverter {
   /// jobCareerに紐づくDB情報取得
   static Future<List<TechnicalDB>> fetchTechnicalDBList(
       String userId, int jobCareerId) async {
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     List<TechnicalDB> technicalDBList = [];
     await FirebaseFirestore.instance
-        .collection('/users/$userId/jobCareer/$jobCareerId/technicalDB')
+        .collection('/search/$userId/jobCareer/$jobCareerId/technicalDB')
         .get()
         .then((event) {
-      technicalDBList = event.docs
-          .map((doc) => TechnicalDB(
-                dbId: doc.id,
-                dbName: ReplaceTechnical.replaceTechnicalSkill(doc.id),
-                month: doc.data()['month'] as int,
-              ))
-          .toList();
+      technicalDBList = (event.docs
+              .map((doc) async => TechnicalDB(
+                    dbId: doc.id,
+                    dbName:
+                        await replaceTechnical.replaceTechnicalSkill(doc.id),
+                    month: doc.data()['month'] as int,
+                  ))
+              .toList())
+          .cast<TechnicalDB>();
     });
     return technicalDBList;
   }

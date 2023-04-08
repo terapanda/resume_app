@@ -6,6 +6,7 @@ import 'package:resume_app/utils/replace_technical.dart';
 
 // テクニカルスキル
 class TechnicalSkillWidget {
+  ReplaceTechnical replaceTechnical = ReplaceTechnical();
   Widget get(Person personItem) {
     if (personItem.technicalSkillList == null) {
       return const Padding(
@@ -31,7 +32,7 @@ class TechnicalSkillWidget {
                     child: Row(
                       // Property
                       children: [
-                        ReplaceTechnical.getSkillIcon(
+                        replaceTechnical.getSkillIcon(
                             personItem.technicalSkillList![index].skillId,
                             30,
                             HexColor()),

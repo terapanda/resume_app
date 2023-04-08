@@ -6,6 +6,7 @@ import 'package:resume_app/utils/replace_technical.dart';
 
 // テクニカル
 class TechnicalSkillWidget {
+  ReplaceTechnical replaceTechnical = ReplaceTechnical();
   Widget get(Person personItem, String type) {
     if (type == 'os') {
       if (personItem.technicalOSList == null ||
@@ -32,7 +33,7 @@ class TechnicalSkillWidget {
                         child: Row(
                           // Property
                           children: [
-                            ReplaceTechnical.getSkillIcon(
+                            replaceTechnical.getSkillIcon(
                                 personItem.technicalOSList![index].osId,
                                 30,
                                 HexColor()),
@@ -86,7 +87,7 @@ class TechnicalSkillWidget {
                         child: Row(
                           // Property
                           children: [
-                            ReplaceTechnical.getSkillIcon(
+                            replaceTechnical.getSkillIcon(
                                 personItem.technicalSkillList![index].skillId,
                                 30,
                                 HexColor()),
@@ -141,7 +142,7 @@ class TechnicalSkillWidget {
                         child: Row(
                           // Property
                           children: [
-                            ReplaceTechnical.getSkillIcon(
+                            replaceTechnical.getSkillIcon(
                                 personItem.technicalDBList![index].dbId,
                                 30,
                                 HexColor()),

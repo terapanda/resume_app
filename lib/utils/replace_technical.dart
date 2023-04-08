@@ -1,64 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/component/icons/my_flutter_app_icons.dart';
+import 'package:resume_app/utils/use_shared_preferences.dart';
 
 class ReplaceTechnical {
-  static String replaceTechnicalSkill(String skillId) {
-    switch (skillId) {
-      case 'react':
-        return "React";
-      case 'vue':
-        return "Vue";
-      case 'angular':
-        return "Angular";
-      case 'javascript':
-        return "Javascript";
-      case 'type_script':
-        return "Type script";
-      case 'node':
-        return "Node";
-      case 'java':
-        return "Java";
-      case 'php':
-        return "Php";
-      case 'python':
-        return "Python";
-      case 'c':
-        return "C";
-      case 'rust':
-        return "Rust";
-      case 'android':
-        return "Android";
-      case 'apple':
-        return "Apple";
-      case 'swift':
-        return "Swift";
-      case 'unity':
-        return "Unity";
-      case 'f':
-        return "F";
-      case 'flutter':
-        return "Flutter";
-      case 'c_sharp':
-        return "C_sharp";
-      case 'c_puls':
-        return "C_puls";
-      case 'ruby':
-        return "Ruby";
-      case 'vba':
-        return "VBa";
-      case 'oracle':
-        return "Oracle";
-      case 'tomcat':
-        return "Tomcat";
-      case 'graphql':
-        return "Graphql";
-      default:
-        return skillId;
-    }
+  Future<String> replaceTechnicalSkill(String skillId) async {
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
+    return encodeData["developLanguage"]?.keys.firstWhere(
+        (key) => encodeData["developLanguage"]?[key] == skillId,
+        orElse: () => skillId) as String;
   }
 
-  static Icon getSkillIcon(String language, double size, Color color) {
+  Icon getSkillIcon(String language, double size, Color color) {
     switch (language) {
       case 'react':
         return Icon(FontAwesomeIcons.react, size: size, color: color);

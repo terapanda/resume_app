@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:resume_app/component/popup_card/popup_card.dart';
 import 'package:resume_app/model/person.dart';
+import 'package:resume_app/model/person_converter.dart';
 import 'package:resume_app/screens/create_pdf/preview_page.dart';
 import 'package:resume_app/services/firebaseService.dart';
 import 'package:resume_app/services/pdf_creator.dart';
@@ -187,6 +188,8 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
     final double deviceHeight = MediaQuery.of(context).size.height;
 
     void _save() async {
+      widget.person.jobCareerList =
+          await PersonConverter.fetchJobCareerList(widget.person.id);
       final pdf = await PdfCreator.create(widget.person, false, true);
       final bytes = await pdf.save();
       final fileName = '技術経歴書${widget.person.initial}.pdf';
@@ -292,6 +295,8 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
     const itemValue = 'download';
 
     void _save() async {
+      widget.person.jobCareerList =
+          await PersonConverter.fetchJobCareerList(widget.person.id);
       final pdf = await PdfCreator.create(widget.person, false, true);
       final bytes = await pdf.save();
       final fileName = '技術経歴書($initial).pdf';

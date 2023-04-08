@@ -20,7 +20,7 @@ const PdfColor lightGreen = PdfColor.fromInt(0xffcdf1e7);
 class PdfCreator {
   static Future<pw.Document> create(
       Person person, bool showName, bool showContractType) async {
-    ReplaceProfileData replaceProfileData = ReplaceProfileData();
+    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     // Googleフォントを取得して埋め込むことも可能
     final pw.Font regular = await PdfGoogleFonts.mPLUS1pRegular();
     final pw.Font bold = await PdfGoogleFonts.mPLUS1pBold();
@@ -71,10 +71,12 @@ class PdfCreator {
         technicalTableBodyRecord.add('【システム名】\n' +
             person.jobCareerList![i].content +
             '\n【担当フェーズ】\n' +
-            person.jobCareerList![i].phase.toString());
+            person.jobCareerList![i].phase
+                .toString()
+                .replaceAll('[', "")
+                .replaceAll(']', ""));
 
-        technicalTableBodyRecord
-            .add(replaceProfileData.replaceRole(person.jobCareerList![i].role));
+        technicalTableBodyRecord.add(person.jobCareerList![i].role);
 
         late String technicals = "";
 
@@ -222,38 +224,107 @@ class PdfCreator {
                   padding: const pw.EdgeInsets.only(left: 10),
                   child: pw.SizedBox(
                       width: 200,
-                      child: pw.Table.fromTextArray(
-                        border: null,
-                        headers: [
-                          person.technicalSkillList != null ? '主要な言語' : ""
-                        ],
-                        data: List<List<dynamic>>.generate(
-                          person.technicalSkillList != null
-                              ? person.technicalSkillList!.length
-                              : 0,
-                          (index) => <dynamic>[
-                            person.technicalSkillList![index].skillName,
-                            CalcMonth.calcMonth(
-                                person.technicalSkillList![index].month),
+                      child: pw.Column(children: <pw.Widget>[
+                        pw.Table.fromTextArray(
+                          border: null,
+                          headers: [
+                            person.technicalSkillList!.length > 0 ? '主要言語' : ""
                           ],
-                        ),
-                        cellStyle: const pw.TextStyle(
-                          fontSize: 10,
-                        ),
-                        headerStyle: pw.TextStyle(
-                          fontSize: 16,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
-                        rowDecoration: const pw.BoxDecoration(
-                          border: pw.Border(
-                            top: pw.BorderSide(
-                              width: .5,
+                          data: List<List<dynamic>>.generate(
+                            person.technicalSkillList != null
+                                ? person.technicalSkillList!.length
+                                : 0,
+                            (index) => <dynamic>[
+                              replaceTechnical.replaceTechnicalSkill(
+                                  person.technicalSkillList![index].skillName),
+                              CalcMonth.calcMonth(
+                                  person.technicalSkillList![index].month),
+                            ],
+                          ),
+                          cellStyle: const pw.TextStyle(
+                            fontSize: 10,
+                          ),
+                          headerStyle: pw.TextStyle(
+                            fontSize: 16,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
+                          rowDecoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                              top: pw.BorderSide(
+                                width: .5,
+                              ),
                             ),
                           ),
+                          cellAlignment: pw.Alignment.centerRight,
+                          cellAlignments: {0: pw.Alignment.centerLeft},
                         ),
-                        cellAlignment: pw.Alignment.centerRight,
-                        cellAlignments: {0: pw.Alignment.centerLeft},
-                      ))),
+                        pw.Table.fromTextArray(
+                          border: null,
+                          headers: [
+                            person.technicalOSList!.length > 0 ? '主要OS' : ""
+                          ],
+                          data: List<List<dynamic>>.generate(
+                            person.technicalOSList != null
+                                ? person.technicalOSList!.length
+                                : 0,
+                            (index) => <dynamic>[
+                              replaceTechnical.replaceTechnicalSkill(
+                                  person.technicalOSList![index].osName),
+                              CalcMonth.calcMonth(
+                                  person.technicalOSList![index].month),
+                            ],
+                          ),
+                          cellStyle: const pw.TextStyle(
+                            fontSize: 10,
+                          ),
+                          headerStyle: pw.TextStyle(
+                            fontSize: 16,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
+                          rowDecoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                              top: pw.BorderSide(
+                                width: .5,
+                              ),
+                            ),
+                          ),
+                          cellAlignment: pw.Alignment.centerRight,
+                          cellAlignments: {0: pw.Alignment.centerLeft},
+                        ),
+                        pw.Table.fromTextArray(
+                          border: null,
+                          headers: [
+                            person.technicalDBList!.length > 0 ? '主要DB' : ""
+                          ],
+                          data: List<List<dynamic>>.generate(
+                            person.technicalDBList != null
+                                ? person.technicalDBList!.length
+                                : 0,
+                            (index) => <dynamic>[
+                              replaceTechnical.replaceTechnicalSkill(
+                                  person.technicalDBList![index].dbName),
+                              CalcMonth.calcMonth(
+                                  person.technicalDBList![index].month),
+                            ],
+                          ),
+                          cellStyle: const pw.TextStyle(
+                            fontSize: 10,
+                          ),
+                          headerStyle: pw.TextStyle(
+                            fontSize: 16,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
+                          rowDecoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                              top: pw.BorderSide(
+                                width: .5,
+                              ),
+                            ),
+                          ),
+                          cellAlignment: pw.Alignment.centerRight,
+                          cellAlignments: {0: pw.Alignment.centerLeft},
+                        )
+                      ]))),
             ],
           ),
           pw.SizedBox(height: 20),
