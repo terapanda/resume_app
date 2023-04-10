@@ -31,12 +31,13 @@ class MypageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final personData = ref.watch(personStreamProvider);
+    PdfCreator pdfCreator = PdfCreator();
 
     final double deviceHeight = MediaQuery.of(context).size.height;
     void _save(Persondata) async {
       Persondata.jobCareerList =
           await PersonConverter.fetchJobCareerList(Persondata.id);
-      final pdf = await PdfCreator.create(Persondata, false, true);
+      final pdf = await pdfCreator.create(Persondata, false, true);
       final bytes = await pdf.save();
       final fileName = '技術経歴書Y.W.pdf';
       await SaveHelper.save(

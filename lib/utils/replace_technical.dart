@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:resume_app/component/icons/my_flutter_app_icons.dart';
-import 'package:resume_app/utils/use_shared_preferences.dart';
 
 class ReplaceTechnical {
-  Future<String> replaceTechnicalSkill(String skillId) async {
-    final masterData = await UseSharedPreferences.getUserDefaults('master');
-    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
-    return encodeData["developLanguage"]?.keys.firstWhere(
-        (key) => encodeData["developLanguage"]?[key] == skillId,
-        orElse: () => skillId) as String;
+  Future<String> replaceTechnicalSkill(
+      String skillId, Map<String, Map<dynamic, String>> masterData) async {
+    final entrySkill = (masterData["developLanguage"])?.entries.firstWhere(
+        (entry) => entry.key == skillId,
+        orElse: () => MapEntry(skillId, skillId));
+
+    if (entrySkill == null) {
+      return skillId;
+    }
+    return entrySkill.value;
   }
 
   Icon getSkillIcon(String language, double size, Color color) {

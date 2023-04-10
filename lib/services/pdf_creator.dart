@@ -1,14 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/utils/calc_years_of_skill.dart';
-import 'package:resume_app/utils/replace_profile_data.dart';
-import 'package:resume_app/utils/replace_technical.dart';
-import 'package:resume_app/utils/age_calculator.dart';
 
 const PdfColor green = PdfColor.fromInt(0xff9ce5d0);
 const PdfColor lightGreen = PdfColor.fromInt(0xffcdf1e7);
@@ -18,9 +16,8 @@ const PdfColor lightGreen = PdfColor.fromInt(0xffcdf1e7);
 // );
 
 class PdfCreator {
-  static Future<pw.Document> create(
+  Future<pw.Document> create(
       Person person, bool showName, bool showContractType) async {
-    ReplaceTechnical replaceTechnical = ReplaceTechnical();
     // Googleフォントを取得して埋め込むことも可能
     final pw.Font regular = await PdfGoogleFonts.mPLUS1pRegular();
     final pw.Font bold = await PdfGoogleFonts.mPLUS1pBold();
@@ -62,19 +59,11 @@ class PdfCreator {
           (i + 1).toString(),
         );
 
-        technicalTableBodyRecord.add(DateFormat('yyyy/MM/dd')
-                .format(person.jobCareerList![i].careerPeriodFrom) +
-            '\n~\n' +
-            DateFormat('yyyy/MM/dd')
-                .format(person.jobCareerList![i].careerPeriodTo));
+        technicalTableBodyRecord.add(
+            '${DateFormat('yyyy/MM/dd').format(person.jobCareerList![i].careerPeriodFrom)}\n~\n${DateFormat('yyyy/MM/dd').format(person.jobCareerList![i].careerPeriodTo)}');
 
-        technicalTableBodyRecord.add('【システム名】\n' +
-            person.jobCareerList![i].content +
-            '\n【担当フェーズ】\n' +
-            person.jobCareerList![i].phase
-                .toString()
-                .replaceAll('[', "")
-                .replaceAll(']', ""));
+        technicalTableBodyRecord.add(
+            '【システム名】\n${person.jobCareerList![i].content}\n【担当フェーズ】\n${person.jobCareerList![i].phase.toString().replaceAll('[', "").replaceAll(']', "")}');
 
         technicalTableBodyRecord.add(person.jobCareerList![i].role);
 
@@ -123,7 +112,6 @@ class PdfCreator {
         technicalTableBody.add(technicalTableBodyRecord);
       }
     }
-    ;
 
     // 本文
     final content = pw.MultiPage(
@@ -201,130 +189,135 @@ class PdfCreator {
                 child: pw.Padding(
                     padding: const pw.EdgeInsets.only(top: 4),
                     child: pw.Container(
-                      margin: pw.EdgeInsets.only(left: 10),
+                      margin: const pw.EdgeInsets.only(left: 10),
                       alignment: pw.Alignment.topLeft,
                       child: pw.Column(children: <pw.Widget>[
-                        pw.Text("概要（得意分野、自己PRなど）",
-                            textAlign: TextAlign.left,
-                            style: pw.TextStyle(
-                                fontSize: 16, fontWeight: pw.FontWeight.bold)),
                         pw.Container(
+                            width: double.infinity,
+                            child: pw.Text("概要（得意分野、自己PRなど）",
+                                textAlign: pw.TextAlign.left,
+                                style: pw.TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: pw.FontWeight.bold))),
+                        pw.Container(
+                            width: double.infinity,
                             decoration: pw.BoxDecoration(
                               border: pw.Border.all(),
                             ),
                             padding: const pw.EdgeInsets.all(8),
                             child: pw.Text(person.description!,
                                 maxLines: 20,
-                                textAlign: TextAlign.left,
+                                textAlign: pw.TextAlign.left,
                                 style: const pw.TextStyle(fontSize: 10)))
                       ]),
                     )),
               ),
-              pw.Padding(
-                  padding: const pw.EdgeInsets.only(left: 10),
-                  child: pw.SizedBox(
-                      width: 200,
-                      child: pw.Column(children: <pw.Widget>[
-                        pw.Table.fromTextArray(
-                          border: null,
-                          headers: [
-                            person.technicalSkillList!.length > 0 ? '主要言語' : ""
-                          ],
-                          data: List<List<dynamic>>.generate(
-                            person.technicalSkillList != null
-                                ? person.technicalSkillList!.length
-                                : 0,
-                            (index) => <dynamic>[
-                              replaceTechnical.replaceTechnicalSkill(
-                                  person.technicalSkillList![index].skillName),
-                              CalcMonth.calcMonth(
-                                  person.technicalSkillList![index].month),
-                            ],
-                          ),
-                          cellStyle: const pw.TextStyle(
-                            fontSize: 10,
-                          ),
-                          headerStyle: pw.TextStyle(
-                            fontSize: 16,
-                            fontWeight: pw.FontWeight.bold,
-                          ),
-                          rowDecoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                              top: pw.BorderSide(
-                                width: .5,
+              pw.Container(
+                  alignment: pw.Alignment.topCenter,
+                  child: pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 10),
+                      child: pw.SizedBox(
+                          width: 200,
+                          child: pw.Column(children: <pw.Widget>[
+                            pw.Table.fromTextArray(
+                              border: null,
+                              headers: [
+                                person.technicalSkillList!.isNotEmpty
+                                    ? '主要言語'
+                                    : ""
+                              ],
+                              data: List<List<dynamic>>.generate(
+                                person.technicalSkillList != null
+                                    ? person.technicalSkillList!.length
+                                    : 0,
+                                (index) => <dynamic>[
+                                  person.technicalSkillList![index].skillName,
+                                  CalcMonth.calcMonth(
+                                      person.technicalSkillList![index].month),
+                                ],
                               ),
-                            ),
-                          ),
-                          cellAlignment: pw.Alignment.centerRight,
-                          cellAlignments: {0: pw.Alignment.centerLeft},
-                        ),
-                        pw.Table.fromTextArray(
-                          border: null,
-                          headers: [
-                            person.technicalOSList!.length > 0 ? '主要OS' : ""
-                          ],
-                          data: List<List<dynamic>>.generate(
-                            person.technicalOSList != null
-                                ? person.technicalOSList!.length
-                                : 0,
-                            (index) => <dynamic>[
-                              replaceTechnical.replaceTechnicalSkill(
-                                  person.technicalOSList![index].osName),
-                              CalcMonth.calcMonth(
-                                  person.technicalOSList![index].month),
-                            ],
-                          ),
-                          cellStyle: const pw.TextStyle(
-                            fontSize: 10,
-                          ),
-                          headerStyle: pw.TextStyle(
-                            fontSize: 16,
-                            fontWeight: pw.FontWeight.bold,
-                          ),
-                          rowDecoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                              top: pw.BorderSide(
-                                width: .5,
+                              cellStyle: const pw.TextStyle(
+                                fontSize: 10,
                               ),
-                            ),
-                          ),
-                          cellAlignment: pw.Alignment.centerRight,
-                          cellAlignments: {0: pw.Alignment.centerLeft},
-                        ),
-                        pw.Table.fromTextArray(
-                          border: null,
-                          headers: [
-                            person.technicalDBList!.length > 0 ? '主要DB' : ""
-                          ],
-                          data: List<List<dynamic>>.generate(
-                            person.technicalDBList != null
-                                ? person.technicalDBList!.length
-                                : 0,
-                            (index) => <dynamic>[
-                              replaceTechnical.replaceTechnicalSkill(
-                                  person.technicalDBList![index].dbName),
-                              CalcMonth.calcMonth(
-                                  person.technicalDBList![index].month),
-                            ],
-                          ),
-                          cellStyle: const pw.TextStyle(
-                            fontSize: 10,
-                          ),
-                          headerStyle: pw.TextStyle(
-                            fontSize: 16,
-                            fontWeight: pw.FontWeight.bold,
-                          ),
-                          rowDecoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                              top: pw.BorderSide(
-                                width: .5,
+                              headerStyle: pw.TextStyle(
+                                fontSize: 12,
+                                fontWeight: pw.FontWeight.bold,
                               ),
+                              rowDecoration: const pw.BoxDecoration(
+                                border: pw.Border(
+                                  top: pw.BorderSide(
+                                    width: .5,
+                                  ),
+                                ),
+                              ),
+                              cellAlignment: pw.Alignment.centerRight,
+                              cellAlignments: {0: pw.Alignment.centerLeft},
                             ),
-                          ),
-                          cellAlignment: pw.Alignment.centerRight,
-                          cellAlignments: {0: pw.Alignment.centerLeft},
-                        )
-                      ]))),
+                            pw.Table.fromTextArray(
+                              border: null,
+                              headers: [
+                                person.technicalOSList!.isNotEmpty ? '主要OS' : ""
+                              ],
+                              data: List<List<dynamic>>.generate(
+                                person.technicalOSList != null
+                                    ? person.technicalOSList!.length
+                                    : 0,
+                                (index) => <dynamic>[
+                                  person.technicalOSList![index].osName,
+                                  CalcMonth.calcMonth(
+                                      person.technicalOSList![index].month),
+                                ],
+                              ),
+                              cellStyle: const pw.TextStyle(
+                                fontSize: 10,
+                              ),
+                              headerStyle: pw.TextStyle(
+                                fontSize: 12,
+                                fontWeight: pw.FontWeight.bold,
+                              ),
+                              rowDecoration: const pw.BoxDecoration(
+                                border: pw.Border(
+                                  top: pw.BorderSide(
+                                    width: .5,
+                                  ),
+                                ),
+                              ),
+                              cellAlignment: pw.Alignment.centerRight,
+                              cellAlignments: {0: pw.Alignment.centerLeft},
+                            ),
+                            pw.Table.fromTextArray(
+                              border: null,
+                              headers: [
+                                person.technicalDBList!.isNotEmpty ? '主要DB' : ""
+                              ],
+                              data: List<List<dynamic>>.generate(
+                                person.technicalDBList != null
+                                    ? person.technicalDBList!.length
+                                    : 0,
+                                (index) => <dynamic>[
+                                  person.technicalDBList![index].dbName,
+                                  CalcMonth.calcMonth(
+                                      person.technicalDBList![index].month),
+                                ],
+                              ),
+                              cellStyle: const pw.TextStyle(
+                                fontSize: 10,
+                              ),
+                              headerStyle: pw.TextStyle(
+                                fontSize: 12,
+                                fontWeight: pw.FontWeight.bold,
+                              ),
+                              rowDecoration: const pw.BoxDecoration(
+                                border: pw.Border(
+                                  top: pw.BorderSide(
+                                    width: .5,
+                                  ),
+                                ),
+                              ),
+                              cellAlignment: pw.Alignment.centerRight,
+                              cellAlignments: {0: pw.Alignment.centerLeft},
+                            )
+                          ])))),
             ],
           ),
           pw.SizedBox(height: 20),

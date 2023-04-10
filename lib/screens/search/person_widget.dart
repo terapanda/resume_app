@@ -186,11 +186,12 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
 
   Widget _popUpItemBody(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
+    PdfCreator pdfCreator = PdfCreator();
 
     void _save() async {
       widget.person.jobCareerList =
           await PersonConverter.fetchJobCareerList(widget.person.id);
-      final pdf = await PdfCreator.create(widget.person, false, true);
+      final pdf = await pdfCreator.create(widget.person, false, true);
       final bytes = await pdf.save();
       final fileName = '技術経歴書${widget.person.initial}.pdf';
       await SaveHelper.save(
@@ -292,12 +293,13 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
 
   PopupMenuItem<String> makePopupMenuDownloadItem(
       BuildContext context, String initial) {
+    PdfCreator pdfCreator = PdfCreator();
     const itemValue = 'download';
 
     void _save() async {
       widget.person.jobCareerList =
           await PersonConverter.fetchJobCareerList(widget.person.id);
-      final pdf = await PdfCreator.create(widget.person, false, true);
+      final pdf = await pdfCreator.create(widget.person, false, true);
       final bytes = await pdf.save();
       final fileName = '技術経歴書($initial).pdf';
       await SaveHelper.save(

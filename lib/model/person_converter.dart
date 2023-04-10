@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:resume_app/model/job_career.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/model/technical_db.dart';
 import 'package:resume_app/model/technical_os.dart';
 import 'package:resume_app/model/technical_skill.dart';
-import 'package:resume_app/services/firebaseService.dart';
-import 'package:resume_app/utils/age_calculator.dart';
-import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
+
+import '../utils/use_shared_preferences.dart';
 
 class PersonConverter {
   static late DateTime experienceDateTime = DateTime.now();
@@ -40,10 +38,6 @@ class PersonConverter {
       sex: doc.data()['sex'] as String,
       station: doc.data()['station'] as String,
       updateDate: (doc.data()['updateDate']).toDate(),
-      // jobCareerList: await fetchJobCareerList(doc.id),
-      // technicalOSList: null,
-      // technicalSkillList: null,
-      // technicalDBList: null,
     );
 
     if (doc.data()['branchOffice'] != null) {
@@ -83,6 +77,8 @@ class PersonConverter {
   static Future<List<TechnicalSkill>> fetchTotalTechnicalSkillList(
       String userId) async {
     ReplaceTechnical replaceTechnical = ReplaceTechnical();
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
     List<TechnicalSkill> totalTechnicalSkillList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/totalTechnicalSkill')
@@ -91,7 +87,8 @@ class PersonConverter {
       for (var doc in event.docs) {
         TechnicalSkill technicalSkill = TechnicalSkill(
             skillId: doc.id,
-            skillName: await replaceTechnical.replaceTechnicalSkill(doc.id),
+            skillName: await replaceTechnical.replaceTechnicalSkill(
+                doc.id, encodeData),
             month: doc.data()['month'] as int);
         totalTechnicalSkillList.add(technicalSkill);
       }
@@ -106,6 +103,8 @@ class PersonConverter {
   static Future<List<TechnicalDB>> fetchTotalTechnicalDBList(
       String userId) async {
     ReplaceTechnical replaceTechnical = ReplaceTechnical();
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
     List<TechnicalDB> totalTechnicalDBList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/totalTechnicalDB')
@@ -114,7 +113,8 @@ class PersonConverter {
       for (var doc in event.docs) {
         TechnicalDB technicalDB = TechnicalDB(
             dbId: doc.id,
-            dbName: await replaceTechnical.replaceTechnicalSkill(doc.id),
+            dbName: await replaceTechnical.replaceTechnicalSkill(
+                doc.id, encodeData),
             month: doc.data()['month'] as int);
         totalTechnicalDBList.add(technicalDB);
       }
@@ -129,6 +129,8 @@ class PersonConverter {
   static Future<List<TechnicalOS>> fetchTotalTechnicalOSList(
       String userId) async {
     ReplaceTechnical replaceTechnical = ReplaceTechnical();
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
     List<TechnicalOS> totalTechnicalOSList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/totalTechnicalOS')
@@ -137,7 +139,8 @@ class PersonConverter {
       for (var doc in event.docs) {
         TechnicalOS technicalOS = TechnicalOS(
             osId: doc.id,
-            osName: await replaceTechnical.replaceTechnicalSkill(doc.id),
+            osName: await replaceTechnical.replaceTechnicalSkill(
+                doc.id, encodeData),
             month: doc.data()['month'] as int);
         totalTechnicalOSList.add(technicalOS);
       }
@@ -197,20 +200,21 @@ class PersonConverter {
   static Future<List<TechnicalSkill>> fetchTechnicalSkillList(
       String userId, int jobCareerId) async {
     ReplaceTechnical replaceTechnical = ReplaceTechnical();
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
     List<TechnicalSkill> technicalSkillList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/jobCareer/$jobCareerId/technicalSkill')
         .get()
         .then((event) async {
-      technicalSkillList = (event.docs
-              .map((doc) async => TechnicalSkill(
-                    skillId: doc.id,
-                    skillName:
-                        await replaceTechnical.replaceTechnicalSkill(doc.id),
-                    month: doc.data()['month'] as int,
-                  ))
-              .toList())
-          .cast<TechnicalSkill>();
+      for (var i = 0; i < event.docs.length; i++) {
+        technicalSkillList.add(TechnicalSkill(
+          skillId: event.docs[i].id,
+          skillName: await replaceTechnical.replaceTechnicalSkill(
+              event.docs[i].id, encodeData),
+          month: event.docs[i].data()['month'] as int,
+        ));
+      }
     });
     return technicalSkillList;
   }
@@ -219,20 +223,21 @@ class PersonConverter {
   static Future<List<TechnicalOS>> fetchTechnicalOSList(
       String userId, int jobCareerId) async {
     ReplaceTechnical replaceTechnical = ReplaceTechnical();
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
     List<TechnicalOS> technicalOSList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/jobCareer/$jobCareerId/technicalOS')
         .get()
-        .then((event) {
-      technicalOSList = (event.docs
-              .map((doc) async => TechnicalOS(
-                    osId: doc.id,
-                    osName:
-                        await replaceTechnical.replaceTechnicalSkill(doc.id),
-                    month: doc.data()['month'] as int,
-                  ))
-              .toList())
-          .cast<TechnicalOS>();
+        .then((event) async {
+      for (var i = 0; i < event.docs.length; i++) {
+        technicalOSList.add(TechnicalOS(
+          osId: event.docs[i].id,
+          osName: await replaceTechnical.replaceTechnicalSkill(
+              event.docs[i].id, encodeData),
+          month: event.docs[i].data()['month'] as int,
+        ));
+      }
     });
     return technicalOSList;
   }
@@ -241,21 +246,23 @@ class PersonConverter {
   static Future<List<TechnicalDB>> fetchTechnicalDBList(
       String userId, int jobCareerId) async {
     ReplaceTechnical replaceTechnical = ReplaceTechnical();
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
     List<TechnicalDB> technicalDBList = [];
     await FirebaseFirestore.instance
         .collection('/search/$userId/jobCareer/$jobCareerId/technicalDB')
         .get()
-        .then((event) {
-      technicalDBList = (event.docs
-              .map((doc) async => TechnicalDB(
-                    dbId: doc.id,
-                    dbName:
-                        await replaceTechnical.replaceTechnicalSkill(doc.id),
-                    month: doc.data()['month'] as int,
-                  ))
-              .toList())
-          .cast<TechnicalDB>();
+        .then((event) async {
+      for (var i = 0; i < event.docs.length; i++) {
+        technicalDBList.add(TechnicalDB(
+          dbId: event.docs[i].id,
+          dbName: await replaceTechnical.replaceTechnicalSkill(
+              event.docs[i].id, encodeData),
+          month: event.docs[i].data()['month'] as int,
+        ));
+      }
     });
+
     return technicalDBList;
   }
 

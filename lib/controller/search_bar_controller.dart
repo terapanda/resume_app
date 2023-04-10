@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:resume_app/model/person_converter.dart';
-import 'package:resume_app/utils/replace_profile_data.dart';
 import 'package:resume_app/utils/replace_technical.dart';
 import 'package:resume_app/model/person.dart';
+
+import '../utils/use_shared_preferences.dart';
 
 class SearchBarController extends ChangeNotifier {
   final globalKey = GlobalKey<ScaffoldState>();
@@ -78,8 +79,11 @@ class SearchBarController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void searchOperation(String searchText, String selectedSortItem) {
+  Future<void> searchOperation(
+      String searchText, String selectedSortItem) async {
     ReplaceTechnical replaceTechnical = ReplaceTechnical();
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
     _searchedText = searchText;
 
     searchedItemList.clear();
@@ -112,7 +116,8 @@ class SearchBarController extends ChangeNotifier {
           element.experience.toString().contains(searchText.toLowerCase()) ||
           (element.technicalOSList != null &&
               element.technicalOSList!
-                  .map((e) => replaceTechnical.replaceTechnicalSkill(e.osId))
+                  .map((e) => replaceTechnical.replaceTechnicalSkill(
+                      e.osId, encodeData))
                   .join(',')
                   .toLowerCase()
                   .contains(
@@ -120,7 +125,8 @@ class SearchBarController extends ChangeNotifier {
                   )) ||
           (element.technicalSkillList != null &&
               element.technicalSkillList!
-                  .map((e) => replaceTechnical.replaceTechnicalSkill(e.skillId))
+                  .map((e) => replaceTechnical.replaceTechnicalSkill(
+                      e.skillId, encodeData))
                   .join(',')
                   .toLowerCase()
                   .contains(
@@ -128,7 +134,10 @@ class SearchBarController extends ChangeNotifier {
                   )) ||
           (element.technicalDBList != null &&
               element.technicalDBList!
-                  .map((e) => {replaceTechnical.replaceTechnicalSkill(e.dbId)})
+                  .map((e) => {
+                        replaceTechnical.replaceTechnicalSkill(
+                            e.dbId, encodeData)
+                      })
                   .join(',')
                   .toLowerCase()
                   .contains(

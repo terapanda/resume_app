@@ -25,6 +25,7 @@ class _PreviewPageState extends State<PreviewPage> {
   late String fileName;
   late bool showName;
   late bool showContractType;
+  late Person person;
 
   @override
   void initState() {
@@ -32,12 +33,14 @@ class _PreviewPageState extends State<PreviewPage> {
 
     // 受け取ったデータを状態を管理する変数に格納
     fileName = '技術経歴書(${widget.person.initial})';
+    person = widget.person;
     showName = false;
     showContractType = true;
   }
 
   @override
   Widget build(BuildContext context) {
+    PdfCreator pdfCreator = PdfCreator();
     return Scaffold(
       appBar: AppBar(
         title: _file_name_widget(),
@@ -78,8 +81,8 @@ class _PreviewPageState extends State<PreviewPage> {
         build: (format) async {
           widget.person.jobCareerList =
               await PersonConverter.fetchJobCareerList(widget.person.id);
-          final pdf = await PdfCreator.create(
-              widget.person, showName, showContractType);
+          final pdf =
+              await pdfCreator.create(person, showName, showContractType);
           return await pdf.save();
         },
         actions: [
