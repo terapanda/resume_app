@@ -1,27 +1,30 @@
 import 'package:resume_app/utils/use_shared_preferences.dart';
 
 class ReplaceProfileData {
-  String replaceSex(int val) {
-    final masterData = UseSharedPreferences.getUserDefaults('master');
+  Future<String> replaceSex(int val) async {
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
     final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
-    return encodeData["sex"]?.keys.firstWhere(
-        (key) => encodeData["sex"]?[key] == val,
-        orElse: () => "その他") as String;
+    final entrySkill = (encodeData["sex"])?.entries.firstWhere(
+        (entry) => entry.key == val,
+        orElse: () => MapEntry(val, "その他"));
+    return entrySkill!.value;
   }
 
-  String replaceContractType(int contractType) {
-    final masterData = UseSharedPreferences.getUserDefaults('master');
+  Future<String> replaceContractType(int contractType) async {
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
     final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
-    return encodeData["contractForm"]?.keys.firstWhere(
-        (key) => encodeData["contractForm"]?[key] == contractType,
-        orElse: () => "その他") as String;
+    final entrySkill = (encodeData["contractForm"])?.entries.firstWhere(
+        (entry) => entry.key == contractType,
+        orElse: () => MapEntry(contractType, "その他"));
+    return entrySkill!.value;
   }
 
-  String replaceRole(int roleType) {
-    final masterData = UseSharedPreferences.getUserDefaults('master');
+  Future<String> replaceRole(int roleType) async {
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
     final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
-    return encodeData["role"]?.keys.firstWhere(
-        (key) => masterData["role"]?[key] == roleType,
-        orElse: () => "その他") as String;
+    final entrySkill = (encodeData["role"])?.entries.firstWhere(
+        (entry) => entry.key == roleType,
+        orElse: () => MapEntry(roleType, "その他"));
+    return entrySkill!.value;
   }
 }

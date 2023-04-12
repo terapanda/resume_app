@@ -20,7 +20,6 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
   late bool isAdmin;
   late bool isProgramer;
   late bool isFullTimeEmployee;
-  late bool isContractEmployeeKey;
 
   @override
   void initState() {
@@ -28,8 +27,7 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
 
     isAdmin = widget.person.authority == 2;
     isProgramer = widget.person.isProgrammer;
-    isFullTimeEmployee = widget.person.contractType == 1;
-    isContractEmployeeKey = widget.person.contractType == 2;
+    isFullTimeEmployee = widget.person.contractType == "正社員";
   }
 
   @override
@@ -104,7 +102,7 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
                         isProgramer = value ?? false;
                       });
 
-                      await FirebaseService.saveAuthority(
+                      await FirebaseService.saveIsProgrammer(
                           widget.person.id, isProgramer);
                     },
                   ),
@@ -121,7 +119,7 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
                   child: Tooltip(
                     message: '契約種別',
                     child: Text(
-                      isContractEmployeeKey ? "正社員" : "契約社員",
+                      isFullTimeEmployee ? "正社員" : "契約社員",
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
@@ -130,15 +128,15 @@ class _PersonAuthWidgetState extends State<PersonAuthWidget> {
                 ),
                 Center(
                   child: CupertinoSwitch(
-                    value: isContractEmployeeKey,
+                    value: isFullTimeEmployee,
                     activeColor: CupertinoColors.activeOrange,
                     onChanged: (bool? value) async {
                       setState(() {
-                        isContractEmployeeKey = value ?? false;
+                        isFullTimeEmployee = value ?? false;
                       });
 
-                      await FirebaseService.saveAuthority(
-                          widget.person.id, isContractEmployeeKey ? 1 : 2);
+                      await FirebaseService.saveContractType(
+                          widget.person.id, isFullTimeEmployee ? 1 : 2);
                     },
                   ),
                 ),

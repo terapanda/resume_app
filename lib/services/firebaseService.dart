@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:resume_app/utils/replace_profile_data.dart';
 
 import '../model/person.dart';
 import '../model/person_converter.dart';
@@ -59,9 +60,40 @@ class FirebaseService {
 
   static Future saveAuthority(userId, authority) async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    final doc = _firestore.doc('users/$userId');
-    await doc.update({
+    final docUsers = _firestore.doc('users/$userId');
+    await docUsers.update({
       'authority': authority,
+    });
+    final docSearch = _firestore.doc('search/$userId');
+    await docSearch.update({
+      'authority': authority,
+    });
+  }
+
+  static Future saveIsProgrammer(userId, isProgrammer) async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final docUsers = _firestore.doc('users/$userId');
+    await docUsers.update({
+      'isProgrammer': isProgrammer,
+    });
+    final docSearch = _firestore.doc('search/$userId');
+    await docSearch.update({
+      'isProgrammer': isProgrammer,
+    });
+  }
+
+  static Future saveContractType(userId, contractType) async {
+    ReplaceProfileData replaceProfileData = ReplaceProfileData();
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final docUsers = _firestore.doc('users/$userId');
+    await docUsers.update({
+      'contractType': contractType,
+    });
+    final docSearch = _firestore.doc('search/$userId');
+    final replaceContractType =
+        await replaceProfileData.replaceContractType(contractType);
+    await docSearch.update({
+      'contractType': replaceContractType,
     });
   }
 
