@@ -34,7 +34,24 @@ class FirebaseService {
   }
 
   static Future fetchUserData(userId) async {
-    return FirebaseFirestore.instance.collection('users').doc(userId).get();
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get();
+  }
+
+  static Future fetchUserDataForSearch(userId) async {
+    return await FirebaseFirestore.instance
+        .collection('search')
+        .doc(userId)
+        .get();
+  }
+
+  static Future fetchJobCareer(String userId) async {
+    final aaa = await FirebaseFirestore.instance
+        .collection('/users/$userId/jobCareer')
+        .get();
+    return aaa;
   }
 
   static Future savePersonProfile(userId, user) async {
@@ -167,5 +184,17 @@ class FirebaseService {
     replaceMap = SplayTreeMap.from(replaceMap, (a, b) => a.compareTo(b));
 
     return replaceMap;
+  }
+
+  /// jobCarrer delete
+  static Future deletejobCareer(String userId, int careerId) async {
+    await FirebaseFirestore.instance
+        .collection("users/$userId/jobCareer")
+        .doc(careerId.toString())
+        .delete()
+        .then(
+          (doc) => print("Document deleted"),
+          onError: (e) => print("Error updating document $e"),
+        );
   }
 }

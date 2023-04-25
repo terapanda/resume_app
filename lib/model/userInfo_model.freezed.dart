@@ -55,10 +55,10 @@ mixin _$UserInfo {
   String? get image => throw _privateConstructorUsedError;
 
   /// 支社名
-  String? get branchOffice => throw _privateConstructorUsedError;
+  int? get branchOffice => throw _privateConstructorUsedError;
 
   /// 部署名
-  String? get department => throw _privateConstructorUsedError;
+  int? get department => throw _privateConstructorUsedError;
 
   /// 経験年数
   int? get experience => throw _privateConstructorUsedError;
@@ -105,8 +105,8 @@ abstract class $UserInfoCopyWith<$Res> {
       String description,
       String station,
       String? image,
-      String? branchOffice,
-      String? department,
+      int? branchOffice,
+      int? department,
       int? experience,
       int authority,
       bool isProgrammer,
@@ -205,11 +205,11 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
       branchOffice: freezed == branchOffice
           ? _value.branchOffice
           : branchOffice // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       department: freezed == department
           ? _value.department
           : department // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       experience: freezed == experience
           ? _value.experience
           : experience // ignore: cast_nullable_to_non_nullable
@@ -266,8 +266,8 @@ abstract class _$$_UserInfoCopyWith<$Res> implements $UserInfoCopyWith<$Res> {
       String description,
       String station,
       String? image,
-      String? branchOffice,
-      String? department,
+      int? branchOffice,
+      int? department,
       int? experience,
       int authority,
       bool isProgrammer,
@@ -364,11 +364,11 @@ class __$$_UserInfoCopyWithImpl<$Res>
       branchOffice: freezed == branchOffice
           ? _value.branchOffice
           : branchOffice // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       department: freezed == department
           ? _value.department
           : department // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       experience: freezed == experience
           ? _value.experience
           : experience // ignore: cast_nullable_to_non_nullable
@@ -496,11 +496,11 @@ class _$_UserInfo extends _UserInfo {
 
   /// 支社名
   @override
-  final String? branchOffice;
+  final int? branchOffice;
 
   /// 部署名
   @override
-  final String? department;
+  final int? department;
 
   /// 経験年数
   @override
@@ -675,8 +675,8 @@ abstract class _UserInfo extends UserInfo {
       required final String description,
       required final String station,
       final String? image,
-      final String? branchOffice,
-      final String? department,
+      final int? branchOffice,
+      final int? department,
       final int? experience,
       required final int authority,
       required final bool isProgrammer,
@@ -738,11 +738,11 @@ abstract class _UserInfo extends UserInfo {
   @override
 
   /// 支社名
-  String? get branchOffice;
+  int? get branchOffice;
   @override
 
   /// 部署名
-  String? get department;
+  int? get department;
   @override
 
   /// 経験年数

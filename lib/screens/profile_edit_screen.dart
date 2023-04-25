@@ -651,7 +651,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       authority: 1,
       birthDay: DateTime.parse("20001017"),
       contractType: 1,
-      department: "システム部",
+      department: 3,
       description: "齋藤飛鳥",
       favoriteSkill: __selectVal,
       initial: "S.T",

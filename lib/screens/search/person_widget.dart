@@ -5,13 +5,14 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:resume_app/component/popup_card/popup_card.dart';
 import 'package:resume_app/model/person.dart';
 import 'package:resume_app/model/person_converter.dart';
+import 'package:resume_app/provider/user_state.dart';
 import 'package:resume_app/screens/create_pdf/preview_page.dart';
 import 'package:resume_app/services/firebaseService.dart';
 import 'package:resume_app/services/pdf_creator.dart';
 import 'package:resume_app/services/save_helper/save_helper.dart';
 import 'package:resume_app/utils/auth_check.dart';
 import 'package:resume_app/utils/hex_color.dart';
-import 'package:resume_app/screens/project_list_screen.dart';
+import 'package:resume_app/screens/project_list/project_list_screen.dart';
 import 'package:resume_app/utils/person_utils/age_widget.dart';
 import 'package:resume_app/utils/person_utils/experience_widget.dart';
 import 'package:resume_app/utils/person_utils/favorite_skill_widget.dart';
@@ -23,6 +24,7 @@ import 'package:resume_app/utils/person_utils/sex_widget.dart';
 import 'package:resume_app/utils/person_utils/station_widget.dart';
 import 'package:resume_app/utils/person_utils/technical_skill_widget.dart';
 
+import '../../model/job_career.dart';
 import '../../provider/person_provider.dart';
 
 class PersonWidget extends ConsumerStatefulWidget {
@@ -107,6 +109,8 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
   }
 
   Widget cardItemWidget(BuildContext context) {
+    final userstate = ref.read(userStateProvider);
+    final googleUserInfostate = ref.read(GoogleUserInfoProvider);
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
@@ -139,34 +143,43 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
                   ]),
                 ),
               ),
-              PopupMenuButton(
-                icon: const Icon(Icons.more_vert),
-                itemBuilder: (context) {
-                  return [
-                    makePopupMenuItem('edit', FontAwesomeIcons.userPen),
-                    makePopupMenuItem('pdf', FontAwesomeIcons.filePdf),
-                    makePopupMenuDownloadItem(context, widget.person.initial),
-                  ];
-                },
-                onSelected: (String value) {
-                  if (value == 'edit') {
-                    Navigator.push(
-                      context,
-                      MaterialWithModalsPageRoute(
-                        builder: (context) => const ProjectListScreen(),
-                      ),
-                    );
-                  } else if (value == 'pdf') {
-                    Navigator.push(
-                      context,
-                      MaterialWithModalsPageRoute(
-                        builder: (context) =>
-                            PreviewPage(person: widget.person),
-                      ),
-                    );
-                  }
-                },
-              )
+              if (googleUserInfostate == widget.person.id ||
+                  allowAdmin(userstate))
+                PopupMenuButton(
+                  icon: const Icon(Icons.more_vert),
+                  itemBuilder: (context) {
+                    return [
+                      makePopupMenuItem(
+                          'job carrier', FontAwesomeIcons.userPen),
+                      makePopupMenuItem('pdf', FontAwesomeIcons.filePdf),
+                      makePopupMenuDownloadItem(context, widget.person.initial),
+                    ];
+                  },
+                  onSelected: (String value) async {
+                    final List<JobCareer> jobCareerList =
+                        await PersonConverter.fetchJobCareerList(
+                            widget.person.id);
+                    if (value == 'job carrier') {
+                      // snapshot.docs[0].data()
+                      Navigator.push(
+                        context,
+                        MaterialWithModalsPageRoute(
+                          builder: (context) => ProjectListScreen(
+                              propPerson: widget.person,
+                              propJobCareerList: jobCareerList),
+                        ),
+                      );
+                    } else if (value == 'pdf') {
+                      Navigator.push(
+                        context,
+                        MaterialWithModalsPageRoute(
+                          builder: (context) =>
+                              PreviewPage(person: widget.person),
+                        ),
+                      );
+                    }
+                  },
+                )
             ]),
             const Divider(),
             const Padding(padding: EdgeInsets.only(top: 8)),
@@ -263,6 +276,18 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
       ),
       floatingActionButton: ButtonBar(
         children: [
+          ElevatedButton.icon(
+            icon: const Icon(FontAwesomeIcons.filePdf),
+            label: const Text('PDF Preview'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialWithModalsPageRoute(
+                  builder: (context) => PreviewPage(person: widget.person),
+                ),
+              );
+            },
+          ),
           ElevatedButton.icon(
             icon: const Icon(Icons.download),
             label: const Text('Download'),

@@ -27,4 +27,8 @@ class ReplaceProfileData {
         orElse: () => MapEntry(roleType, "その他"));
     return entrySkill!.value;
   }
+
+  String replaceYMDforJp(DateTime careerPeriod) {
+    return '${careerPeriod.year}年${careerPeriod.month}月${careerPeriod.day}日';
+  }
 }

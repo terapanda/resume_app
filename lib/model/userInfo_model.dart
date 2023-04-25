@@ -48,10 +48,10 @@ abstract class UserInfo with _$UserInfo {
     String? image,
 
     /// 支社名
-    String? branchOffice,
+    int? branchOffice,
 
     /// 部署名
-    String? department,
+    int? department,
 
     /// 経験年数
     int? experience,
