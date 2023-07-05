@@ -5,7 +5,15 @@ import 'package:resume_app/component/icons/my_flutter_app_icons.dart';
 class ReplaceTechnical {
   Future<String> replaceTechnicalSkill(
       String skillId, Map<String, Map<dynamic, String>> masterData) async {
-    final entrySkill = (masterData["developLanguage"])?.entries.firstWhere(
+    Map<dynamic, String> developLanguage = {};
+    developLanguage
+        .addAll(masterData["developLanguageSkill"] as Map<dynamic, String>);
+    developLanguage
+        .addAll(masterData["developLanguageOS"] as Map<dynamic, String>);
+    developLanguage
+        .addAll(masterData["developLanguageDB"] as Map<dynamic, String>);
+
+    final entrySkill = developLanguage.entries.firstWhere(
         (entry) => entry.key == skillId,
         orElse: () => MapEntry(skillId, skillId));
 

@@ -62,7 +62,7 @@ class UseSharedPreferences {
         documentMap = Map();
         collectionKey = replaceMapItem('{', dataSpItem.split(':')[0]);
 
-        if (collectionKey == "developLanguage") {
+        if (collectionKey.contains("developLanguage")) {
           documentKey = replaceMapItem('{', dataSpItem.split(':')[1]);
         } else {
           documentKey =
@@ -72,7 +72,7 @@ class UseSharedPreferences {
             replaceMapItem('}', dataSpItem.split(':')[2]);
         collectionMap[collectionKey] = documentMap;
       } else {
-        if (collectionKey == "developLanguage") {
+        if (collectionKey.contains("developLanguage")) {
           documentKey = replaceMapItem('{', dataSpItem.split(':')[0]);
         } else {
           documentKey =

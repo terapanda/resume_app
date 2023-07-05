@@ -3,16 +3,22 @@ import 'dart:developer';
 import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:resume_app/model/technical_db.dart';
+import 'package:resume_app/model/technical_skill.dart';
 import 'package:resume_app/utils/replace_profile_data.dart';
+import '../../model/userInfo_model.dart' as userInfoModel;
 
+import '../model/job_career.dart';
 import '../model/person.dart';
 import '../model/person_converter.dart';
+import '../model/technical_os.dart';
+import '../utils/deep_copy.dart';
 
 class FirebaseService {
   // personデータに整形したデータを取得
   static Future fetchConvertPerson({userId}) async {
     var person =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+        await FirebaseFirestore.instance.collection('search').doc(userId).get();
     if (!person.exists) {
       return Person;
     }
@@ -73,6 +79,100 @@ class FirebaseService {
       'image': user.image,
       'updateDate': DateTime.now(),
     });
+  }
+
+  static Future saveProject(userId, userInfoModel.JobCareer projectInfo) async {
+    inspect(projectInfo);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final doc =
+        _firestore.doc('users/$userId/jobCareer/${projectInfo.careerId}');
+    await doc.set({
+      'careerPeriodFrom': projectInfo.careerPeriodFrom,
+      'careerPeriodTo': projectInfo.careerPeriodTo,
+      'content': projectInfo.content,
+      'phase': projectInfo.phase,
+      'role': projectInfo.role,
+    });
+    for (var listItem in projectInfo.usedTechnicalOSList!) {
+      final osDoc = _firestore.doc(
+          'users/$userId/jobCareer/${projectInfo.careerId}/technicalOS/${listItem.osId}');
+      osDoc.set({'month': listItem.month});
+    }
+    for (var listItem in projectInfo.usedTechnicalSkillList!) {
+      final skillDoc = _firestore.doc(
+          'users/$userId/jobCareer/${projectInfo.careerId}/technicalSkill/${listItem.skillId}');
+      skillDoc.set({'month': listItem.month});
+    }
+    for (var listItem in projectInfo.usedTechnicalDBList!) {
+      final dbDoc = _firestore.doc(
+          'users/$userId/jobCareer/${projectInfo.careerId}/technicalDB/${listItem.dbId}');
+      dbDoc.set({'month': listItem.month});
+    }
+  }
+
+  static Future saveProjectForSearch(userId, JobCareer projectInfo) async {
+    inspect(projectInfo);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    final doc =
+        _firestore.doc('search/$userId/jobCareer/${projectInfo.careerId}');
+    await doc.set({
+      'careerPeriodFrom': projectInfo.careerPeriodFrom,
+      'careerPeriodTo': projectInfo.careerPeriodTo,
+      'content': projectInfo.content,
+      'phase': projectInfo.phase,
+      'role': projectInfo.role,
+    });
+    List<TechnicalOS>? osList = projectInfo.usedTechnicalOSList;
+    for (var listItem in osList!) {
+      final osDoc = _firestore.doc(
+          'search/$userId/jobCareer/${projectInfo.careerId}/technicalOS/${listItem.osId}');
+      osDoc.set({'month': listItem.month});
+    }
+    List<TechnicalSkill>? skillList = projectInfo.usedTechnicalSkillList;
+    for (var listItem in skillList!) {
+      final skillDoc = _firestore.doc(
+          'search/$userId/jobCareer/${projectInfo.careerId}/technicalSkill/${listItem.skillId}');
+      skillDoc.set({'month': listItem.month});
+    }
+    List<TechnicalDB>? dbList = projectInfo.usedTechnicalDBList;
+    for (var listItem in dbList!) {
+      final dbDoc = _firestore.doc(
+          'search/$userId/jobCareer/${projectInfo.careerId}/technicalDB/${listItem.dbId}');
+      dbDoc.set({'month': listItem.month});
+    }
+  }
+
+  static Future<Person> saveAddingUpList(Person person) async {
+    Person copyPerson = deepCopy(person);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    List<TechnicalOS> technicalOSList =
+        PersonConverter.getAddingUpTechnicalOSList(person);
+    for (var listItem in technicalOSList) {
+      final osDoc = _firestore
+          .doc('search/${person.id}/totalTechnicalOS/${listItem.osId}');
+      osDoc.set({'month': listItem.month});
+    }
+    List<TechnicalSkill> technicalSkillList =
+        PersonConverter.getAddingUpTechnicalSkillList(person);
+    for (var listItem in technicalSkillList) {
+      final skillDoc = _firestore
+          .doc('search/${person.id}/totalTechnicalSkill/${listItem.skillId}');
+      skillDoc.set({'month': listItem.month});
+    }
+    List<TechnicalDB> technicalDBList =
+        PersonConverter.getAddingUpTechnicalDBList(person);
+    for (var listItem in technicalDBList) {
+      final dbDoc = _firestore
+          .doc('search/${person.id}/totalTechnicalDB/${listItem.dbId}');
+      dbDoc.set({'month': listItem.month});
+    }
+
+    person.technicalOSList = technicalOSList;
+    person.technicalSkillList = technicalSkillList;
+    person.technicalDBList = technicalDBList;
+
+    return person;
   }
 
   static Future saveAuthority(userId, authority) async {
@@ -156,17 +256,41 @@ class FirebaseService {
         await FirebaseFirestore.instance.collection('master').doc('sex').get();
     masterMap['sex'] = replaceDocData(sexData.data());
 
-    final developLanguageData = await FirebaseFirestore.instance
+    final developLanguageSkillData = await FirebaseFirestore.instance
         .collection('master')
-        .doc('developLanguage')
+        .doc('developLanguageSkill')
         .get();
 
-    late Map<String, String> replaceMap = {};
-    developLanguageData.data()?.forEach((key, value) {
-      replaceMap[key] = value.toString();
+    late Map<String, String> replaceSkillMap = {};
+    developLanguageSkillData.data()?.forEach((key, value) {
+      replaceSkillMap[key] = value.toString();
     });
 
-    masterMap['developLanguage'] = replaceMap;
+    masterMap['developLanguageSkill'] = replaceSkillMap;
+
+    final developLanguageDBData = await FirebaseFirestore.instance
+        .collection('master')
+        .doc('developLanguageDB')
+        .get();
+
+    late Map<String, String> replaceDBMap = {};
+    developLanguageDBData.data()?.forEach((key, value) {
+      replaceDBMap[key] = value.toString();
+    });
+
+    masterMap['developLanguageDB'] = replaceDBMap;
+
+    final developLanguageOSData = await FirebaseFirestore.instance
+        .collection('master')
+        .doc('developLanguageOS')
+        .get();
+
+    late Map<String, String> replaceOSMap = {};
+    developLanguageOSData.data()?.forEach((key, value) {
+      replaceOSMap[key] = value.toString();
+    });
+
+    masterMap['developLanguageOS'] = replaceOSMap;
 
     return masterMap;
   }

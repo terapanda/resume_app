@@ -1,15 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:banner_listtile/banner_listtile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:resume_app/model/person.dart';
-import 'package:resume_app/provider/person_provider.dart';
-import 'package:resume_app/screens/project_list/project_widget.dart';
+import 'package:resume_app/screens/project_list/project_card.dart';
 import 'package:resume_app/utils/unfocus_keybord.dart';
 
 import '../../model/job_career.dart';
 import '../../utils/size_config.dart';
-import '../project_edit_dialog.dart';
 
 class ProjectListScreen extends ConsumerStatefulWidget {
   final Person propPerson;
@@ -59,7 +55,7 @@ class _ProjectListScreenState extends ConsumerState<ProjectListScreen> {
                     itemCount: jobCareerList.length,
                     itemBuilder: (context, index) {
                       return SizedBox(
-                        child: ProjectWidget(
+                        child: ProjectCard(
                             propIndex: index,
                             propJobCareer: jobCareerList[index],
                             propPerson: person),

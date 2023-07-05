@@ -159,6 +159,7 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
                     final List<JobCareer> jobCareerList =
                         await PersonConverter.fetchJobCareerList(
                             widget.person.id);
+                    widget.person.jobCareerList = jobCareerList;
                     if (value == 'job carrier') {
                       // snapshot.docs[0].data()
                       Navigator.push(
@@ -166,7 +167,7 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
                         MaterialWithModalsPageRoute(
                           builder: (context) => ProjectListScreen(
                               propPerson: widget.person,
-                              propJobCareerList: jobCareerList),
+                              propJobCareerList: widget.person.jobCareerList!),
                         ),
                       );
                     } else if (value == 'pdf') {

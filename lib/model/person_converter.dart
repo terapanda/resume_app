@@ -7,6 +7,7 @@ import 'package:resume_app/model/technical_os.dart';
 import 'package:resume_app/model/technical_skill.dart';
 import 'package:resume_app/utils/replace_technical.dart';
 
+import '../utils/deep_copy.dart';
 import '../utils/use_shared_preferences.dart';
 
 class PersonConverter {
@@ -307,16 +308,17 @@ class PersonConverter {
 
   /// jobCareerごとのOSを合算した言語経歴リストを作成
   static List<TechnicalOS> getAddingUpTechnicalOSList(Person person) {
+    Person copyPerson = deepCopy(person);
     // jobCareerごとのOSを一旦合算なしでListに詰め込む
     List<TechnicalOS> tempTechnicalOSList = [];
-    if (person.jobCareerList != null) {
+    if (copyPerson.jobCareerList != null) {
       // jobCareerList
-      for (var jobCareerListItem in person.jobCareerList!) {
+      for (var jobCareerListItem in copyPerson.jobCareerList!) {
         // jobCareerのOSList
         for (var usedTechnicalOSListItem
             in jobCareerListItem.usedTechnicalOSList!) {
           // OS経歴集計Listに追加
-          tempTechnicalOSList.add(usedTechnicalOSListItem);
+          tempTechnicalOSList.add(deepCopy(usedTechnicalOSListItem));
         }
       }
     }
@@ -325,7 +327,7 @@ class PersonConverter {
     List<TechnicalOS> addingUpList = [];
     for (var technicalOSListItem in tempTechnicalOSList) {
       if (addingUpList.isEmpty) {
-        addingUpList.add(technicalOSListItem);
+        addingUpList.add(deepCopy(technicalOSListItem));
       } else {
         var flg = true;
         for (var tempListItem in addingUpList) {
@@ -336,7 +338,7 @@ class PersonConverter {
           }
         }
         if (flg) {
-          addingUpList.add(technicalOSListItem);
+          addingUpList.add(deepCopy(technicalOSListItem));
         }
       }
     }
