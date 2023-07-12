@@ -28,10 +28,10 @@ import '../../model/job_career.dart';
 import '../../provider/person_provider.dart';
 
 class PersonWidget extends ConsumerStatefulWidget {
-  final Person person;
-  final int index;
+  late Person person;
+  late int index;
 
-  const PersonWidget({
+  PersonWidget({
     Key? key,
     required this.person,
     required this.index,
@@ -162,7 +162,7 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
                     widget.person.jobCareerList = jobCareerList;
                     if (value == 'job carrier') {
                       // snapshot.docs[0].data()
-                      Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialWithModalsPageRoute(
                           builder: (context) => ProjectListScreen(
@@ -170,6 +170,13 @@ class _PersonWidgetState extends ConsumerState<PersonWidget> {
                               propJobCareerList: widget.person.jobCareerList!),
                         ),
                       );
+
+                      widget.person = await FirebaseService.fetchConvertPerson(
+                          userId: widget.person.id);
+                      widget.person.jobCareerList =
+                          await PersonConverter.fetchJobCareerList(
+                              widget.person.id);
+                      setState(() {});
                     } else if (value == 'pdf') {
                       Navigator.push(
                         context,

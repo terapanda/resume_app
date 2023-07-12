@@ -308,29 +308,28 @@ class PersonConverter {
 
   /// jobCareerごとのOSを合算した言語経歴リストを作成
   static List<TechnicalOS> getAddingUpTechnicalOSList(Person person) {
-    Person copyPerson = deepCopy(person);
     // jobCareerごとのOSを一旦合算なしでListに詰め込む
     List<TechnicalOS> tempTechnicalOSList = [];
-    if (copyPerson.jobCareerList != null) {
+    if (person.jobCareerList != null) {
       // jobCareerList
-      for (var jobCareerListItem in copyPerson.jobCareerList!) {
+      for (JobCareer jobCareerListItem in person.jobCareerList!) {
         // jobCareerのOSList
-        for (var usedTechnicalOSListItem
+        for (TechnicalOS usedTechnicalOSListItem
             in jobCareerListItem.usedTechnicalOSList!) {
           // OS経歴集計Listに追加
-          tempTechnicalOSList.add(deepCopy(usedTechnicalOSListItem));
+          tempTechnicalOSList.add(usedTechnicalOSListItem);
         }
       }
     }
 
     // 重複項目を合算する
     List<TechnicalOS> addingUpList = [];
-    for (var technicalOSListItem in tempTechnicalOSList) {
+    for (TechnicalOS technicalOSListItem in tempTechnicalOSList) {
       if (addingUpList.isEmpty) {
-        addingUpList.add(deepCopy(technicalOSListItem));
+        addingUpList.add(technicalOSListItem);
       } else {
         var flg = true;
-        for (var tempListItem in addingUpList) {
+        for (TechnicalOS tempListItem in addingUpList) {
           if (tempListItem.osId == technicalOSListItem.osId) {
             tempListItem.month = tempListItem.month + technicalOSListItem.month;
             flg = false;
@@ -338,7 +337,7 @@ class PersonConverter {
           }
         }
         if (flg) {
-          addingUpList.add(deepCopy(technicalOSListItem));
+          addingUpList.add(technicalOSListItem);
         }
       }
     }
@@ -351,9 +350,9 @@ class PersonConverter {
     List<TechnicalDB> tempTechnicalDBList = [];
     if (person.jobCareerList != null) {
       // jobCareerList
-      for (var jobCareerListItem in person.jobCareerList!) {
+      for (JobCareer jobCareerListItem in person.jobCareerList!) {
         // jobCareerのDBList
-        for (var usedTechnicalDBListItem
+        for (TechnicalDB usedTechnicalDBListItem
             in jobCareerListItem.usedTechnicalDBList!) {
           // DB経歴集計Listに追加
           tempTechnicalDBList.add(usedTechnicalDBListItem);
@@ -363,12 +362,12 @@ class PersonConverter {
 
     // 重複項目を合算する
     List<TechnicalDB> addingUpList = [];
-    for (var technicalDBListItem in tempTechnicalDBList) {
+    for (TechnicalDB technicalDBListItem in tempTechnicalDBList) {
       if (addingUpList.isEmpty) {
         addingUpList.add(technicalDBListItem);
       } else {
         var flg = true;
-        for (var tempListItem in addingUpList) {
+        for (TechnicalDB tempListItem in addingUpList) {
           if (tempListItem.dbId == technicalDBListItem.dbId) {
             tempListItem.month = tempListItem.month + technicalDBListItem.month;
             flg = false;

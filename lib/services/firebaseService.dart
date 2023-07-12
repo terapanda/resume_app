@@ -144,8 +144,12 @@ class FirebaseService {
   }
 
   static Future<Person> saveAddingUpList(Person person) async {
-    Person copyPerson = deepCopy(person);
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    Person newPerson = await fetchConvertPerson(userId: person.id);
+    newPerson.jobCareerList =
+        await PersonConverter.fetchJobCareerList(person.id);
+
     List<TechnicalOS> technicalOSList =
         PersonConverter.getAddingUpTechnicalOSList(person);
     for (var listItem in technicalOSList) {
@@ -168,11 +172,11 @@ class FirebaseService {
       dbDoc.set({'month': listItem.month});
     }
 
-    person.technicalOSList = technicalOSList;
-    person.technicalSkillList = technicalSkillList;
-    person.technicalDBList = technicalDBList;
+    newPerson.technicalOSList = technicalOSList;
+    newPerson.technicalSkillList = technicalSkillList;
+    newPerson.technicalDBList = technicalDBList;
 
-    return person;
+    return newPerson;
   }
 
   static Future saveAuthority(userId, authority) async {

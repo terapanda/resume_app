@@ -547,9 +547,7 @@ class TechnicalSkillWidgetForJobJobCareer {
                         onTap: () {
                           final technicalMonthController =
                               TextEditingController();
-                          technicalMonthController.text =
-                              (jobCareer.usedTechnicalOSList![index].month)
-                                  .toString();
+                          technicalMonthController.text = '1';
                           selectBottomSheet(
                             context,
                             [
@@ -690,9 +688,7 @@ class TechnicalSkillWidgetForJobJobCareer {
                         onTap: () {
                           final technicalMonthController =
                               TextEditingController();
-                          technicalMonthController.text =
-                              (jobCareer.usedTechnicalSkillList![index].month)
-                                  .toString();
+                          technicalMonthController.text = '1';
                           selectBottomSheet(
                             context,
                             [
@@ -832,9 +828,7 @@ class TechnicalSkillWidgetForJobJobCareer {
                         onTap: () {
                           final technicalMonthController =
                               TextEditingController();
-                          technicalMonthController.text =
-                              (jobCareer.usedTechnicalDBList![index].month)
-                                  .toString();
+                          technicalMonthController.text = '1';
                           selectBottomSheet(
                             context,
                             [

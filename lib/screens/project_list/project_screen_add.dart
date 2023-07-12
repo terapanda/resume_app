@@ -24,29 +24,23 @@ import '../../utils/calc_years_of_skill.dart';
 import '../../utils/select_bottom_sheet.dart';
 import '../../utils/use_shared_preferences.dart';
 
-class Project extends ConsumerStatefulWidget {
+class ProjectAdd extends ConsumerStatefulWidget {
   final Person propPerson;
-  final JobCareer propJobCareer;
   final int propIndex;
 
-  const Project({
+  const ProjectAdd({
     Key? key,
     required this.propPerson,
-    required this.propJobCareer,
     required this.propIndex,
   }) : super(key: key);
 
   @override
-  ConsumerState<Project> createState() => _ProjectState();
+  ConsumerState<ProjectAdd> createState() => _ProjectAddState();
 }
 
-class _ProjectState extends ConsumerState<Project> {
+class _ProjectAddState extends ConsumerState<ProjectAdd> {
   late Person person;
-  late JobCareer jobCareer;
   late int jobIndex;
-
-  late bool editMode;
-  late String dropdownValue;
 
   final contentController = TextEditingController();
   final careerPeriodFromController = TextEditingController();
@@ -60,8 +54,11 @@ class _ProjectState extends ConsumerState<Project> {
   late Map<dynamic, String> developLanguageOSMaster;
   late Map<dynamic, String> developLanguageSkillMaster;
   late Map<dynamic, String> developLanguageDBMaster;
+  late JobCareer jobCareer;
   Map<dynamic, String> phaseMaster = {};
   late String tempRole;
+  late String tempCareerPeriodFrom;
+  late String tempCareerPeriodTo;
   List selectedPhaseMasterList = [];
   List phaseMasterList = [];
   String? selectedValue;
@@ -70,11 +67,27 @@ class _ProjectState extends ConsumerState<Project> {
   void initState() {
     super.initState();
     person = widget.propPerson;
-    jobCareer = widget.propJobCareer;
     jobIndex = widget.propIndex;
 
-    editMode = false;
-    dropdownValue = 'UI';
+    contentController.text = '';
+    careerPeriodFromController.text = '';
+    careerPeriodToController.text = '';
+    roleController.text = '';
+    tempRole = '';
+    tempCareerPeriodFrom = '';
+    tempCareerPeriodTo = '';
+    selectedPhaseMasterList = [];
+
+    jobCareer = JobCareer(
+        careerId: jobIndex + 1,
+        content: '',
+        careerPeriodFrom: DateTime.now(),
+        careerPeriodTo: DateTime.now(),
+        role: '',
+        phase: [],
+        usedTechnicalOSList: [],
+        usedTechnicalSkillList: [],
+        usedTechnicalDBList: []);
   }
 
   @override
@@ -92,155 +105,21 @@ class _ProjectState extends ConsumerState<Project> {
     developLanguageSkillMaster = encodeData['developLanguageSkill']!;
     developLanguageDBMaster = encodeData['developLanguageDB']!;
 
-    contentController.text = jobCareer.content;
-    careerPeriodFromController.text =
-        ReplaceProfileData().replaceYMDforJp(jobCareer.careerPeriodFrom);
-    careerPeriodToController.text =
-        ReplaceProfileData().replaceYMDforJp(jobCareer.careerPeriodTo);
-    roleController.text = jobCareer.role;
-    tempRole = roleController.text;
-
-    selectedPhaseMasterList = [];
-    for (var i = 0; i < jobCareer.phase.length; i++) {
-      selectedPhaseMasterList.add({
-        "key":
-            await ReplaceProfileData().replacePhaseForVal(jobCareer.phase[i]),
-        "value": jobCareer.phase[i]
-      });
-    }
     step1Controller.text = "os";
     step2Controller.text = "";
     step3Controller.text = "1";
+
+    for (var phaseMasterItem in phaseMaster.entries) {
+      phaseMasterList
+          .add({'key': phaseMasterItem.key, 'value': phaseMasterItem.value});
+    }
 
     return 'Data Loaded';
   }
 
   @override
   Widget build(BuildContext context) {
-    for (var phaseMasterItem in phaseMaster.entries) {
-      print(phaseMasterItem);
-      phaseMasterList
-          .add({'key': phaseMasterItem.key, 'value': phaseMasterItem.value});
-      print(phaseMasterItem);
-    }
-
-    var popUpItem = Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Column(children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                jobCareer.content,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ]),
-        ),
-        const Padding(padding: EdgeInsets.only(top: 24)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(FontAwesomeIcons.calendar, size: 30, color: HexColor()),
-            Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '参画期間',
-                        style: TextStyle(fontSize: 14, color: HexColor()),
-                      ),
-                      Text(
-                        '${ReplaceProfileData().replaceYMDforJp(jobCareer.careerPeriodFrom)} ~ ${ReplaceProfileData().replaceYMDforJp(jobCareer.careerPeriodTo)}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ])),
-          ],
-        ),
-        const Padding(padding: EdgeInsets.only(top: 16)),
-        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(
-            flex: 1, // 1 要素分の横幅
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // Property
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Icon(FontAwesomeIcons.addressCard,
-                        size: 30, color: HexColor())),
-                Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '役割',
-                            style: TextStyle(fontSize: 12, color: HexColor()),
-                          ),
-                          Text(
-                            jobCareer.role,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ])),
-              ],
-            ),
-          ),
-          Expanded(
-              child: Align(
-            alignment: Alignment.topLeft,
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // Property
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Icon(Icons.workspace_premium,
-                          size: 30, color: HexColor())),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 4),
-                            child: Text(
-                              '担当フェーズ',
-                              style: TextStyle(fontSize: 12, color: HexColor()),
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: jobCareer.phase
-                                .map((phaseItem) => Container(
-                                    margin: const EdgeInsets.only(
-                                        bottom: 4, right: 16, left: 8),
-                                    child: Text(
-                                      phaseItem,
-                                      style: const TextStyle(fontSize: 15),
-                                    )))
-                                .toList(),
-                          )
-                        ]),
-                  ),
-                ]),
-          )),
-        ]),
-        const Divider(),
-        const Padding(padding: EdgeInsets.only(top: 8)),
-        HeadlineWidget().get('言語経歴'),
-        TechnicalSkillWidgetForJobJobCareer().get(jobCareer, 'os'),
-        TechnicalSkillWidgetForJobJobCareer().get(jobCareer, 'skill'),
-        TechnicalSkillWidgetForJobJobCareer().get(jobCareer, 'db'),
-        TechnicalSkillWidgetForJobJobCareer().get(jobCareer, ''),
-      ],
-    );
-
-    var popUpItemEdit = Column(
+    var popUpItemAdd = Column(
       children: [
         const Padding(padding: EdgeInsets.only(top: 16)),
         Align(
@@ -300,6 +179,8 @@ class _ProjectState extends ConsumerState<Project> {
                       ),
                     ),
                     onTap: () {
+                      tempCareerPeriodFrom = careerPeriodFromController.text;
+
                       DatePicker.showDatePicker(context,
                           showTitleActions: true,
                           minTime: DateTime(1900, 1, 1),
@@ -314,9 +195,9 @@ class _ProjectState extends ConsumerState<Project> {
                         print(date);
                         careerPeriodFromController.text =
                             ReplaceProfileData().replaceYMDforJp(date);
-                      },
-                          currentTime: jobCareer.careerPeriodFrom,
-                          locale: LocaleType.jp);
+                      }, onCancel: () {
+                        careerPeriodFromController.text = tempCareerPeriodFrom;
+                      }, locale: LocaleType.jp);
                     },
                   ),
                 ),
@@ -350,6 +231,8 @@ class _ProjectState extends ConsumerState<Project> {
                       ),
                     ),
                     onTap: () {
+                      tempCareerPeriodTo = careerPeriodToController.text;
+
                       DatePicker.showDatePicker(context,
                           showTitleActions: true,
                           minTime: DateTime(1900, 1, 1),
@@ -363,9 +246,9 @@ class _ProjectState extends ConsumerState<Project> {
                         jobCareer.careerPeriodTo = date;
                         careerPeriodToController.text =
                             ReplaceProfileData().replaceYMDforJp(date);
-                      },
-                          currentTime: jobCareer.careerPeriodTo,
-                          locale: LocaleType.jp);
+                      }, onCancel: () {
+                        careerPeriodToController.text = tempCareerPeriodTo;
+                      }, locale: LocaleType.jp);
                     },
                   ),
                 ),
@@ -396,6 +279,11 @@ class _ProjectState extends ConsumerState<Project> {
             ),
           ),
           onTap: () {
+            if (roleController.text == '') {
+              roleController.text = 'PM';
+            }
+            tempRole = roleController.text;
+
             selectBottomSheet(
               context,
               [
@@ -488,25 +376,16 @@ class _ProjectState extends ConsumerState<Project> {
         ),
         actions: [
           TextButton(
-            onPressed: () async {
-              if (editMode) {
+              onPressed: () async {
                 await saveUserInfo();
                 await saveUserInfoForSearchData();
-              }
-              setState(() {
-                editMode = !editMode;
-              });
-            },
-            child: editMode
-                ? const Text(
-                    '保存',
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  )
-                : const Text(
-                    '編集',
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  ),
-          ),
+                setState(() {});
+                Navigator.pop(context);
+              },
+              child: const Text(
+                '保存',
+                style: TextStyle(color: Colors.black, fontSize: 18),
+              )),
         ],
         automaticallyImplyLeading: true,
       ),
@@ -517,8 +396,7 @@ class _ProjectState extends ConsumerState<Project> {
               // 値が存在する場合の処理
               return SingleChildScrollView(
                   child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: editMode ? popUpItemEdit : popUpItem));
+                      padding: const EdgeInsets.all(16), child: popUpItemAdd));
             } else {
               // 値が存在しない場合の処理
               return Column(
@@ -536,24 +414,6 @@ class _ProjectState extends ConsumerState<Project> {
                   ]);
             }
           }),
-      floatingActionButton: ButtonBar(
-        children: [
-          !editMode
-              ? ElevatedButton.icon(
-                  icon: const Icon(FontAwesomeIcons.filePdf),
-                  label: const Text('PDF Preview'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialWithModalsPageRoute(
-                        builder: (context) => PreviewPage(person: person),
-                      ),
-                    );
-                  },
-                )
-              : const SizedBox(),
-        ],
-      ),
     );
   }
 
@@ -788,7 +648,7 @@ class _ProjectState extends ConsumerState<Project> {
         usedTechnicalOSList: jobCareer.usedTechnicalOSList,
         usedTechnicalSkillList: jobCareer.usedTechnicalSkillList,
         usedTechnicalDBList: jobCareer.usedTechnicalDBList);
-    person.jobCareerList![jobIndex] = userInfo;
+    person.jobCareerList!.add(userInfo);
     await FirebaseService.saveProjectForSearch(person.id, userInfo);
 
     person = await FirebaseService.saveAddingUpList(person);

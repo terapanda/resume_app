@@ -8,6 +8,7 @@ import 'package:resume_app/provider/user_state.dart';
 import 'package:resume_app/screens/project_list/project_screen.dart';
 import 'package:resume_app/services/firebaseService.dart';
 import 'package:resume_app/utils/hex_color.dart';
+import '../../model/person_converter.dart';
 import '../../provider/person_provider.dart';
 
 class ProjectCard extends ConsumerStatefulWidget {
@@ -97,14 +98,19 @@ class _ProjectCardState extends ConsumerState<ProjectCard> {
     final userstate = ref.read(userStateProvider);
     final googleUserInfostate = ref.read(GoogleUserInfoProvider);
     return InkWell(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        await Navigator.push(
           context,
           MaterialWithModalsPageRoute(
             builder: (context) => Project(
                 propPerson: person, propJobCareer: jobCareer, propIndex: index),
           ),
         );
+
+        person = await FirebaseService.fetchConvertPerson(userId: person.id);
+        person.jobCareerList =
+            await PersonConverter.fetchJobCareerList(person.id);
+        jobCareer = person.jobCareerList![index];
       },
       child: Card(
         child: Padding(
