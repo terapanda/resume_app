@@ -77,6 +77,7 @@ dependencies:
   multiselect_dropdown_flutter: ^0.0.7
   drop_down_list: ^0.0.5
   dropdown_search: ^5.0.6
+  awesome_snackbar_content: ^0.1.2
 
 flutter_icons:
   android: "launcher_icon"

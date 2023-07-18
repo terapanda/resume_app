@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:resume_app/provider/user_state.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 class TopScreen extends ConsumerWidget {
   TopScreen({super.key});
@@ -49,6 +50,24 @@ class TopScreen extends ConsumerWidget {
                     } on FirebaseAuthException catch (e) {
                       print('FirebaseAuthException');
                       print('${e.code}');
+                      final snackBar = SnackBar(
+                        /// need to set following properties for best effect of awesome_snackbar_content
+                        elevation: 0,
+                        duration: Duration(seconds: 10),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: 'ログインエラー',
+                          message: '会社ドメインのアカウントで再度ログイン認証を行なってください。',
+
+                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                          contentType: ContentType.failure,
+                        ),
+                      );
+
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(snackBar);
                     } on Exception catch (e) {
                       print('Other Exception');
                       print('${e.toString()}');
@@ -96,9 +115,12 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   // loginしているユーザー情報取得
   final loginUserData = await FirebaseService.fetchUserData(googleUser.id);
 
-  ref.read(userStateProvider.notifier).state = loginUserData.data();
+  if (loginUserData.data() != null) {
+    ref.read(userStateProvider.notifier).state = loginUserData.data();
+  }
 
   final userstate = ref.read(userStateProvider);
   // Once signed in, return the UserCredential
+
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
