@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:resume_app/firebase_options.dart';
+import 'package:resume_app/screens/profile_add_screen.dart';
 import 'package:resume_app/utils/use_shared_preferences.dart';
 import '../model/person.dart';
 import '../provider/person_provider.dart';
@@ -29,24 +30,66 @@ class TopScreen extends ConsumerWidget {
               ElevatedButton.icon(
                   onPressed: (() async {
                     try {
-                      final userCredential = await signInWithGoogle(ref);
-                      Navigator.of(context).push(
-                        PageRouteBuilder(pageBuilder:
-                            (context, animation, secondaryAnimation) {
-                          return HomeScreen();
-                        }, transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          final Offset begin = Offset(0.0, 1.0);
-                          final Offset end = Offset.zero;
-                          final Animatable<Offset> tween =
-                              Tween(begin: begin, end: end)
-                                  .chain(CurveTween(curve: Curves.easeInOut));
-                          final Animation<Offset> offsetAnimation =
-                              animation.drive(tween);
-                          return SlideTransition(
-                              position: offsetAnimation, child: child);
-                        }),
-                      );
+                      final userCredential =
+                          await signInWithGoogle(ref, context);
+                      final userstate = ref.read(userStateProvider);
+                      if (userstate.isEmpty) {
+                        // 新規ユーザ
+                        Navigator.of(context).push(
+                          PageRouteBuilder(pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return ProfileAddScreen();
+                          }, transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            final Offset begin = Offset(0.0, 1.0);
+                            final Offset end = Offset.zero;
+                            final Animatable<Offset> tween =
+                                Tween(begin: begin, end: end)
+                                    .chain(CurveTween(curve: Curves.easeInOut));
+                            final Animation<Offset> offsetAnimation =
+                                animation.drive(tween);
+                            return SlideTransition(
+                                position: offsetAnimation, child: child);
+                          }),
+                        );
+                        return;
+                      }
+                      userCredential.additionalUserInfo!.isNewUser &&
+                              userstate == null
+                          ? Navigator.of(context).push(
+                              PageRouteBuilder(pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return HomeScreen();
+                              }, transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                final Offset begin = Offset(0.0, 1.0);
+                                final Offset end = Offset.zero;
+                                final Animatable<Offset> tween = Tween(
+                                        begin: begin, end: end)
+                                    .chain(CurveTween(curve: Curves.easeInOut));
+                                final Animation<Offset> offsetAnimation =
+                                    animation.drive(tween);
+                                return SlideTransition(
+                                    position: offsetAnimation, child: child);
+                              }),
+                            )
+                          : Navigator.of(context).push(
+                              PageRouteBuilder(pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return HomeScreen();
+                              }, transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                final Offset begin = Offset(0.0, 1.0);
+                                final Offset end = Offset.zero;
+                                final Animatable<Offset> tween = Tween(
+                                        begin: begin, end: end)
+                                    .chain(CurveTween(curve: Curves.easeInOut));
+                                final Animation<Offset> offsetAnimation =
+                                    animation.drive(tween);
+                                return SlideTransition(
+                                    position: offsetAnimation, child: child);
+                              }),
+                            );
                     } on FirebaseAuthException catch (e) {
                       print('FirebaseAuthException');
                       print('${e.code}');
@@ -81,7 +124,7 @@ class TopScreen extends ConsumerWidget {
   }
 }
 
-Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
+signInWithGoogle(WidgetRef ref, BuildContext context) async {
   // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn(
           clientId: DefaultFirebaseOptions.currentPlatform.iosClientId)
@@ -116,11 +159,8 @@ Future<UserCredential> signInWithGoogle(WidgetRef ref) async {
   final loginUserData = await FirebaseService.fetchUserData(googleUser.id);
 
   if (loginUserData.data() != null) {
+    // 既存ユーザ
     ref.read(userStateProvider.notifier).state = loginUserData.data();
   }
-
-  final userstate = ref.read(userStateProvider);
-  // Once signed in, return the UserCredential
-
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }

@@ -81,6 +81,23 @@ class FirebaseService {
     });
   }
 
+  static Future saveBasicPersonProfile(userId, user) async {
+    inspect(user);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final doc = _firestore.doc('users/$userId');
+    await doc.set({
+      'authority': user.authority,
+      'nameFirst': user.nameFirst,
+      'nameLast': user.nameLast,
+      'rubyFirst': user.rubyFirst,
+      'rubyLast': user.rubyLast,
+      'birthDay': user.birthDay,
+      'sex': user.sex,
+      'isProgrammer': user.isProgrammer,
+      'updateDate': DateTime.now(),
+    });
+  }
+
   static Future saveProject(userId, userInfoModel.JobCareer projectInfo) async {
     inspect(projectInfo);
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;

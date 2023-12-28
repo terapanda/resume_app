@@ -24,10 +24,10 @@ abstract class UserInfo with _$UserInfo {
     required String rubyLast,
 
     /// 得意言語
-    required List<String> favoriteSkill,
+    List<String>? favoriteSkill,
 
     /// イニシャル
-    required String initial,
+    String? initial,
 
     /// 性別
     required int sex,
@@ -36,13 +36,13 @@ abstract class UserInfo with _$UserInfo {
     required DateTime birthDay,
 
     /// 契約形態
-    required int contractType,
+    int? contractType,
 
     /// 概要・自己PR
-    required String description,
+    String? description,
 
     /// 駅
-    required String station,
+    String? station,
 
     /// 写真
     String? image,

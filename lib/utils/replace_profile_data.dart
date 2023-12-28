@@ -112,4 +112,22 @@ class ReplaceProfileData {
         orElse: () => MapEntry(skill, "その他"));
     return entrySkill!.key;
   }
+
+  Future<int> replaceDepartmentForVal(String department) async {
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
+    final targetDepartment = (encodeData["department"])?.entries.firstWhere(
+        (entry) => entry.value == department,
+        orElse: () => MapEntry(department, "その他"));
+    return targetDepartment!.key;
+  }
+
+  Future<int> replaceBranchOfficeForVal(String branchOffice) async {
+    final masterData = await UseSharedPreferences.getUserDefaults('master');
+    final encodeData = UseSharedPreferences.decodeMasterMap(masterData);
+    final targetBranchOffice = (encodeData["branchOffice"])?.entries.firstWhere(
+        (entry) => entry.value == branchOffice,
+        orElse: () => MapEntry(branchOffice, "その他"));
+    return targetBranchOffice!.key;
+  }
 }

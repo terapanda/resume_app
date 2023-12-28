@@ -31,10 +31,10 @@ mixin _$UserInfo {
   String get rubyLast => throw _privateConstructorUsedError;
 
   /// 得意言語
-  List<String> get favoriteSkill => throw _privateConstructorUsedError;
+  List<String>? get favoriteSkill => throw _privateConstructorUsedError;
 
   /// イニシャル
-  String get initial => throw _privateConstructorUsedError;
+  String? get initial => throw _privateConstructorUsedError;
 
   /// 性別
   int get sex => throw _privateConstructorUsedError;
@@ -43,13 +43,13 @@ mixin _$UserInfo {
   DateTime get birthDay => throw _privateConstructorUsedError;
 
   /// 契約形態
-  int get contractType => throw _privateConstructorUsedError;
+  int? get contractType => throw _privateConstructorUsedError;
 
   /// 概要・自己PR
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
 
   /// 駅
-  String get station => throw _privateConstructorUsedError;
+  String? get station => throw _privateConstructorUsedError;
 
   /// 写真
   String? get image => throw _privateConstructorUsedError;
@@ -97,13 +97,13 @@ abstract class $UserInfoCopyWith<$Res> {
       String nameLast,
       String rubyFirst,
       String rubyLast,
-      List<String> favoriteSkill,
-      String initial,
+      List<String>? favoriteSkill,
+      String? initial,
       int sex,
       DateTime birthDay,
-      int contractType,
-      String description,
-      String station,
+      int? contractType,
+      String? description,
+      String? station,
       String? image,
       int? branchOffice,
       int? department,
@@ -134,13 +134,13 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
     Object? nameLast = null,
     Object? rubyFirst = null,
     Object? rubyLast = null,
-    Object? favoriteSkill = null,
-    Object? initial = null,
+    Object? favoriteSkill = freezed,
+    Object? initial = freezed,
     Object? sex = null,
     Object? birthDay = null,
-    Object? contractType = null,
-    Object? description = null,
-    Object? station = null,
+    Object? contractType = freezed,
+    Object? description = freezed,
+    Object? station = freezed,
     Object? image = freezed,
     Object? branchOffice = freezed,
     Object? department = freezed,
@@ -170,14 +170,14 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
           ? _value.rubyLast
           : rubyLast // ignore: cast_nullable_to_non_nullable
               as String,
-      favoriteSkill: null == favoriteSkill
+      favoriteSkill: freezed == favoriteSkill
           ? _value.favoriteSkill
           : favoriteSkill // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      initial: null == initial
+              as List<String>?,
+      initial: freezed == initial
           ? _value.initial
           : initial // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       sex: null == sex
           ? _value.sex
           : sex // ignore: cast_nullable_to_non_nullable
@@ -186,18 +186,18 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
           ? _value.birthDay
           : birthDay // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      contractType: null == contractType
+      contractType: freezed == contractType
           ? _value.contractType
           : contractType // ignore: cast_nullable_to_non_nullable
-              as int,
-      description: null == description
+              as int?,
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      station: null == station
+              as String?,
+      station: freezed == station
           ? _value.station
           : station // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -258,13 +258,13 @@ abstract class _$$_UserInfoCopyWith<$Res> implements $UserInfoCopyWith<$Res> {
       String nameLast,
       String rubyFirst,
       String rubyLast,
-      List<String> favoriteSkill,
-      String initial,
+      List<String>? favoriteSkill,
+      String? initial,
       int sex,
       DateTime birthDay,
-      int contractType,
-      String description,
-      String station,
+      int? contractType,
+      String? description,
+      String? station,
       String? image,
       int? branchOffice,
       int? department,
@@ -293,13 +293,13 @@ class __$$_UserInfoCopyWithImpl<$Res>
     Object? nameLast = null,
     Object? rubyFirst = null,
     Object? rubyLast = null,
-    Object? favoriteSkill = null,
-    Object? initial = null,
+    Object? favoriteSkill = freezed,
+    Object? initial = freezed,
     Object? sex = null,
     Object? birthDay = null,
-    Object? contractType = null,
-    Object? description = null,
-    Object? station = null,
+    Object? contractType = freezed,
+    Object? description = freezed,
+    Object? station = freezed,
     Object? image = freezed,
     Object? branchOffice = freezed,
     Object? department = freezed,
@@ -329,14 +329,14 @@ class __$$_UserInfoCopyWithImpl<$Res>
           ? _value.rubyLast
           : rubyLast // ignore: cast_nullable_to_non_nullable
               as String,
-      favoriteSkill: null == favoriteSkill
+      favoriteSkill: freezed == favoriteSkill
           ? _value._favoriteSkill
           : favoriteSkill // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      initial: null == initial
+              as List<String>?,
+      initial: freezed == initial
           ? _value.initial
           : initial // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       sex: null == sex
           ? _value.sex
           : sex // ignore: cast_nullable_to_non_nullable
@@ -345,18 +345,18 @@ class __$$_UserInfoCopyWithImpl<$Res>
           ? _value.birthDay
           : birthDay // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      contractType: null == contractType
+      contractType: freezed == contractType
           ? _value.contractType
           : contractType // ignore: cast_nullable_to_non_nullable
-              as int,
-      description: null == description
+              as int?,
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      station: null == station
+              as String?,
+      station: freezed == station
           ? _value.station
           : station // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -413,13 +413,13 @@ class _$_UserInfo extends _UserInfo {
       required this.nameLast,
       required this.rubyFirst,
       required this.rubyLast,
-      required final List<String> favoriteSkill,
-      required this.initial,
+      final List<String>? favoriteSkill,
+      this.initial,
       required this.sex,
       required this.birthDay,
-      required this.contractType,
-      required this.description,
-      required this.station,
+      this.contractType,
+      this.description,
+      this.station,
       this.image,
       this.branchOffice,
       this.department,
@@ -456,19 +456,21 @@ class _$_UserInfo extends _UserInfo {
   final String rubyLast;
 
   /// 得意言語
-  final List<String> _favoriteSkill;
+  final List<String>? _favoriteSkill;
 
   /// 得意言語
   @override
-  List<String> get favoriteSkill {
+  List<String>? get favoriteSkill {
+    final value = _favoriteSkill;
+    if (value == null) return null;
     if (_favoriteSkill is EqualUnmodifiableListView) return _favoriteSkill;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_favoriteSkill);
+    return EqualUnmodifiableListView(value);
   }
 
   /// イニシャル
   @override
-  final String initial;
+  final String? initial;
 
   /// 性別
   @override
@@ -480,15 +482,15 @@ class _$_UserInfo extends _UserInfo {
 
   /// 契約形態
   @override
-  final int contractType;
+  final int? contractType;
 
   /// 概要・自己PR
   @override
-  final String description;
+  final String? description;
 
   /// 駅
   @override
-  final String station;
+  final String? station;
 
   /// 写真
   @override
@@ -667,13 +669,13 @@ abstract class _UserInfo extends UserInfo {
       required final String nameLast,
       required final String rubyFirst,
       required final String rubyLast,
-      required final List<String> favoriteSkill,
-      required final String initial,
+      final List<String>? favoriteSkill,
+      final String? initial,
       required final int sex,
       required final DateTime birthDay,
-      required final int contractType,
-      required final String description,
-      required final String station,
+      final int? contractType,
+      final String? description,
+      final String? station,
       final String? image,
       final int? branchOffice,
       final int? department,
@@ -706,11 +708,11 @@ abstract class _UserInfo extends UserInfo {
   @override
 
   /// 得意言語
-  List<String> get favoriteSkill;
+  List<String>? get favoriteSkill;
   @override
 
   /// イニシャル
-  String get initial;
+  String? get initial;
   @override
 
   /// 性別
@@ -722,15 +724,15 @@ abstract class _UserInfo extends UserInfo {
   @override
 
   /// 契約形態
-  int get contractType;
+  int? get contractType;
   @override
 
   /// 概要・自己PR
-  String get description;
+  String? get description;
   @override
 
   /// 駅
-  String get station;
+  String? get station;
   @override
 
   /// 写真

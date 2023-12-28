@@ -205,65 +205,68 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                                 Container(
                                     margin: EdgeInsets.only(top: 5, bottom: 5),
                                     child: Text("性別")),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.448,
-                                  // height: MediaQuery.of(context).size.height * 0.08,
-                                  padding: const EdgeInsets.all(3),
-                                  child: DropdownButtonFormField2(
-                                    decoration: InputDecoration(
-                                        isDense: true,
-                                        contentPadding: EdgeInsets.zero,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        focusedBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.blue, width: 2))),
-                                    // isExpanded: false,
-                                    hint: const Text(
-                                      '性別',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.black45,
-                                    ),
-                                    iconSize: 30,
-                                    buttonHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.07,
-                                    buttonPadding:
-                                        const EdgeInsets.only(right: 10),
-                                    dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: Border.all(
-                                          color: Colors.blue, width: 2),
-                                    ),
-                                    items: const [
-                                      DropdownMenuItem(
-                                        value: 1,
-                                        child: Text('男性'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 2,
-                                        child: Text('女性'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 3,
-                                        child: Text('その他'),
-                                      ),
-                                    ],
-                                    onChanged: (value) {
-                                      sex = int.parse(value.toString());
-                                    },
-                                    onSaved: (value) {
-                                      sex = int.parse(value.toString());
-                                    },
-                                    value: userDataJson.sex,
-                                  ),
-                                ),
+                                // Container(
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 0.448,
+                                //   // height: MediaQuery.of(context).size.height * 0.08,
+                                //   padding: const EdgeInsets.all(3),
+                                //   child: DropdownButtonFormField2(
+                                //     decoration: InputDecoration(
+                                //         isDense: true,
+                                //         contentPadding: EdgeInsets.zero,
+                                //         border: OutlineInputBorder(
+                                //           borderRadius:
+                                //               BorderRadius.circular(4),
+                                //         ),
+                                //         focusedBorder: const OutlineInputBorder(
+                                //             borderSide: BorderSide(
+                                //                 color: Colors.blue, width: 2))),
+                                //     // isExpanded: false,
+                                //     hint: const Text(
+                                //       '性別',
+                                //       style: TextStyle(fontSize: 14),
+                                //     ),
+
+                                //     iconStyleData: const IconStyleData(
+                                //       icon: Icon(
+                                //         Icons.arrow_drop_down,
+                                //         color: Colors.black45,
+                                //       ),
+                                //       iconSize: 30,
+                                //     ),
+                                //     buttonHeight:
+                                //         MediaQuery.of(context).size.height *
+                                //             0.07,
+                                //     buttonPadding:
+                                //         const EdgeInsets.only(right: 10),
+                                //     dropdownDecoration: BoxDecoration(
+                                //       borderRadius: BorderRadius.circular(15),
+                                //       border: Border.all(
+                                //           color: Colors.blue, width: 2),
+                                //     ),
+                                //     items: const [
+                                //       DropdownMenuItem(
+                                //         value: 1,
+                                //         child: Text('男性'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 2,
+                                //         child: Text('女性'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 3,
+                                //         child: Text('その他'),
+                                //       ),
+                                //     ],
+                                //     onChanged: (value) {
+                                //       sex = int.parse(value.toString());
+                                //     },
+                                //     onSaved: (value) {
+                                //       sex = int.parse(value.toString());
+                                //     },
+                                //     value: userDataJson.sex,
+                                //   ),
+                                // ),
                               ],
                             )
                           ],
@@ -312,83 +315,83 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                                 Container(
                                     margin: EdgeInsets.only(top: 5, bottom: 5),
                                     child: Text("支社名")),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.448,
-                                  // height: MediaQuery.of(context).size.height * 0.08,
-                                  padding: const EdgeInsets.all(3),
-                                  child: DropdownButtonFormField2(
-                                    decoration: InputDecoration(
-                                        isDense: true,
-                                        contentPadding: EdgeInsets.zero,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        focusedBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.blue, width: 2))),
-                                    // isExpanded: false,
-                                    hint: const Text(
-                                      '性別',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.black45,
-                                    ),
-                                    iconSize: 30,
-                                    buttonHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.07,
-                                    buttonPadding:
-                                        const EdgeInsets.only(right: 10),
-                                    dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: Border.all(
-                                          color: Colors.blue, width: 2),
-                                    ),
-                                    items: const [
-                                      DropdownMenuItem(
-                                        value: 1,
-                                        child: Text('北海道支社'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 2,
-                                        child: Text('東京本社'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 3,
-                                        child: Text('中部支社'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 4,
-                                        child: Text('関西支社'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 5,
-                                        child: Text('中国支社'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 6,
-                                        child: Text('九州支社'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 7,
-                                        child: Text('バングラデシュ'),
-                                      ),
-                                    ],
-                                    onChanged: (value) {
-                                      branchOffice =
-                                          int.parse(value.toString());
-                                    },
-                                    onSaved: (value) {
-                                      branchOffice =
-                                          int.parse(value.toString());
-                                    },
-                                    value: userDataJson.branchOffice,
-                                  ),
-                                ),
+                                // Container(
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 0.448,
+                                //   // height: MediaQuery.of(context).size.height * 0.08,
+                                //   padding: const EdgeInsets.all(3),
+                                //   child: DropdownButtonFormField2(
+                                //     decoration: InputDecoration(
+                                //         isDense: true,
+                                //         contentPadding: EdgeInsets.zero,
+                                //         border: OutlineInputBorder(
+                                //           borderRadius:
+                                //               BorderRadius.circular(4),
+                                //         ),
+                                //         focusedBorder: const OutlineInputBorder(
+                                //             borderSide: BorderSide(
+                                //                 color: Colors.blue, width: 2))),
+                                //     // isExpanded: false,
+                                //     hint: const Text(
+                                //       '性別',
+                                //       style: TextStyle(fontSize: 14),
+                                //     ),
+                                //     icon: const Icon(
+                                //       Icons.arrow_drop_down,
+                                //       color: Colors.black45,
+                                //     ),
+                                //     iconSize: 30,
+                                //     buttonHeight:
+                                //         MediaQuery.of(context).size.height *
+                                //             0.07,
+                                //     buttonPadding:
+                                //         const EdgeInsets.only(right: 10),
+                                //     dropdownDecoration: BoxDecoration(
+                                //       borderRadius: BorderRadius.circular(15),
+                                //       border: Border.all(
+                                //           color: Colors.blue, width: 2),
+                                //     ),
+                                //     items: const [
+                                //       DropdownMenuItem(
+                                //         value: 1,
+                                //         child: Text('北海道支社'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 2,
+                                //         child: Text('東京本社'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 3,
+                                //         child: Text('中部支社'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 4,
+                                //         child: Text('関西支社'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 5,
+                                //         child: Text('中国支社'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 6,
+                                //         child: Text('九州支社'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 7,
+                                //         child: Text('バングラデシュ'),
+                                //       ),
+                                //     ],
+                                //     onChanged: (value) {
+                                //       branchOffice =
+                                //           int.parse(value.toString());
+                                //     },
+                                //     onSaved: (value) {
+                                //       branchOffice =
+                                //           int.parse(value.toString());
+                                //     },
+                                //     value: userDataJson.branchOffice,
+                                //   ),
+                                // ),
                               ],
                             ),
                             Column(
@@ -397,65 +400,65 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                                 Container(
                                     margin: EdgeInsets.only(top: 5, bottom: 5),
                                     child: Text("部署名")),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.448,
-                                  // height: MediaQuery.of(context).size.height * 0.08,
-                                  padding: const EdgeInsets.all(3),
-                                  child: DropdownButtonFormField2(
-                                    decoration: InputDecoration(
-                                        isDense: true,
-                                        contentPadding: EdgeInsets.zero,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        focusedBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.blue, width: 2))),
-                                    // isExpanded: false,
-                                    hint: const Text(
-                                      '部署',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.black45,
-                                    ),
-                                    iconSize: 30,
-                                    buttonHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.07,
-                                    buttonPadding:
-                                        const EdgeInsets.only(right: 10),
-                                    dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: Border.all(
-                                          color: Colors.blue, width: 2),
-                                    ),
-                                    items: const [
-                                      DropdownMenuItem(
-                                        value: 1,
-                                        child: Text('システム本部'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 2,
-                                        child: Text('営業部'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 3,
-                                        child: Text('経営企画部'),
-                                      ),
-                                    ],
-                                    onChanged: (value) {
-                                      sex = int.parse(value.toString());
-                                    },
-                                    onSaved: (value) {
-                                      sex = int.parse(value.toString());
-                                    },
-                                    value: userDataJson.sex,
-                                  ),
-                                ),
+                                // Container(
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 0.448,
+                                //   // height: MediaQuery.of(context).size.height * 0.08,
+                                //   padding: const EdgeInsets.all(3),
+                                //   child: DropdownButtonFormField2(
+                                //     decoration: InputDecoration(
+                                //         isDense: true,
+                                //         contentPadding: EdgeInsets.zero,
+                                //         border: OutlineInputBorder(
+                                //           borderRadius:
+                                //               BorderRadius.circular(4),
+                                //         ),
+                                //         focusedBorder: const OutlineInputBorder(
+                                //             borderSide: BorderSide(
+                                //                 color: Colors.blue, width: 2))),
+                                //     // isExpanded: false,
+                                //     hint: const Text(
+                                //       '部署',
+                                //       style: TextStyle(fontSize: 14),
+                                //     ),
+                                //     icon: const Icon(
+                                //       Icons.arrow_drop_down,
+                                //       color: Colors.black45,
+                                //     ),
+                                //     iconSize: 30,
+                                //     buttonHeight:
+                                //         MediaQuery.of(context).size.height *
+                                //             0.07,
+                                //     buttonPadding:
+                                //         const EdgeInsets.only(right: 10),
+                                //     dropdownDecoration: BoxDecoration(
+                                //       borderRadius: BorderRadius.circular(15),
+                                //       border: Border.all(
+                                //           color: Colors.blue, width: 2),
+                                //     ),
+                                //     items: const [
+                                //       DropdownMenuItem(
+                                //         value: 1,
+                                //         child: Text('システム本部'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 2,
+                                //         child: Text('営業部'),
+                                //       ),
+                                //       DropdownMenuItem(
+                                //         value: 3,
+                                //         child: Text('経営企画部'),
+                                //       ),
+                                //     ],
+                                //     onChanged: (value) {
+                                //       sex = int.parse(value.toString());
+                                //     },
+                                //     onSaved: (value) {
+                                //       sex = int.parse(value.toString());
+                                //     },
+                                //     value: userDataJson.sex,
+                                //   ),
+                                // ),
                               ],
                             )
                           ],

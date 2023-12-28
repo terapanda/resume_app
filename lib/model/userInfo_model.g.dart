@@ -11,22 +11,22 @@ _$_UserInfo _$$_UserInfoFromJson(Map<String, dynamic> json) => _$_UserInfo(
       nameLast: json['nameLast'] as String,
       rubyFirst: json['rubyFirst'] as String,
       rubyLast: json['rubyLast'] as String,
-      favoriteSkill: (json['favoriteSkill'] as List<dynamic>)
-          .map((e) => e as String)
+      favoriteSkill: (json['favoriteSkill'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      initial: json['initial'] as String,
+      initial: json['initial'] as String?,
       sex: json['sex'] as int,
-      birthDay: json['birthDay'].toDate(),
-      contractType: json['contractType'] as int,
-      description: json['description'] as String,
-      station: json['station'] as String,
+      birthDay: DateTime.parse(json['birthDay'] as String),
+      contractType: json['contractType'] as int?,
+      description: json['description'] as String?,
+      station: json['station'] as String?,
       image: json['image'] as String?,
       branchOffice: json['branchOffice'] as int?,
       department: json['department'] as int?,
       experience: json['experience'] as int?,
       authority: json['authority'] as int,
       isProgrammer: json['isProgrammer'] as bool,
-      updateDate: json['updateDate'].toDate(),
+      updateDate: DateTime.parse(json['updateDate'] as String),
       technicalOSList: (json['technicalOSList'] as List<dynamic>?)
           ?.map((e) => TechnicalOS.fromJson(e as Map<String, dynamic>))
           .toList(),
